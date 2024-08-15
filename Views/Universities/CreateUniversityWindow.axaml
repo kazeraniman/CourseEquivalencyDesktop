@@ -1,0 +1,43 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="310"
+        x:Class="CourseEquivalencyDesktop.Views.Universities.CreateUniversityWindow"
+        Title="Create University"
+        CanResize="False"
+        Width="800"
+        Height="310"
+        WindowStartupLocation="CenterOwner">
+    <StackPanel Spacing="24" Margin="20">
+        <Border
+            Background="{StaticResource BackgroundGrey50}"
+            Padding="24"
+            CornerRadius="6">
+            <StackPanel
+                Spacing="16">
+                <StackPanel Spacing="5">
+                    <Label FontWeight="Bold" Content="Enter a name"/>
+                    <TextBox Classes="FormInputTextBox" Watermark="University of Waterloo">
+                        <TextBox.InnerLeftContent>
+                            <Path Data="{StaticResource UniversityIconData}" />
+                        </TextBox.InnerLeftContent>
+                    </TextBox>
+                </StackPanel>
+                <StackPanel Spacing="5">
+                    <Label FontWeight="Bold" Content="Enter a URL (optional)"/>
+                    <TextBox Classes="FormInputTextBox" Watermark="https://uwaterloo.ca/">
+                        <TextBox.InnerLeftContent>
+                            <Path Data="{StaticResource LinkIconData}"/>
+                        </TextBox.InnerLeftContent>
+                    </TextBox>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Spacing="16" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Theme="{StaticResource GreyButton}" Content="Cancel"/>
+            <Button Theme="{StaticResource BlueButton}" Content="Create University"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

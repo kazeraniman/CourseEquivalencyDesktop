@@ -8,8 +8,90 @@
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
-  
+
     <Application.Styles>
         <FluentTheme />
+
+        <!-- Shape textboxes used for form inputs so that the contents don't look tight. -->
+        <Style Selector="TextBox.FormInputTextBox">
+            <Setter Property="Padding" Value="10,10,0,10"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+
+            <!-- Add a margin to paths used as icons in textboxes so that they don't hug so tightly. -->
+            <Style Selector="^ Path">
+                <Setter Property="Margin" Value="10,0,0,0"/>
+                <!-- <Setter Property="ClipToBounds" Value="True"/> -->
+                <Setter Property="Stretch" Value="Uniform"/>
+                <Setter Property="Height" Value="14"/>
+                <Setter Property="Width" Value="14"/>
+            </Style>
+
+            <!-- Turn icons in textboxes black when focused. -->
+            <Style Selector="^:focus Path">
+                <Setter Property="Stroke" Value="Black"/>
+            </Style>
+        </Style>
+
+        <!-- Draw the svg paths properly. -->
+        <Style Selector="Path">
+            <Setter Property="Stroke" Value="{DynamicResource TextGrey500}"/>
+            <Setter Property="StrokeThickness" Value="1.25"/>
+            <Setter Property="StrokeLineCap" Value="Round"/>
+            <Setter Property="StrokeJoin" Value="Round"/>
+        </Style>
     </Application.Styles>
+
+    <Application.Resources>
+        <!-- Icons from https://heroicons.com/ -->
+        <!-- link -->
+        <StreamGeometry x:Key="LinkIconData">M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244</StreamGeometry>
+        <!-- building -->
+        <StreamGeometry x:Key="UniversityIconData">M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z</StreamGeometry>
+
+        <!-- Colours -->
+        <Color x:Key="BackgroundGrey50">#f9fafb</Color>
+        <Color x:Key="BackgroundGrey100">#f3f4f6</Color>
+        <Color x:Key="BackgroundGrey200">#e5e7eb</Color>
+        <Color x:Key="BackgroundBlue400">#60a5fa</Color>
+        <Color x:Key="BackgroundBlue500">#3b82f6</Color>
+        <Color x:Key="TextGrey500">#6b7280</Color>
+        <Color x:Key="TextGrey600">#4b5563</Color>
+
+        <!-- Themes -->
+        <!-- Text boxes which will be used for form inputs. -->
+        <ControlTheme x:Key="FormInputTextBox" TargetType="TextBox">
+            <Setter Property="Padding" Value="10,10,0,10"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </ControlTheme>
+
+        <!-- Basic button theme for inheritance. -->
+        <ControlTheme x:Key="BaseButton" TargetType="Button">
+            <Setter Property="FontSize" Value="14"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="500"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="CornerRadius" Value="8"/>
+        </ControlTheme>
+
+        <!-- Standard grey button. -->
+        <ControlTheme x:Key="GreyButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Background" Value="{StaticResource BackgroundGrey100}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextGrey600}"/>
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="{StaticResource BackgroundGrey200}"/>
+            </Style>
+        </ControlTheme>
+
+        <!-- Standard blue button. -->
+        <ControlTheme x:Key="BlueButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Background" Value="{StaticResource BackgroundBlue500}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="{StaticResource BackgroundBlue400}"/>
+            </Style>
+        </ControlTheme>
+    </Application.Resources>
 </Application>
