@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.Input;
+using CourseEquivalencyDesktop.ViewModels.Universities;
 using CourseEquivalencyDesktop.Views.Universities;
 
 namespace CourseEquivalencyDesktop.Views;
@@ -25,7 +26,13 @@ public partial class MainWindow : Window
     [RelayCommand]
     private void SpawnCreateUniversityWindow()
     {
-        var createUniversityWindow = new CreateUniversityWindow();
+        var createUniversityViewModel = new CreateUniversityViewModel();
+        var createUniversityWindow = new CreateUniversityWindow
+        {
+            DataContext = createUniversityViewModel
+        };
+
+        createUniversityViewModel.OnRequestCloseWindow += (_, _) => createUniversityWindow.Close();
         createUniversityWindow.ShowDialog(this);
     }
 }
