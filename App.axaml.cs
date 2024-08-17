@@ -1,10 +1,13 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.ViewModels;
-using CourseEquivalencyDesktop.Views;
+using Microsoft.Extensions.DependencyInjection;
+using MainWindow = CourseEquivalencyDesktop.Views.General.MainWindow;
 
 namespace CourseEquivalencyDesktop;
 
@@ -13,6 +16,16 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+
+        // Register all the services needed for the application to run
+        var collection = new ServiceCollection();
+        collection.AddCommonServices();
+
+        // Creates a ServiceProvider containing services from the provided IServiceCollection
+        var services = collection.BuildServiceProvider();
+
+        // Make the services generally available
+        Ioc.Default.ConfigureServices(services);
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -22,6 +35,7 @@ public partial class App : Application
             // Line below is needed to remove Avalonia data validation.
             // Without this line you will get duplicate validations from both Avalonia and CT
             BindingPlugins.DataValidators.RemoveAt(0);
+
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainWindowViewModel(),

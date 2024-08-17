@@ -17,6 +17,7 @@ public partial class CreateUniversityViewModel : ViewModelBase
     private string name;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CreateCommand))]
     [Url]
     private string url;
 
@@ -27,11 +28,6 @@ public partial class CreateUniversityViewModel : ViewModelBase
         Name = Name,
         Url = Url
     };
-
-    partial void OnNameChanged(string value)
-    {
-        ValidateProperty(value, nameof(Name));
-    }
 
     partial void OnUrlChanged(string value)
     {

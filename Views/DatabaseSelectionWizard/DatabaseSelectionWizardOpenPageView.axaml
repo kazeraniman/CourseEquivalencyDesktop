@@ -1,0 +1,40 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard"
+             xmlns:v="using:CourseEquivalencyDesktop.Views.DatabaseSelectionWizard"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="100"
+             x:Class="CourseEquivalencyDesktop.Views.DatabaseSelectionWizard.DatabaseSelectionWizardOpenPageView"
+             x:DataType="vm:DatabaseSelectionWizardOpenPageViewModel">
+
+    <Design.DataContext>
+        <vm:DatabaseSelectionWizardOpenPageViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="*, Auto">
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="0,0,0,10"
+            TextWrapping="Wrap"
+            Text="Select the database file to load."/>
+        <TextBox
+            Grid.Row="1"
+            Grid.Column="0"
+            IsReadOnly="True"
+            IsEnabled="False"
+            VerticalContentAlignment="Center"
+            Text="{Binding Path=((vm:DatabaseSelectionWizardViewModel)DataContext).ExistingDatabaseFilePath, RelativeSource={RelativeSource FindAncestor, AncestorType=v:DatabaseSelectionWizardWindow}}"/>
+        <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="5,0,0,0"
+            Theme="{StaticResource GreyButton}"
+            Command="{Binding Path=((vm:DatabaseSelectionWizardViewModel)DataContext).SelectExistingDatabaseCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=v:DatabaseSelectionWizardWindow}}">
+            <Path Data="{StaticResource FilePickIconData}" />
+        </Button>
+    </Grid>
+
+</UserControl>

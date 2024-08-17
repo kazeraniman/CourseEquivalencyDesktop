@@ -1,10 +1,14 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using CommunityToolkit.Mvvm.ComponentModel.__Internals;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
+using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.ViewModels.Universities;
+using CourseEquivalencyDesktop.Views.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.Views.Universities;
 
-namespace CourseEquivalencyDesktop.Views;
+namespace CourseEquivalencyDesktop.Views.General;
 
 public partial class MainWindow : Window
 {
@@ -17,7 +21,7 @@ public partial class MainWindow : Window
     {
         base.OnLoaded(e);
 
-        SpawnCreateUniversityWindow();
+        SpawnDatabaseSelectionWizardWindow();
     }
 
     /// <summary>
@@ -34,5 +38,22 @@ public partial class MainWindow : Window
 
         createUniversityViewModel.OnRequestCloseWindow += (_, _) => createUniversityWindow.Close();
         createUniversityWindow.ShowDialog(this);
+    }
+
+    private void SpawnDatabaseSelectionWizardWindow()
+    {
+        var databaseSelectionWizardViewModel = Ioc.Default.GetService<DatabaseSelectionWizardViewModel>();
+        var databaseSelectionWizardWindow = new DatabaseSelectionWizardWindow
+        {
+            DataContext = databaseSelectionWizardViewModel
+        };
+
+        databaseSelectionWizardWindow.Closing += (_, e) =>
+        {
+            // TODO: Prevent closing if there is no database location in the settings
+        };
+
+
+        databaseSelectionWizardWindow.ShowDialog(this);
     }
 }

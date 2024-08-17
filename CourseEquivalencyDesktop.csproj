@@ -20,5 +20,30 @@
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.0"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\General\MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\DatabaseSelectionWizard\DatabaseSelectionWizardCreatePageView.axaml.cs">
+        <DependentUpon>DatabaseSelectionWizardCreatePageView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\DatabaseSelectionWizard\DatabaseSelectionWizardOpenPageView.axaml.cs">
+        <DependentUpon>DatabaseSelectionWizardCreatePageView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\DatabaseSelectionWizard\DatabaseSelectionWizardFinalizationPageView.axaml.cs">
+        <DependentUpon>DatabaseSelectionWizardOpenPageView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\DatabaseSelectionWizard\DatabaseSelectionWizardOpenPageView.axaml" />
+      <AdditionalFiles Include="Views\General\MainWindow.axaml" />
     </ItemGroup>
 </Project>
