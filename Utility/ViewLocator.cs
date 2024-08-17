@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using CourseEquivalencyDesktop.ViewModels;
 
-namespace CourseEquivalencyDesktop;
+namespace CourseEquivalencyDesktop.Utility;
 
 public class ViewLocator : IDataTemplate
 {

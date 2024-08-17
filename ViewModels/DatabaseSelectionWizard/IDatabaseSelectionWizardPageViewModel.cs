@@ -1,0 +1,3 @@
+﻿namespace CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
+
+public interface IDatabaseSelectionWizardPageViewModel;

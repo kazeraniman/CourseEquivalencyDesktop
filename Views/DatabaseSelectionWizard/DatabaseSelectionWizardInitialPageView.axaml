@@ -1,0 +1,36 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard"
+             xmlns:v="using:CourseEquivalencyDesktop.Views.DatabaseSelectionWizard"
+             xmlns:u="using:CourseEquivalencyDesktop.Utility"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="CourseEquivalencyDesktop.Views.DatabaseSelectionWizard.DatabaseSelectionWizardInitialPageView"
+             x:DataType="vm:DatabaseSelectionWizardInitialPageViewModel">
+
+    <Design.DataContext>
+        <vm:DatabaseSelectionWizardInitialPageViewModel/>
+    </Design.DataContext>
+
+    <StackPanel>
+        <TextBlock
+            Margin="0,0,0,10"
+            TextWrapping="Wrap"
+            Text="This wizard will guide you through the process of selecting the database. Are you creating a new database or opening an existing one?"/>
+
+        <StackPanel>
+            <StackPanel.Resources>
+                <u:ComparisonConverter x:Key="ComparisonConverter" />
+            </StackPanel.Resources>
+            <RadioButton
+                Content="Create New Database"
+                IsChecked="{Binding Path=((vm:DatabaseSelectionWizardViewModel)DataContext).DatabaseSelectionOption, RelativeSource={RelativeSource FindAncestor, AncestorType=v:DatabaseSelectionWizardWindow}, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static vm:DatabaseSelectionOptions.CreateNew}}" />
+            <RadioButton
+                Content="Open Existing Database"
+                IsChecked="{Binding Path=((vm:DatabaseSelectionWizardViewModel)DataContext).DatabaseSelectionOption, RelativeSource={RelativeSource FindAncestor, AncestorType=v:DatabaseSelectionWizardWindow}, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static vm:DatabaseSelectionOptions.OpenExisting}}" />
+        </StackPanel>
+
+    </StackPanel>
+
+</UserControl>
