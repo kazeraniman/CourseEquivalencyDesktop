@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Services;
 
@@ -51,6 +52,11 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     [ObservableProperty]
     private bool isDoneButtonShown;
 
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CompleteWizardCommand))]
+    [NotifyCanExecuteChangedFor(nameof(NavigatePreviousPageCommand))]
+    private bool isFinalizing;
+
     public DatabaseSelectionWizardViewModel()
     {
         Utility.Utility.AssertDesignMode();
@@ -73,6 +79,11 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
         IsDoneButtonShown = CurrentPage is DatabaseSelectionWizardFinalizationPageViewModel;
     }
 
+    private bool CanNavigatePrevious()
+    {
+        return !IsFinalizing;
+    }
+
     private bool CanNavigateNext()
     {
         return CurrentPage switch
@@ -87,8 +98,8 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
 
     private bool CanFinish()
     {
-        return (DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew && !string.IsNullOrEmpty(NewDatabaseFilePath)) ||
-               (DatabaseSelectionOption == DatabaseSelectionOptions.OpenExisting && !string.IsNullOrEmpty(ExistingDatabaseFilePath));
+        return !IsFinalizing && ((DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew && !string.IsNullOrEmpty(NewDatabaseFilePath)) ||
+               (DatabaseSelectionOption == DatabaseSelectionOptions.OpenExisting && !string.IsNullOrEmpty(ExistingDatabaseFilePath)));
     }
 
     private IDatabaseSelectionWizardPageViewModel? GetPreviousPage()
@@ -117,7 +128,7 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
         };
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanNavigatePrevious))]
     private void NavigatePreviousPage()
     {
         var previousPage = GetPreviousPage();
@@ -165,6 +176,14 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     private async Task CompleteWizard()
     {
         // TODO: Actually complete the wizard stuff.
+        IsFinalizing = true;
+        var userSettingsService = Ioc.Default.GetService<UserSettingsService>();
+        if (userSettingsService is not null)
+        {
+            await userSettingsService.SetDatabaseFilePath(DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew ? NewDatabaseFilePath : ExistingDatabaseFilePath);
+        }
+
+        IsFinalizing = false;
         Console.WriteLine("Wizard complete!");
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
@@ -28,8 +27,15 @@ public partial class App : Application
         Ioc.Default.ConfigureServices(services);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
+        // Load the settings file
+        var userSettingsService = Ioc.Default.GetService<UserSettingsService>();
+        if (userSettingsService is not null)
+        {
+            await userSettingsService.LoadSettings();
+        }
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Line below is needed to remove Avalonia data validation.
