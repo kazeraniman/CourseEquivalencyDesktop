@@ -1,14 +1,14 @@
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using CommunityToolkit.Mvvm.ComponentModel.__Internals;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 using CourseEquivalencyDesktop.Views.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.Views.Universities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseEquivalencyDesktop.Views.General;
 
@@ -19,15 +19,17 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    protected override void OnLoaded(RoutedEventArgs e)
+    protected override async void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
 
         // TODO: Need to check if the DB connected too as an additional check after this
-        if (string.IsNullOrEmpty(Ioc.Default.GetService<UserSettingsService>()?.DatabaseFilePath))
+        if (string.IsNullOrEmpty(Ioc.Default.GetRequiredService<UserSettingsService>().DatabaseFilePath))
         {
-            SpawnDatabaseSelectionWizardWindow();
+            await SpawnDatabaseSelectionWizardWindow();
         }
+
+        await Ioc.Default.GetRequiredService<DatabaseService>().Database.MigrateAsync();
     }
 
     /// <summary>
@@ -46,17 +48,18 @@ public partial class MainWindow : Window
         createUniversityWindow.ShowDialog(this);
     }
 
-    private void SpawnDatabaseSelectionWizardWindow()
+    private Task SpawnDatabaseSelectionWizardWindow()
     {
-        var databaseSelectionWizardViewModel = Ioc.Default.GetService<DatabaseSelectionWizardViewModel>();
+        var databaseSelectionWizardViewModel = Ioc.Default.GetRequiredService<DatabaseSelectionWizardViewModel>();
         var databaseSelectionWizardWindow = new DatabaseSelectionWizardWindow
         {
             DataContext = databaseSelectionWizardViewModel
         };
 
+        databaseSelectionWizardViewModel.OnRequestCloseWindow += (_, _) => databaseSelectionWizardWindow.Close();
         databaseSelectionWizardWindow.Closing += (_, e) =>
         {
-            if (string.IsNullOrEmpty(Ioc.Default.GetService<UserSettingsService>()?.DatabaseFilePath))
+            if (string.IsNullOrEmpty(Ioc.Default.GetRequiredService<UserSettingsService>().DatabaseFilePath))
             {
                 // TODO: Maybe show a dialog to tell them why they can't close it
                 // TODO: Maybe override the topbar so that it doesn't have close button at all and just add a cancel button myself that only works if there is a database set?
@@ -65,7 +68,6 @@ public partial class MainWindow : Window
             }
         };
 
-
-        databaseSelectionWizardWindow.ShowDialog(this);
+        return databaseSelectionWizardWindow.ShowDialog(this);
     }
 }

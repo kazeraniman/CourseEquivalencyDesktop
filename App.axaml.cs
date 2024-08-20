@@ -30,11 +30,8 @@ public partial class App : Application
     public override async void OnFrameworkInitializationCompleted()
     {
         // Load the settings file
-        var userSettingsService = Ioc.Default.GetService<UserSettingsService>();
-        if (userSettingsService is not null)
-        {
-            await userSettingsService.LoadSettings();
-        }
+        var userSettingsService = Ioc.Default.GetRequiredService<UserSettingsService>();
+        await userSettingsService.LoadSettings();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
