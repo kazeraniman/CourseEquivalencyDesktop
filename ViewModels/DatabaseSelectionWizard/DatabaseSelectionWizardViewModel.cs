@@ -57,6 +57,8 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     [NotifyCanExecuteChangedFor(nameof(NavigatePreviousPageCommand))]
     private bool isFinalizing;
 
+    public event EventHandler OnRequestCloseWindow;
+
     public DatabaseSelectionWizardViewModel()
     {
         Utility.Utility.AssertDesignMode();
@@ -177,13 +179,10 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     {
         // TODO: Actually complete the wizard stuff.
         IsFinalizing = true;
-        var userSettingsService = Ioc.Default.GetService<UserSettingsService>();
-        if (userSettingsService is not null)
-        {
-            await userSettingsService.SetDatabaseFilePath(DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew ? NewDatabaseFilePath : ExistingDatabaseFilePath);
-        }
+        var userSettingsService = Ioc.Default.GetRequiredService<UserSettingsService>();
+        await userSettingsService.SetDatabaseFilePath(DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew ? NewDatabaseFilePath : ExistingDatabaseFilePath);
 
         IsFinalizing = false;
-        Console.WriteLine("Wizard complete!");
+        OnRequestCloseWindow(this, EventArgs.Empty);
     }
 }
