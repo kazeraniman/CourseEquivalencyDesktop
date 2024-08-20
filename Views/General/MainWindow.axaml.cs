@@ -1,9 +1,11 @@
+using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using CommunityToolkit.Mvvm.Input;
+using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
+using CourseEquivalencyDesktop.ViewModels;
 using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 using CourseEquivalencyDesktop.Views.DatabaseSelectionWizard;
@@ -14,38 +16,34 @@ namespace CourseEquivalencyDesktop.Views.General;
 
 public partial class MainWindow : Window
 {
+    private IDisposable? createUniversityInteractionDisposable;
+
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    protected override void OnDataContextChanged(EventArgs e)
+    {
+        createUniversityInteractionDisposable?.Dispose();
+        if (DataContext is MainWindowViewModel vm)
+        {
+            createUniversityInteractionDisposable = vm.CreateUniversityInteraction.RegisterHandler(SpawnCreateUniversityWindow);
+        }
+
+        base.OnDataContextChanged(e);
     }
 
     protected override async void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
 
-        // TODO: Need to check if the DB connected too as an additional check after this
         if (string.IsNullOrEmpty(Ioc.Default.GetRequiredService<UserSettingsService>().DatabaseFilePath))
         {
             await SpawnDatabaseSelectionWizardWindow();
         }
 
         await Ioc.Default.GetRequiredService<DatabaseService>().Database.MigrateAsync();
-    }
-
-    /// <summary>
-    /// Create a window to allow for the creation of a new university.
-    /// </summary>
-    [RelayCommand]
-    private void SpawnCreateUniversityWindow()
-    {
-        var createUniversityViewModel = new CreateUniversityViewModel();
-        var createUniversityWindow = new CreateUniversityWindow
-        {
-            DataContext = createUniversityViewModel
-        };
-
-        createUniversityViewModel.OnRequestCloseWindow += (_, _) => createUniversityWindow.Close();
-        createUniversityWindow.ShowDialog(this);
     }
 
     private Task SpawnDatabaseSelectionWizardWindow()
@@ -69,5 +67,17 @@ public partial class MainWindow : Window
         };
 
         return databaseSelectionWizardWindow.ShowDialog(this);
+    }
+
+    private async Task<University?> SpawnCreateUniversityWindow(int? id)
+    {
+        var createUniversityViewModel = new CreateUniversityViewModel();
+        var createUniversityWindow = new CreateUniversityWindow
+        {
+            DataContext = createUniversityViewModel
+        };
+
+        createUniversityViewModel.OnRequestCloseWindow += (_, args) => createUniversityWindow.Close((args as CreateUniversityViewModel.CreateUniversityEventArgs)?.University);
+        return await createUniversityWindow.ShowDialog<University>(this);
     }
 }

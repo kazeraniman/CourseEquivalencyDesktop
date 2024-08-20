@@ -11,6 +11,6 @@ public class University
 
     public override string ToString()
     {
-        return $"University: Name - {Name}; URL - {Url}";
+        return $"University: Id - {Id}; Name - {Name}; URL - {Url}";
     }
 }

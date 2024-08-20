@@ -57,7 +57,7 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     [NotifyCanExecuteChangedFor(nameof(NavigatePreviousPageCommand))]
     private bool isFinalizing;
 
-    public event EventHandler OnRequestCloseWindow;
+    public event EventHandler? OnRequestCloseWindow;
 
     public DatabaseSelectionWizardViewModel()
     {
@@ -183,6 +183,6 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
         await userSettingsService.SetDatabaseFilePath(DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew ? NewDatabaseFilePath : ExistingDatabaseFilePath);
 
         IsFinalizing = false;
-        OnRequestCloseWindow(this, EventArgs.Empty);
+        OnRequestCloseWindow?.Invoke(this, EventArgs.Empty);
     }
 }
