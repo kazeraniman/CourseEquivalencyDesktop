@@ -1,8 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
+using CourseEquivalencyDesktop.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseEquivalencyDesktop.ViewModels.Universities;
 
@@ -11,25 +16,29 @@ namespace CourseEquivalencyDesktop.ViewModels.Universities;
 /// </summary>
 public partial class CreateUniversityViewModel : ViewModelBase
 {
+    public class CreateUniversityEventArgs : EventArgs
+    {
+        public University? University { get; init; }
+    }
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CreateCommand))]
     [Required]
-    private string name;
+    private string name = string.Empty;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CreateCommand))]
     [Url]
-    private string url;
+    private string? url;
 
-    public event EventHandler OnRequestCloseWindow;
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
+    [NotifyCanExecuteChangedFor(nameof(CreateCommand))]
+    private bool isCreating;
 
-    public University GetUniversity => new()
-    {
-        Name = Name,
-        Url = Url
-    };
+    public event EventHandler? OnRequestCloseWindow;
 
-    partial void OnUrlChanged(string value)
+    partial void OnUrlChanged(string? value)
     {
         if (string.IsNullOrEmpty(value))
         {
@@ -40,22 +49,62 @@ public partial class CreateUniversityViewModel : ViewModelBase
         ValidateProperty(value, nameof(Url));
     }
 
+    private bool CanCancel()
+    {
+        return !IsCreating;
+    }
+
     private bool CanCreate()
     {
-        return !(HasErrors || string.IsNullOrWhiteSpace(Name));
+        return !(IsCreating || HasErrors || string.IsNullOrWhiteSpace(Name));
     }
 
     [RelayCommand(CanExecute = nameof(CanCreate))]
-    private void Create()
+    private async Task Create()
     {
-        // TODO: Actually perform the necessary database actions (creation, ensuring there aren't dupes, etc.)
-        Console.WriteLine(GetUniversity);
-        OnRequestCloseWindow(this, EventArgs.Empty);
+        var preparedName = Name.Trim();
+        var preparedUrl = Url?.Trim();
+
+        var databaseService = Ioc.Default.GetRequiredService<DatabaseService>();
+        if (databaseService.Universities.Any(university => university.Name == preparedName))
+        {
+            // TODO: Proper error handling dialog box
+            Console.WriteLine("A university with this name already exists.");
+            return;
+        }
+
+        var entityEntry = databaseService.Add(new University
+        {
+            Name = preparedName,
+            Url = preparedUrl
+        });
+        databaseService.SaveChangesFailed += SaveChangesFailedHandler;
+        databaseService.SavedChanges += SaveChangesSuccessHandler;
+        await databaseService.SaveChangesAsync();
+
+        void Unsubscribe()
+        {
+            databaseService.SaveChangesFailed -= SaveChangesFailedHandler;
+            databaseService.SavedChanges -= SaveChangesSuccessHandler;
+        }
+
+        void SaveChangesFailedHandler(object? sender, SaveChangesFailedEventArgs e)
+        {
+            Unsubscribe();
+            // TODO: Proper error handling dialog box
+            Console.WriteLine("Failed to create university.");
+        }
+
+        void SaveChangesSuccessHandler(object? sender, SavedChangesEventArgs e)
+        {
+            Unsubscribe();
+            OnRequestCloseWindow?.Invoke(this, new CreateUniversityEventArgs { University = entityEntry.Entity });
+        }
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanCancel))]
     private void Cancel()
     {
-        OnRequestCloseWindow(this, EventArgs.Empty);
+        OnRequestCloseWindow?.Invoke(this, EventArgs.Empty);
     }
 }

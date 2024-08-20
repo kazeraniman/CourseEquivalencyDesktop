@@ -1,8 +1,19 @@
-﻿namespace CourseEquivalencyDesktop.ViewModels;
+﻿using System;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
+using CourseEquivalencyDesktop.Models;
+using CourseEquivalencyDesktop.Utility;
+
+namespace CourseEquivalencyDesktop.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-#pragma warning disable CA1822 // Mark members as static
-    public string Greeting => "Welcome to Avalonia!";
-#pragma warning restore CA1822 // Mark members as static
+    public readonly Interaction<int?, University?> CreateUniversityInteraction = new();
+
+    [RelayCommand]
+    private async Task CreateUniversity()
+    {
+        var universityToCreate = await CreateUniversityInteraction.HandleAsync(null);
+        Console.WriteLine(universityToCreate);
+    }
 }
