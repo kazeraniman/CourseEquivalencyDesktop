@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Services;
+using CourseEquivalencyDesktop.ViewModels.General;
 
 namespace CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 
