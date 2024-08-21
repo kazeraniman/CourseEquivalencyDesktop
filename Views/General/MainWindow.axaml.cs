@@ -38,12 +38,21 @@ public partial class MainWindow : Window
     {
         base.OnLoaded(e);
 
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
+        {
+            return;
+        }
+
+        mainWindowViewModel.IsLoaded = false;
+
         if (string.IsNullOrEmpty(Ioc.Default.GetRequiredService<UserSettingsService>().DatabaseFilePath))
         {
             await SpawnDatabaseSelectionWizardWindow();
         }
 
         await Ioc.Default.GetRequiredService<DatabaseService>().Database.MigrateAsync();
+
+        mainWindowViewModel.IsLoaded = true;
     }
 
     private Task SpawnDatabaseSelectionWizardWindow()
