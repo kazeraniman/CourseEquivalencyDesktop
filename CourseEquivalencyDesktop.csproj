@@ -45,6 +45,10 @@
         <DependentUpon>DatabaseSelectionWizardOpenPageView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Home\HomePageView.axaml.cs">
+        <DependentUpon>UniversitiesPageView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

@@ -15,7 +15,10 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+    }
 
+    public override async void OnFrameworkInitializationCompleted()
+    {
         // Register all the services needed for the application to run
         var collection = new ServiceCollection();
         collection.AddCommonServices();
@@ -25,10 +28,7 @@ public partial class App : Application
 
         // Make the services generally available
         Ioc.Default.ConfigureServices(services);
-    }
 
-    public override async void OnFrameworkInitializationCompleted()
-    {
         // Load the settings file
         var userSettingsService = Ioc.Default.GetRequiredService<UserSettingsService>();
         await userSettingsService.LoadSettings();
