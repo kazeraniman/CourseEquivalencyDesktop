@@ -7,7 +7,6 @@
         x:Class="CourseEquivalencyDesktop.Views.DatabaseSelectionWizard.DatabaseSelectionWizardWindow"
         x:DataType="vm:DatabaseSelectionWizardViewModel"
         Title="Database Selection Wizard"
-        Icon="/Assets/CourseEquivalencyDesktop.ico"
         CanResize="False"
         Width="800"
         Height="250"

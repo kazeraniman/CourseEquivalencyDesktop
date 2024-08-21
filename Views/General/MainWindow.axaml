@@ -6,7 +6,6 @@
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="CourseEquivalencyDesktop.Views.General.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/CourseEquivalencyDesktop.ico"
         Title="ExCourseEquivalency"
         WindowStartupLocation="CenterScreen"
         MinWidth="1280"
