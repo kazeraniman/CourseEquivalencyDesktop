@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace CourseEquivalencyDesktop.Views.General;
 
-public partial class LoadingSpinner : UserControl
+public partial class MainPageLoadingView : UserControl
 {
-    public LoadingSpinner()
+    public MainPageLoadingView()
     {
         InitializeComponent();
     }

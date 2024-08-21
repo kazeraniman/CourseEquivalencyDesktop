@@ -5,12 +5,12 @@ using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
-using CourseEquivalencyDesktop.ViewModels;
 using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 using CourseEquivalencyDesktop.Views.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.Views.Universities;
 using Microsoft.EntityFrameworkCore;
+using MainWindowViewModel = CourseEquivalencyDesktop.ViewModels.General.MainWindowViewModel;
 
 namespace CourseEquivalencyDesktop.Views.General;
 
@@ -43,8 +43,6 @@ public partial class MainWindow : Window
             return;
         }
 
-        mainWindowViewModel.IsLoaded = false;
-
         if (string.IsNullOrEmpty(Ioc.Default.GetRequiredService<UserSettingsService>().DatabaseFilePath))
         {
             await SpawnDatabaseSelectionWizardWindow();
@@ -52,7 +50,7 @@ public partial class MainWindow : Window
 
         await Ioc.Default.GetRequiredService<DatabaseService>().Database.MigrateAsync();
 
-        mainWindowViewModel.IsLoaded = true;
+        mainWindowViewModel.CompleteLoad();
     }
 
     private Task SpawnDatabaseSelectionWizardWindow()

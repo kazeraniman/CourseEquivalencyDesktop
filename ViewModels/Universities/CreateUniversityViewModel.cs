@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
+using CourseEquivalencyDesktop.ViewModels.General;
 using Microsoft.EntityFrameworkCore;
 
 namespace CourseEquivalencyDesktop.ViewModels.Universities;

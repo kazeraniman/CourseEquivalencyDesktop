@@ -4,30 +4,19 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Utility;
-using CourseEquivalencyDesktop.ViewModels.Home;
-using CourseEquivalencyDesktop.ViewModels.Universities;
 
-namespace CourseEquivalencyDesktop.ViewModels;
+namespace CourseEquivalencyDesktop.ViewModels.General;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
     public readonly Interaction<int?, University?> CreateUniversityInteraction = new();
 
     [ObservableProperty]
-    private NavigationPageInfo currentPage;
+    private ViewModelBase currentContent = new MainPageLoadingViewModel();
 
-    [ObservableProperty]
-    private bool isLoaded;
-
-    public NavigationPageInfo[] Pages =>
-    [
-        new NavigationPageInfo("Home", "HomeIconData", new HomePageViewModel()),
-        new NavigationPageInfo("Universities", "UniversityIconData", new UniversitiesPageViewModel())
-    ];
-
-    public MainWindowViewModel()
+    public void CompleteLoad()
     {
-        currentPage = Pages[0];
+        CurrentContent = new MainPageViewModel();
     }
 
     [RelayCommand]

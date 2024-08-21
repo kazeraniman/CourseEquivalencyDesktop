@@ -4,9 +4,9 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CourseEquivalencyDesktop.Services;
-using CourseEquivalencyDesktop.ViewModels;
+using CourseEquivalencyDesktop.ViewModels.General;
+using CourseEquivalencyDesktop.Views.General;
 using Microsoft.Extensions.DependencyInjection;
-using MainWindow = CourseEquivalencyDesktop.Views.General.MainWindow;
 
 namespace CourseEquivalencyDesktop;
 

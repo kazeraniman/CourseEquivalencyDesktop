@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace CourseEquivalencyDesktop.ViewModels;
+namespace CourseEquivalencyDesktop.ViewModels.General;
 
 public class ViewModelBase : ObservableValidator
 {

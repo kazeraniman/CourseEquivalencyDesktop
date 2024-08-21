@@ -2,6 +2,7 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using CourseEquivalencyDesktop.ViewModels;
+using CourseEquivalencyDesktop.ViewModels.General;
 
 namespace CourseEquivalencyDesktop.Utility;
 

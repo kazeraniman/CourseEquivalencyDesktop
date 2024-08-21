@@ -1,4 +1,5 @@
 ﻿using CourseEquivalencyDesktop.ViewModels;
+using CourseEquivalencyDesktop.ViewModels.General;
 
 namespace CourseEquivalencyDesktop.Utility;
 
