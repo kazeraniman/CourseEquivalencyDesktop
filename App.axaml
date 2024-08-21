@@ -40,6 +40,12 @@
             <Setter Property="StrokeLineCap" Value="Round"/>
             <Setter Property="StrokeJoin" Value="Round"/>
         </Style>
+
+        <!-- Page headers. -->
+        <Style Selector="TextBlock.PageHeader">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="LineHeight" Value="32"/>
+        </Style>
     </Application.Styles>
 
     <Application.Resources>

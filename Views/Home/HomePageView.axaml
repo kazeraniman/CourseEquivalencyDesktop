@@ -12,6 +12,9 @@
         <vm:HomePageViewModel/>
     </Design.DataContext>
 
-    Home
+    <StackPanel>
+        <TextBlock Text="Home"
+                   Classes="PageHeader"/>
+    </StackPanel>
 
 </UserControl>

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
 using Microsoft.EntityFrameworkCore;
@@ -13,18 +11,11 @@ namespace CourseEquivalencyDesktop.ViewModels.General;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public readonly Interaction<int?, University?> CreateUniversityInteraction = new();
+
     public readonly Interaction<bool?, bool?> SpawnDatabaseSelectionWizardInteraction = new();
 
     [ObservableProperty]
     private ViewModelBase currentContent = new MainPageLoadingViewModel();
-
-    [RelayCommand]
-    private async Task CreateUniversity()
-    {
-        var universityToCreate = await CreateUniversityInteraction.HandleAsync(null);
-        Console.WriteLine(universityToCreate);
-    }
 
     [RelayCommand]
     private async Task Initialization()
