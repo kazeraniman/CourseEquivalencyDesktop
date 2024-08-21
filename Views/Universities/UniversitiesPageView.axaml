@@ -12,6 +12,9 @@
         <vm:UniversitiesPageViewModel/>
     </Design.DataContext>
 
-    Universities
+    <StackPanel>
+        <TextBlock Text="Universities"
+                   Classes="PageHeader"/>
+    </StackPanel>
 
 </UserControl>
