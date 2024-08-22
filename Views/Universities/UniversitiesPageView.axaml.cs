@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CourseEquivalencyDesktop.Models;
+using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 
 namespace CourseEquivalencyDesktop.Views.Universities;
@@ -14,6 +16,23 @@ public partial class UniversitiesPageView : UserControl
     public UniversitiesPageView()
     {
         InitializeComponent();
+    }
+
+    protected override void OnLoaded(RoutedEventArgs e)
+    {
+        base.OnLoaded(e);
+
+        if (DataContext is not UniversitiesPageViewModel universitiesPageViewModel)
+        {
+            return;
+        }
+
+        if (Design.IsDesignMode)
+        {
+            return;
+        }
+
+        universitiesPageViewModel.UpdateUniversities();
     }
 
     protected override void OnUnloaded(RoutedEventArgs e)
@@ -28,26 +47,26 @@ public partial class UniversitiesPageView : UserControl
         createUniversityInteractionDisposable?.Dispose();
         if (DataContext is UniversitiesPageViewModel vm)
         {
-            createUniversityInteractionDisposable = vm.CreateUniversityInteraction.RegisterHandler(SpawnCreateUniversityWindow);
+            createUniversityInteractionDisposable = vm.CreateOrEditUniversityInteraction.RegisterHandler(SpawnCreateUniversityWindow);
         }
 
         base.OnDataContextChanged(e);
     }
 
-    private async Task<University?> SpawnCreateUniversityWindow(int? id)
+    private async Task<University?> SpawnCreateUniversityWindow(University? university)
     {
         if (TopLevel.GetTopLevel(this) is not Window window)
         {
             return null;
         }
 
-        var createUniversityViewModel = new CreateUniversityViewModel();
-        var createUniversityWindow = new CreateUniversityWindow
+        var createUniversityViewModel = Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditUniversityViewModelFactory>()(university);
+        var createUniversityWindow = new CreateOrEditUniversityWindow
         {
             DataContext = createUniversityViewModel
         };
 
-        createUniversityViewModel.OnRequestCloseWindow += (_, args) => createUniversityWindow.Close((args as CreateUniversityViewModel.CreateUniversityEventArgs)?.University);
+        createUniversityViewModel.OnRequestCloseWindow += (_, args) => createUniversityWindow.Close((args as CreateOrEditUniversityViewModel.CreateOrEditUniversityEventArgs)?.University);
 
         return await createUniversityWindow.ShowDialog<University>(window);
     }

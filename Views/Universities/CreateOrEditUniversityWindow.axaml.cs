@@ -2,9 +2,9 @@
 
 namespace CourseEquivalencyDesktop.Views.Universities;
 
-public partial class CreateUniversityWindow : Window
+public partial class CreateOrEditUniversityWindow : Window
 {
-    public CreateUniversityWindow()
+    public CreateOrEditUniversityWindow()
     {
         InitializeComponent();
     }
