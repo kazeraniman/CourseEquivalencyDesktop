@@ -23,7 +23,7 @@
             <!-- Add a margin to paths used as icons in textboxes so that they don't hug so tightly. -->
             <Style Selector="^ Path">
                 <Setter Property="Margin" Value="10,0,0,0"/>
-                <!-- <Setter Property="ClipToBounds" Value="True"/> -->
+                <Setter Property="Stroke" Value="{DynamicResource TextGrey500}"/>
                 <Setter Property="Stretch" Value="Uniform"/>
                 <Setter Property="Height" Value="14"/>
                 <Setter Property="Width" Value="14"/>
@@ -37,7 +37,7 @@
 
         <!-- Draw the svg paths properly. -->
         <Style Selector="Path">
-            <Setter Property="Stroke" Value="{DynamicResource TextGrey500}"/>
+            <Setter Property="Stroke" Value="Black"/>
             <Setter Property="StrokeThickness" Value="1.25"/>
             <Setter Property="StrokeLineCap" Value="Round"/>
             <Setter Property="StrokeJoin" Value="Round"/>
@@ -70,11 +70,14 @@
         <StreamGeometry x:Key="PageLeftIconData">M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18</StreamGeometry>
         <!-- arrow-right -->
         <StreamGeometry x:Key="PageRightIconData">M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3</StreamGeometry>
+        <!-- plus -->
+        <StreamGeometry x:Key="CreateIconData">M12 4.5v15m7.5-7.5h-15</StreamGeometry>
 
         <!-- Colours -->
         <Color x:Key="BackgroundGrey50">#f9fafb</Color>
         <Color x:Key="BackgroundGrey100">#f3f4f6</Color>
         <Color x:Key="BackgroundGrey200">#e5e7eb</Color>
+        <Color x:Key="BackgroundGrey400">#9ca3af</Color>
         <Color x:Key="BackgroundBlue400">#60a5fa</Color>
         <Color x:Key="BackgroundBlue500">#3b82f6</Color>
         <Color x:Key="BackgroundSky100">#e0f2fe</Color>

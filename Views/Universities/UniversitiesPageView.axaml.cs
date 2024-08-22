@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -33,6 +34,7 @@ public partial class UniversitiesPageView : UserControl
         }
 
         universitiesPageViewModel.UpdateUniversities();
+        UniversitiesDataGrid.Columns[0].Sort(ListSortDirection.Ascending);
     }
 
     protected override void OnUnloaded(RoutedEventArgs e)
