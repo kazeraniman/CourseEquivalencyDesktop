@@ -4,16 +4,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Universities"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="340"
-        x:Class="CourseEquivalencyDesktop.Views.Universities.CreateUniversityWindow"
-        x:DataType="vm:CreateUniversityViewModel"
-        Title="Create University"
+        x:Class="CourseEquivalencyDesktop.Views.Universities.CreateOrEditUniversityWindow"
+        x:DataType="vm:CreateOrEditUniversityViewModel"
+        Title="{Binding WindowAndButtonText}"
         CanResize="False"
         Width="800"
         Height="340"
         WindowStartupLocation="CenterOwner">
 
     <Design.DataContext>
-        <vm:CreateUniversityViewModel />
+        <vm:CreateOrEditUniversityViewModel />
     </Design.DataContext>
 
     <RelativePanel Margin="20">
@@ -49,8 +49,8 @@
 
         <StackPanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" Spacing="16"
                     Orientation="Horizontal">
-            <Button Theme="{StaticResource GreyButton}" Content="Cancel" Command="{Binding CancelCommand}" />
-            <Button Theme="{StaticResource BlueButton}" Content="Create University" Command="{Binding CreateCommand}" />
+            <Button Theme="{StaticResource GreyButton}" Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True" />
+            <Button Theme="{StaticResource BlueButton}" Content="{Binding WindowAndButtonText}" Command="{Binding CreateOrEditCommand}" IsDefault="True" />
         </StackPanel>
     </RelativePanel>
 </Window>

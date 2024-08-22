@@ -19,6 +19,7 @@ public class UserSettingsService
     private UserSettings userSettings = new();
 
     public string? DatabaseFilePath => userSettings.DatabaseFilePath;
+    public int DataGridPageSize => userSettings.DataGridPageSize;
 
     public async Task LoadSettings()
     {
@@ -41,6 +42,12 @@ public class UserSettingsService
     public async Task SetDatabaseFilePath(string? databaseFilePath)
     {
         userSettings.DatabaseFilePath = databaseFilePath;
+        await SaveSettings();
+    }
+
+    public async Task SetDataGridPageSize(int dataGridPageSize)
+    {
+        userSettings.DataGridPageSize = dataGridPageSize;
         await SaveSettings();
     }
 }
