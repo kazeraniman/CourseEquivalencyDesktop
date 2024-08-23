@@ -8,7 +8,7 @@ namespace CourseEquivalencyDesktop.Services;
 
 public class UserSettingsService
 {
-    private const string APP_DATA_FOLDER_NAME = "CourseEquivalencyDesktop";
+    private const string APP_DATA_FOLDER_NAME = "ExCourseEquivalency";
     private const string USER_SETTINGS_FILE_NAME = "Settings.json";
 
     private static readonly string userSettingsFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
