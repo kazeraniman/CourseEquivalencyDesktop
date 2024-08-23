@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -17,12 +18,17 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     public readonly Interaction<University?, University?> CreateOrEditUniversityInteraction = new();
 
     private readonly ObservableCollection<University> universities = [];
+
     public DataGridCollectionView UniversitiesCollectionView { get; init; }
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(NextPageCommand))]
+    [NotifyCanExecuteChangedFor(nameof(PreviousPageCommand))]
     private string searchText = string.Empty;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(NextPageCommand))]
+    [NotifyCanExecuteChangedFor(nameof(PreviousPageCommand))]
     private int currentHumanReadablePageIndex = 1;
 
     private readonly DatabaseService databaseService;
@@ -49,6 +55,13 @@ public partial class UniversitiesPageViewModel : ViewModelBase
         };
 
         UniversitiesCollectionView.PageChanged += PageChangedHandler;
+        universities.CollectionChanged += CollectionChangedHandler;
+    }
+
+    private void CollectionChangedHandler(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        PreviousPageCommand.NotifyCanExecuteChanged();
+        NextPageCommand.NotifyCanExecuteChanged();
     }
 
     private void PageChangedHandler(object? sender, EventArgs e)
@@ -77,6 +90,21 @@ public partial class UniversitiesPageViewModel : ViewModelBase
         // TODO: Debounce so this doesn't constantly happen
         UniversitiesCollectionView.Refresh();
         UniversitiesCollectionView.MoveToFirstPage();
+    }
+
+    private int GetPageCount()
+    {
+        return (int)Math.Ceiling((double)UniversitiesCollectionView.TotalItemCount / UniversitiesCollectionView.PageSize);
+    }
+
+    private bool CanGoToNextPage()
+    {
+        return GetPageCount() > CurrentHumanReadablePageIndex;
+    }
+
+    private bool CanGoToPreviousPage()
+    {
+        return CurrentHumanReadablePageIndex > 1;
     }
 
     [RelayCommand]
@@ -128,13 +156,13 @@ public partial class UniversitiesPageViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanGoToNextPage))]
     private void NextPage()
     {
         UniversitiesCollectionView.MoveToNextPage();
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanGoToPreviousPage))]
     private void PreviousPage()
     {
         UniversitiesCollectionView.MoveToPreviousPage();
