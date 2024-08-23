@@ -16,6 +16,11 @@ public class UserSettingsService
     private static readonly string userSettingsFilePath = Path.Combine(userSettingsFolderPath,
         USER_SETTINGS_FILE_NAME);
 
+    private static readonly JsonSerializerOptions jsonSerializerOptions = new(JsonSerializerOptions.Default)
+    {
+        WriteIndented = true
+    };
+
     private UserSettings userSettings = new();
 
     public string? DatabaseFilePath => userSettings.DatabaseFilePath;
@@ -36,7 +41,7 @@ public class UserSettingsService
     {
         Directory.CreateDirectory(userSettingsFolderPath);
         await using var createStream = File.Create(userSettingsFilePath);
-        await JsonSerializer.SerializeAsync(createStream, userSettings);
+        await JsonSerializer.SerializeAsync(createStream, userSettings, jsonSerializerOptions);
     }
 
     public async Task SetDatabaseFilePath(string? databaseFilePath)
