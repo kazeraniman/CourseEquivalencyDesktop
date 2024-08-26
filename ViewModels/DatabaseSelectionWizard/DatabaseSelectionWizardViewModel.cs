@@ -16,19 +16,26 @@ public enum DatabaseSelectionOptions
 
 public partial class DatabaseSelectionWizardViewModel : ViewModelBase
 {
+    #region Constants
     private const string OPEN_EXISTING_DIALOG_TITLE = "Open Database";
     private const string CREATE_DIALOG_TITLE = "Create Database";
     private const string DEFAULT_DATABASE_NAME = "ExCourseEquivalencyDatabase";
+    #endregion
 
+    #region Fields
     private readonly DatabaseSelectionWizardInitialPageViewModel databaseSelectionWizardInitialPageViewModel = new();
     private readonly DatabaseSelectionWizardCreatePageViewModel databaseSelectionWizardCreatePageViewModel = new();
     private readonly DatabaseSelectionWizardOpenPageViewModel databaseSelectionWizardOpenPageViewModel = new();
-    private readonly DatabaseSelectionWizardFinalizationPageViewModel databaseSelectionWizardFinalizationPageViewModel = new();
+
+    private readonly DatabaseSelectionWizardFinalizationPageViewModel databaseSelectionWizardFinalizationPageViewModel =
+        new();
 
     private readonly FileDialogService fileDialogService;
+    #endregion
 
-    [ObservableProperty]
-    private DatabaseSelectionOptions databaseSelectionOption;
+    #region Properties
+    #region Observable Properties
+    [ObservableProperty] private DatabaseSelectionOptions databaseSelectionOption;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(NavigateNextPageCommand))]
@@ -40,26 +47,27 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     [NotifyCanExecuteChangedFor(nameof(CompleteWizardCommand))]
     private string? newDatabaseFilePath;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(NavigateNextPageCommand))]
-    private IDatabaseSelectionWizardPageViewModel currentPage;
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(NavigateNextPageCommand))]
+    private ViewModelBase currentPage;
 
-    [ObservableProperty]
-    private bool isNextPageButtonShown;
+    [ObservableProperty] private bool isNextPageButtonShown;
 
-    [ObservableProperty]
-    private bool isPreviousPageButtonShown;
+    [ObservableProperty] private bool isPreviousPageButtonShown;
 
-    [ObservableProperty]
-    private bool isDoneButtonShown;
+    [ObservableProperty] private bool isDoneButtonShown;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CompleteWizardCommand))]
     [NotifyCanExecuteChangedFor(nameof(NavigatePreviousPageCommand))]
     private bool isFinalizing;
+    #endregion
+    #endregion
 
+    #region Events
     public event EventHandler? OnRequestCloseWindow;
+    #endregion
 
+    #region Constructors
     public DatabaseSelectionWizardViewModel()
     {
         Utility.Utility.AssertDesignMode();
@@ -73,15 +81,48 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
         CurrentPage = databaseSelectionWizardInitialPageViewModel;
         this.fileDialogService = fileDialogService;
     }
+    #endregion
 
+    #region Handlers
     // ReSharper disable once UnusedParameterInPartialMethod
-    partial void OnCurrentPageChanged(IDatabaseSelectionWizardPageViewModel value)
+    partial void OnCurrentPageChanged(ViewModelBase value)
     {
         IsNextPageButtonShown = GetNextPage() is not null;
         IsPreviousPageButtonShown = GetPreviousPage() is not null;
         IsDoneButtonShown = CurrentPage is DatabaseSelectionWizardFinalizationPageViewModel;
     }
+    #endregion
 
+    #region Utility
+    private ViewModelBase? GetPreviousPage()
+    {
+        return CurrentPage switch
+        {
+            DatabaseSelectionWizardFinalizationPageViewModel => DatabaseSelectionOption ==
+                                                                DatabaseSelectionOptions.CreateNew
+                ? databaseSelectionWizardCreatePageViewModel
+                : databaseSelectionWizardOpenPageViewModel,
+            DatabaseSelectionWizardCreatePageViewModel or DatabaseSelectionWizardOpenPageViewModel =>
+                databaseSelectionWizardInitialPageViewModel,
+            _ => null
+        };
+    }
+
+    private ViewModelBase? GetNextPage()
+    {
+        return CurrentPage switch
+        {
+            DatabaseSelectionWizardInitialPageViewModel => DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew
+                ? databaseSelectionWizardCreatePageViewModel
+                : databaseSelectionWizardOpenPageViewModel,
+            DatabaseSelectionWizardCreatePageViewModel or DatabaseSelectionWizardOpenPageViewModel =>
+                databaseSelectionWizardFinalizationPageViewModel,
+            _ => null
+        };
+    }
+    #endregion
+
+    #region Command Execution Checks
     private bool CanNavigatePrevious()
     {
         return !IsFinalizing;
@@ -101,36 +142,14 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
 
     private bool CanFinish()
     {
-        return !IsFinalizing && ((DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew && !string.IsNullOrEmpty(NewDatabaseFilePath)) ||
-               (DatabaseSelectionOption == DatabaseSelectionOptions.OpenExisting && !string.IsNullOrEmpty(ExistingDatabaseFilePath)));
+        return !IsFinalizing && ((DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew &&
+                                  !string.IsNullOrEmpty(NewDatabaseFilePath)) ||
+                                 (DatabaseSelectionOption == DatabaseSelectionOptions.OpenExisting &&
+                                  !string.IsNullOrEmpty(ExistingDatabaseFilePath)));
     }
+    #endregion
 
-    private IDatabaseSelectionWizardPageViewModel? GetPreviousPage()
-    {
-        return CurrentPage switch
-        {
-            DatabaseSelectionWizardFinalizationPageViewModel => DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew
-                ? databaseSelectionWizardCreatePageViewModel
-                : databaseSelectionWizardOpenPageViewModel,
-            DatabaseSelectionWizardCreatePageViewModel or DatabaseSelectionWizardOpenPageViewModel =>
-                databaseSelectionWizardInitialPageViewModel,
-            _ => null
-        };
-    }
-
-    private IDatabaseSelectionWizardPageViewModel? GetNextPage()
-    {
-        return CurrentPage switch
-        {
-            DatabaseSelectionWizardInitialPageViewModel => DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew
-                ? databaseSelectionWizardCreatePageViewModel
-                : databaseSelectionWizardOpenPageViewModel,
-            DatabaseSelectionWizardCreatePageViewModel or DatabaseSelectionWizardOpenPageViewModel =>
-                databaseSelectionWizardFinalizationPageViewModel,
-            _ => null
-        };
-    }
-
+    #region Commands
     [RelayCommand(CanExecute = nameof(CanNavigatePrevious))]
     private void NavigatePreviousPage()
     {
@@ -154,7 +173,8 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     [RelayCommand]
     private async Task SelectExistingDatabase()
     {
-        var databaseFiles = await fileDialogService.OpenFileDialog(OPEN_EXISTING_DIALOG_TITLE, false, FileDialogService.SqliteDatabaseFilePickerFileType);
+        var databaseFiles = await fileDialogService.OpenFileDialog(OPEN_EXISTING_DIALOG_TITLE, false,
+            FileDialogService.SqliteDatabaseFilePickerFileType);
         if (databaseFiles.Count == 0)
         {
             return;
@@ -166,7 +186,8 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     [RelayCommand]
     private async Task SelectCreatedDatabase()
     {
-        var databaseFile = await fileDialogService.SaveFileDialog(CREATE_DIALOG_TITLE, DEFAULT_DATABASE_NAME, FileDialogService.SQLITE_DATABASE_DEFAULT_EXTENSION, FileDialogService.SqliteDatabaseFilePickerFileType);
+        var databaseFile = await fileDialogService.SaveFileDialog(CREATE_DIALOG_TITLE, DEFAULT_DATABASE_NAME,
+            FileDialogService.SQLITE_DATABASE_DEFAULT_EXTENSION, FileDialogService.SqliteDatabaseFilePickerFileType);
         if (databaseFile is null)
         {
             return;
@@ -178,12 +199,14 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanFinish))]
     private async Task CompleteWizard()
     {
-        // TODO: Actually complete the wizard stuff.
         IsFinalizing = true;
         var userSettingsService = Ioc.Default.GetRequiredService<UserSettingsService>();
-        await userSettingsService.SetDatabaseFilePath(DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew ? NewDatabaseFilePath : ExistingDatabaseFilePath);
+        await userSettingsService.SetDatabaseFilePath(DatabaseSelectionOption == DatabaseSelectionOptions.CreateNew
+            ? NewDatabaseFilePath
+            : ExistingDatabaseFilePath);
 
         IsFinalizing = false;
         OnRequestCloseWindow?.Invoke(this, EventArgs.Empty);
     }
+    #endregion
 }

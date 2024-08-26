@@ -11,12 +11,17 @@ namespace CourseEquivalencyDesktop.ViewModels.General;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-
+    #region Fields
     public readonly Interaction<bool?, bool?> SpawnDatabaseSelectionWizardInteraction = new();
+    #endregion
 
-    [ObservableProperty]
-    private ViewModelBase currentContent = new MainPageLoadingViewModel();
+    #region Properties
+    #region Observable Properties
+    [ObservableProperty] private ViewModelBase currentContent = new MainPageLoadingViewModel();
+    #endregion
+    #endregion
 
+    #region Commands
     [RelayCommand]
     private async Task Initialization()
     {
@@ -49,4 +54,5 @@ public partial class MainWindowViewModel : ViewModelBase
         // Show the actual content now that we are ready
         CurrentContent = new MainPageViewModel();
     }
+    #endregion
 }

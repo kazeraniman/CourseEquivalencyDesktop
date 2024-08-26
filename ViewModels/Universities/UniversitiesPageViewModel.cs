@@ -15,12 +15,19 @@ namespace CourseEquivalencyDesktop.ViewModels.Universities;
 
 public partial class UniversitiesPageViewModel : ViewModelBase
 {
+    #region Fields
     public readonly Interaction<University?, University?> CreateOrEditUniversityInteraction = new();
 
     private readonly ObservableCollection<University> universities = [];
 
+    private readonly DatabaseService databaseService;
+    private readonly UserSettingsService userSettingsService;
+    #endregion
+
+    #region Properties
     public DataGridCollectionView UniversitiesCollectionView { get; init; }
 
+    #region Observable Properties
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(NextPageCommand))]
     [NotifyCanExecuteChangedFor(nameof(PreviousPageCommand))]
@@ -30,10 +37,10 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     [NotifyCanExecuteChangedFor(nameof(NextPageCommand))]
     [NotifyCanExecuteChangedFor(nameof(PreviousPageCommand))]
     private int currentHumanReadablePageIndex = 1;
+    #endregion
+    #endregion
 
-    private readonly DatabaseService databaseService;
-    private readonly UserSettingsService userSettingsService;
-
+    #region Constructors
     public UniversitiesPageViewModel()
     {
         Utility.Utility.AssertDesignMode();
@@ -57,7 +64,9 @@ public partial class UniversitiesPageViewModel : ViewModelBase
         UniversitiesCollectionView.PageChanged += PageChangedHandler;
         universities.CollectionChanged += CollectionChangedHandler;
     }
+    #endregion
 
+    #region Handlers
     private void CollectionChangedHandler(object? sender, NotifyCollectionChangedEventArgs e)
     {
         PreviousPageCommand.NotifyCanExecuteChanged();
@@ -69,22 +78,6 @@ public partial class UniversitiesPageViewModel : ViewModelBase
         CurrentHumanReadablePageIndex = UniversitiesCollectionView.PageIndex + 1;
     }
 
-    private bool Filter(object arg)
-    {
-        if (arg is not University university)
-        {
-            return false;
-        }
-
-        return string.IsNullOrWhiteSpace(SearchText) || university.Name.CaseInsensitiveContains(SearchText) || (university.Url?.CaseInsensitiveContains(SearchText) ?? false);
-    }
-
-    public void UpdateUniversities()
-    {
-        universities.Clear();
-        universities.AddRange(databaseService.Universities);
-    }
-
     partial void OnSearchTextChanged(string value)
     {
         // TODO: Debounce so this doesn't constantly happen
@@ -92,11 +85,33 @@ public partial class UniversitiesPageViewModel : ViewModelBase
         UniversitiesCollectionView.MoveToFirstPage();
     }
 
-    private int GetPageCount()
+    private bool Filter(object arg)
     {
-        return (int)Math.Ceiling((double)UniversitiesCollectionView.TotalItemCount / UniversitiesCollectionView.PageSize);
+        if (arg is not University university)
+        {
+            return false;
+        }
+
+        return string.IsNullOrWhiteSpace(SearchText) || university.Name.CaseInsensitiveContains(SearchText) ||
+               (university.Url?.CaseInsensitiveContains(SearchText) ?? false);
+    }
+    #endregion
+
+    #region Utility
+    public void UpdateUniversities()
+    {
+        universities.Clear();
+        universities.AddRange(databaseService.Universities);
     }
 
+    private int GetPageCount()
+    {
+        return (int)Math.Ceiling(
+            (double)UniversitiesCollectionView.TotalItemCount / UniversitiesCollectionView.PageSize);
+    }
+    #endregion
+
+    #region Command Execution Checks
     private bool CanGoToNextPage()
     {
         return GetPageCount() > CurrentHumanReadablePageIndex;
@@ -106,7 +121,9 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     {
         return CurrentHumanReadablePageIndex > 1;
     }
+    #endregion
 
+    #region Commands
     [RelayCommand]
     private async Task CreateUniversity()
     {
@@ -167,4 +184,5 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     {
         UniversitiesCollectionView.MoveToPreviousPage();
     }
+    #endregion
 }

@@ -9,6 +9,7 @@ namespace CourseEquivalencyDesktop;
 
 public partial class App : Application
 {
+    #region Avalonia Life Cycle
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -30,4 +31,5 @@ public partial class App : Application
 
         base.OnFrameworkInitializationCompleted();
     }
+    #endregion
 }

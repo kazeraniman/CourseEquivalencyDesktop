@@ -9,13 +9,13 @@
              x:DataType="vm:UniversitiesPageViewModel">
 
     <Design.DataContext>
-        <vm:UniversitiesPageViewModel/>
+        <vm:UniversitiesPageViewModel />
     </Design.DataContext>
 
     <StackPanel x:Name="PageRoot"
                 Spacing="30">
         <TextBlock Text="Universities"
-                   Classes="PageHeader"/>
+                   Classes="PageHeader" />
         <Grid RowDefinitions="Auto, *, Auto"
               ColumnDefinitions="*, Auto">
             <TextBox x:Name="SearchTextBox"
@@ -33,7 +33,7 @@
                     Command="{Binding CreateUniversityCommand}"
                     Grid.Row="0"
                     Grid.Column="1"
-                    Margin="8,0,0,0"/>
+                    Margin="8,0,0,0" />
             <Border Grid.Row="1"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
@@ -42,20 +42,16 @@
                     Margin="0,20"
                     CornerRadius="6">
                 <DataGrid x:Name="UniversitiesDataGrid"
-                      CanUserResizeColumns="True"
-                      IsReadOnly="True"
-                      CanUserSortColumns="True"
-                      Height="450"
-                      RowBackground="White"
-                      GridLinesVisibility="Horizontal"
-                      ItemsSource="{Binding UniversitiesCollectionView}">
+                          CanUserResizeColumns="True"
+                          IsReadOnly="True"
+                          CanUserSortColumns="True"
+                          Height="450"
+                          RowBackground="White"
+                          GridLinesVisibility="Horizontal"
+                          ItemsSource="{Binding UniversitiesCollectionView}">
                     <DataGrid.Resources>
                         <ResourceDictionary>
-                            <SolidColorBrush x:Key="DataGridCellFocusVisualPrimaryBrush" Color="Transparent"/>
-                            <SolidColorBrush x:Key="DataGridCellFocusVisualSecondaryBrush" Color="Transparent"/>
-                            <SolidColorBrush x:Key="DataGridRowHoveredBackgroundColor" Color="Transparent"/>
-                            <SolidColorBrush x:Key="DataGridRowSelectedUnfocusedBackgroundBrush" Color="Transparent"/>
-                            <SolidColorBrush x:Key="DataGridRowSelectedHoveredUnfocusedBackgroundBrush" Color="Transparent"/>
+                            <!-- These keys may be faded as they aren't used, but they are necessary to provide the overrides. -->
                         </ResourceDictionary>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
@@ -67,7 +63,7 @@
                                     <SelectableTextBlock VerticalAlignment="Center"
                                                          Padding="10,5"
                                                          Text="{Binding Name}"
-                                                         ToolTip.Tip="{Binding Name}"/>
+                                                         ToolTip.Tip="{Binding Name}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -80,7 +76,7 @@
                                                      Padding="10,5"
                                                      Content="{Binding Url}"
                                                      ToolTip.Tip="{Binding Url}"
-                                                     NavigateUri="{Binding Url}"/>
+                                                     NavigateUri="{Binding Url}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -98,14 +94,14 @@
                                                 CommandParameter="{Binding}"
                                                 Margin="5"
                                                 ToolTip.Tip="Edit">
-                                            <Path Data="{StaticResource EditIconData}"/>
+                                            <Path Data="{StaticResource EditIconData}" />
                                         </Button>
                                         <Button Theme="{StaticResource GreyButton}"
                                                 Command="{Binding #PageRoot.((vm:UniversitiesPageViewModel)DataContext).DeleteUniversityCommand}"
                                                 CommandParameter="{Binding}"
                                                 Margin="5"
                                                 ToolTip.Tip="Delete">
-                                            <Path Data="{StaticResource DeleteIconData}"/>
+                                            <Path Data="{StaticResource DeleteIconData}" />
                                         </Button>
                                     </StackPanel>
                                 </DataTemplate>
@@ -123,7 +119,9 @@
                 <Button Theme="{StaticResource GreyButton}"
                         Command="{Binding PreviousPageCommand}"
                         ToolTip.Tip="Previous Page">
-                    <Path Height="25" Width="25" Data="{StaticResource PageLeftIconData}"/>
+                    <Path Height="25"
+                          Width="25"
+                          Data="{StaticResource PageLeftIconData}" />
                 </Button>
                 <Border Padding="15, 10"
                         Background="{StaticResource BackgroundBlue500}"
@@ -134,15 +132,16 @@
                                Foreground="White"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               TextAlignment="Center"/>
+                               TextAlignment="Center" />
                 </Border>
                 <Button Theme="{StaticResource GreyButton}"
                         Command="{Binding NextPageCommand}"
                         ToolTip.Tip="Next Page">
-                    <Path Height="25" Width="25" Data="{StaticResource PageRightIconData}"/>
+                    <Path Height="25"
+                          Width="25"
+                          Data="{StaticResource PageRightIconData}" />
                 </Button>
             </StackPanel>
         </Grid>
     </StackPanel>
-
 </UserControl>

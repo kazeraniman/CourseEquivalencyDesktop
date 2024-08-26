@@ -1,13 +1,13 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls;
 
 namespace CourseEquivalencyDesktop.Views.General;
 
 public partial class MainPageLoadingView : UserControl
 {
+    #region Constructors
     public MainPageLoadingView()
     {
         InitializeComponent();
     }
+    #endregion
 }

@@ -12,13 +12,18 @@ namespace CourseEquivalencyDesktop.Views.Universities;
 
 public partial class UniversitiesPageView : UserControl
 {
+    #region Fields
     private IDisposable? createUniversityInteractionDisposable;
+    #endregion
 
+    #region Constructors
     public UniversitiesPageView()
     {
         InitializeComponent();
     }
+    #endregion
 
+    #region Avalonia Life Cycle
     protected override void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
@@ -49,12 +54,15 @@ public partial class UniversitiesPageView : UserControl
         createUniversityInteractionDisposable?.Dispose();
         if (DataContext is UniversitiesPageViewModel vm)
         {
-            createUniversityInteractionDisposable = vm.CreateOrEditUniversityInteraction.RegisterHandler(SpawnCreateUniversityWindow);
+            createUniversityInteractionDisposable =
+                vm.CreateOrEditUniversityInteraction.RegisterHandler(SpawnCreateUniversityWindow);
         }
 
         base.OnDataContextChanged(e);
     }
+    #endregion
 
+    #region Interaction Handlers
     private async Task<University?> SpawnCreateUniversityWindow(University? university)
     {
         if (TopLevel.GetTopLevel(this) is not Window window)
@@ -62,14 +70,19 @@ public partial class UniversitiesPageView : UserControl
             return null;
         }
 
-        var createUniversityViewModel = Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditUniversityViewModelFactory>()(university);
+        var createUniversityViewModel =
+            Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditUniversityViewModelFactory>()(
+                university);
         var createUniversityWindow = new CreateOrEditUniversityWindow
         {
             DataContext = createUniversityViewModel
         };
 
-        createUniversityViewModel.OnRequestCloseWindow += (_, args) => createUniversityWindow.Close((args as CreateOrEditUniversityViewModel.CreateOrEditUniversityEventArgs)?.University);
+        createUniversityViewModel.OnRequestCloseWindow += (_, args) =>
+            createUniversityWindow.Close((args as CreateOrEditUniversityViewModel.CreateOrEditUniversityEventArgs)
+                ?.University);
 
         return await createUniversityWindow.ShowDialog<University>(window);
     }
+    #endregion
 }

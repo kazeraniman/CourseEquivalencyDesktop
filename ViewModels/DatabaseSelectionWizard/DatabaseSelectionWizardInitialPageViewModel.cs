@@ -2,6 +2,6 @@
 
 namespace CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 
-public partial class DatabaseSelectionWizardInitialPageViewModel : ViewModelBase, IDatabaseSelectionWizardPageViewModel
+public partial class DatabaseSelectionWizardInitialPageViewModel : ViewModelBase
 {
 }

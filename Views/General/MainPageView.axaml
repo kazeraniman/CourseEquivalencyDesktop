@@ -4,19 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.General"
              xmlns:u="using:CourseEquivalencyDesktop.Utility"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
              x:Class="CourseEquivalencyDesktop.Views.General.MainPageView"
              x:DataType="vm:MainPageViewModel">
 
     <Design.DataContext>
-        <vm:MainPageViewModel/>
+        <vm:MainPageViewModel />
     </Design.DataContext>
 
     <SplitView IsPaneOpen="True"
                DisplayMode="CompactInline"
                OpenPaneLength="200">
         <SplitView.Resources>
-            <u:IconConverter x:Key="IconConverter"/>
+            <u:IconConverter x:Key="IconConverter" />
         </SplitView.Resources>
         <SplitView.Pane>
             <ListBox SelectionMode="AlwaysSelected"
@@ -24,31 +26,43 @@
                      SelectedItem="{Binding CurrentPage}">
                 <ListBox.Styles>
                     <Style Selector="ListBox">
-                        <Setter Property="Background" Value="{StaticResource BackgroundGrey50}"/>
-                        <Setter Property="Padding" Value="8, 20"/>
+                        <Setter Property="Background"
+                                Value="{StaticResource BackgroundGrey50}" />
+                        <Setter Property="Padding"
+                                Value="8, 20" />
                     </Style>
 
                     <Style Selector="ListBoxItem">
-                        <Setter Property="Background" Value="{StaticResource BackgroundGrey100}"/>
-                        <Setter Property="Cursor" Value="Hand"/>
-                        <Setter Property="Margin" Value="0,0,0,8"/>
-                        <Setter Property="CornerRadius" Value="6"/>
+                        <Setter Property="Background"
+                                Value="{StaticResource BackgroundGrey100}" />
+                        <Setter Property="Cursor"
+                                Value="Hand" />
+                        <Setter Property="Margin"
+                                Value="0,0,0,8" />
+                        <Setter Property="CornerRadius"
+                                Value="6" />
                         <Style Selector="^ TextBlock">
-                            <Setter Property="FontWeight" Value="500"/>
+                            <Setter Property="FontWeight"
+                                    Value="500" />
                         </Style>
                         <Style Selector="^ Path">
-                            <Setter Property="Stroke" Value="Black"/>
+                            <Setter Property="Stroke"
+                                    Value="Black" />
                         </Style>
 
-                        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter, ^:selected /template/ ContentPresenter#PART_ContentPresenter">
-                            <Setter Property="Background" Value="{StaticResource BackgroundSky100}"/>
+                        <Style
+                            Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter, ^:selected /template/ ContentPresenter#PART_ContentPresenter">
+                            <Setter Property="Background"
+                                    Value="{StaticResource BackgroundSky100}" />
                         </Style>
                         <Style Selector="^:pointerover, ^:selected">
                             <Style Selector="^ TextBlock">
-                                <Setter Property="Foreground" Value="{StaticResource TextBlue600}"/>
+                                <Setter Property="Foreground"
+                                        Value="{StaticResource TextBlue600}" />
                             </Style>
                             <Style Selector="^ Path">
-                                <Setter Property="Stroke" Value="{StaticResource TextBlue600}"/>
+                                <Setter Property="Stroke"
+                                        Value="{StaticResource TextBlue600}" />
                             </Style>
                         </Style>
                     </Style>
@@ -57,9 +71,10 @@
                     <DataTemplate DataType="u:NavigationPageInfo">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="10">
-                            <Path Height="25" Data="{Binding Icon, Converter={StaticResource IconConverter}}"/>
+                            <Path Height="25"
+                                  Data="{Binding Icon, Converter={StaticResource IconConverter}}" />
                             <TextBlock Text="{Binding Name}"
-                                       VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -69,8 +84,7 @@
         <Panel Margin="20"
                HorizontalAlignment="Stretch"
                VerticalAlignment="Stretch">
-            <TransitioningContentControl Content="{Binding CurrentPage.ViewModel}"/>
+            <TransitioningContentControl Content="{Binding CurrentPage.ViewModel}" />
         </Panel>
     </SplitView>
-
 </UserControl>

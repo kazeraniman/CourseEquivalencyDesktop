@@ -3,12 +3,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.General"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
              x:Class="CourseEquivalencyDesktop.Views.General.MainPageLoadingView"
              x:DataType="vm:MainPageLoadingViewModel">
 
     <Design.DataContext>
-        <vm:MainPageLoadingViewModel/>
+        <vm:MainPageLoadingViewModel />
     </Design.DataContext>
 
     <!-- Loading icon taken from [loading.io css spinner](https://loading.io/css/) under CC0 -->
@@ -20,10 +22,14 @@
 
         <Canvas.Styles>
             <Style Selector="Ellipse">
-                <Setter Property="Fill" Value="{StaticResource TextBlue600}"/>
-                <Setter Property="Width" Value="6.4"/>
-                <Setter Property="Height" Value="6.4"/>
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Fill"
+                        Value="{StaticResource TextBlue600}" />
+                <Setter Property="Width"
+                        Value="6.4" />
+                <Setter Property="Height"
+                        Value="6.4" />
+                <Setter Property="Opacity"
+                        Value="0.5" />
 
                 <Style Selector="^:nth-child(1)">
                     <Style.Animations>
@@ -31,29 +37,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:1.1">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -65,29 +86,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:1">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -99,29 +135,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:0.9">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -133,29 +184,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:0.8">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -167,29 +233,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:0.7">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -201,29 +282,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:0.6">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -235,29 +331,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:0.5">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -269,29 +380,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:0.4">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -303,29 +429,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:0.3">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -337,29 +478,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:0.2">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -371,29 +527,44 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:0.1">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
@@ -405,50 +576,75 @@
                                    Duration="0:0:1.2"
                                    Delay="0:0:0">
                             <KeyFrame Cue="0%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="20%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.7"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.7" />
                             </KeyFrame>
                             <KeyFrame Cue="80%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.8"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.8" />
                             </KeyFrame>
                             <KeyFrame Cue="100%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1"/>
-                                <Setter Property="Opacity" Value="0.5"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1" />
+                                <Setter Property="Opacity"
+                                        Value="0.5" />
                             </KeyFrame>
                             <KeyFrame Cue="50%">
-                                <Setter Property="ScaleTransform.ScaleX" Value="1.5"/>
-                                <Setter Property="ScaleTransform.ScaleY" Value="1.5"/>
-                                <Setter Property="Opacity" Value="1"/>
+                                <Setter Property="ScaleTransform.ScaleX"
+                                        Value="1.5" />
+                                <Setter Property="ScaleTransform.ScaleY"
+                                        Value="1.5" />
+                                <Setter Property="Opacity"
+                                        Value="1" />
                             </KeyFrame>
                         </Animation>
                     </Style.Animations>
                 </Style>
             </Style>
 
-
         </Canvas.Styles>
 
-        <Ellipse Canvas.Top="36.8" Canvas.Left="66.24"/>
-        <Ellipse Canvas.Top="22.08" Canvas.Left="62.29579"/>
-        <Ellipse Canvas.Top="11.30421" Canvas.Left="51.52"/>
-        <Ellipse Canvas.Top="7.36" Canvas.Left="36.8"/>
-        <Ellipse Canvas.Top="11.30421" Canvas.Left="22.08"/>
-        <Ellipse Canvas.Top="22.08" Canvas.Left="11.30421"/>
-        <Ellipse Canvas.Top="36.8" Canvas.Left="7.36"/>
-        <Ellipse Canvas.Top="51.52" Canvas.Left="11.30421"/>
-        <Ellipse Canvas.Top="62.29579" Canvas.Left="22.08"/>
-        <Ellipse Canvas.Top="66.24" Canvas.Left="36.8"/>
-        <Ellipse Canvas.Top="62.29579" Canvas.Left="51.52"/>
-        <Ellipse Canvas.Top="51.52" Canvas.Left="62.29579"/>
+        <Ellipse Canvas.Top="36.8"
+                 Canvas.Left="66.24" />
+        <Ellipse Canvas.Top="22.08"
+                 Canvas.Left="62.29579" />
+        <Ellipse Canvas.Top="11.30421"
+                 Canvas.Left="51.52" />
+        <Ellipse Canvas.Top="7.36"
+                 Canvas.Left="36.8" />
+        <Ellipse Canvas.Top="11.30421"
+                 Canvas.Left="22.08" />
+        <Ellipse Canvas.Top="22.08"
+                 Canvas.Left="11.30421" />
+        <Ellipse Canvas.Top="36.8"
+                 Canvas.Left="7.36" />
+        <Ellipse Canvas.Top="51.52"
+                 Canvas.Left="11.30421" />
+        <Ellipse Canvas.Top="62.29579"
+                 Canvas.Left="22.08" />
+        <Ellipse Canvas.Top="66.24"
+                 Canvas.Left="36.8" />
+        <Ellipse Canvas.Top="62.29579"
+                 Canvas.Left="51.52" />
+        <Ellipse Canvas.Top="51.52"
+                 Canvas.Left="62.29579" />
     </Canvas>
-
 </UserControl>

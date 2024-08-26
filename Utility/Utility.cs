@@ -5,6 +5,10 @@ using Avalonia.Controls;
 
 namespace CourseEquivalencyDesktop.Utility;
 
+/// <summary>
+/// Holds an assortment of utility methods.
+/// If there are sufficiently many related methods, consider extracting into their own class.
+/// </summary>
 public static class Utility
 {
     /// <summary>
@@ -37,6 +41,12 @@ public static class Utility
         }
     }
 
+    /// <summary>
+    /// Checks if the provided string appears in the original string in a case-insensitive manner.
+    /// </summary>
+    /// <param name="source">The original string.</param>
+    /// <param name="toCheck">The string to look for in the original string.</param>
+    /// <returns>True if the provided string appears, false otherwise.</returns>
     public static bool CaseInsensitiveContains(this string? source, string toCheck)
     {
         return source?.IndexOf(toCheck, StringComparison.InvariantCultureIgnoreCase) >= 0;
