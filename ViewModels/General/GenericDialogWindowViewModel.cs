@@ -24,6 +24,9 @@ public partial class GenericDialogWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     private string? secondaryButtonText;
+
+    [ObservableProperty]
+    private bool isSecondaryButtonCancel;
     #endregion
     #endregion
 
@@ -36,18 +39,19 @@ public partial class GenericDialogWindowViewModel : ViewModelBase
     {
         Utility.Utility.AssertDesignMode();
 
-        titleText = "Generic Dialog Window";
-        bodyText = "Generic dialog window body text. Please ignore.";
-        primaryButtonText = "Ok";
+        TitleText = "Generic Dialog Window";
+        BodyText = "Generic dialog window body text. Please ignore.";
+        PrimaryButtonText = "Ok";
     }
 
     public GenericDialogWindowViewModel(string titleText, string bodyText, string primaryButtonText,
-        string? secondaryButtonText)
+        string? secondaryButtonText, bool isCloseable, bool isSecondaryButtonCancel)
     {
-        this.titleText = titleText;
-        this.bodyText = bodyText;
-        this.primaryButtonText = primaryButtonText;
-        this.secondaryButtonText = secondaryButtonText;
+        TitleText = titleText;
+        BodyText = bodyText;
+        PrimaryButtonText = primaryButtonText;
+        SecondaryButtonText = secondaryButtonText;
+        IsSecondaryButtonCancel = isSecondaryButtonCancel && isCloseable;
     }
     #endregion
 

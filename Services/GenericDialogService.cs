@@ -10,7 +10,8 @@ namespace CourseEquivalencyDesktop.Services;
 public class GenericDialogService
 {
     public async Task<bool?> OpenGenericDialog(string titleText, string bodyText,
-        string primaryButtonText, string? secondaryButtonText = null, bool isCloseable = true)
+        string primaryButtonText, string? secondaryButtonText = null, bool isCloseable = true,
+        bool isSecondaryButtonCancel = true)
     {
         if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -24,7 +25,8 @@ public class GenericDialogService
         }
 
         var genericDialogWindowViewModel =
-            new GenericDialogWindowViewModel(titleText, bodyText, primaryButtonText, secondaryButtonText);
+            new GenericDialogWindowViewModel(titleText, bodyText, primaryButtonText, secondaryButtonText,
+                isCloseable, isSecondaryButtonCancel);
         var genericDialogWindow = new GenericDialogWindow
         {
             DataContext = genericDialogWindowViewModel
@@ -32,7 +34,7 @@ public class GenericDialogService
 
         genericDialogWindowViewModel.OnRequestCloseWindow += (_, args) =>
             genericDialogWindow.Close((args as GenericDialogWindowViewModel.GenericDialogEventArgs)?.WasPrimary);
-        genericDialogWindow.Closing += (result, e) =>
+        genericDialogWindow.Closing += (r, e) =>
         {
             if (!(isCloseable || e.IsProgrammatic))
             {
