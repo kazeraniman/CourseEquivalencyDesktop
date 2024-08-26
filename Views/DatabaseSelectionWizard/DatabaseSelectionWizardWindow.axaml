@@ -3,7 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="250"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="250"
         x:Class="CourseEquivalencyDesktop.Views.DatabaseSelectionWizard.DatabaseSelectionWizardWindow"
         x:DataType="vm:DatabaseSelectionWizardViewModel"
         Title="Database Selection Wizard"
@@ -17,18 +19,27 @@
     </Design.DataContext>
 
     <RelativePanel Margin="20">
-        <TransitioningContentControl
-            RelativePanel.AlignTopWithPanel="True"
-            RelativePanel.AlignLeftWithPanel="True"
-            RelativePanel.AlignRightWithPanel="True"
-            Content="{Binding CurrentPage}"/>
+        <TransitioningContentControl RelativePanel.AlignTopWithPanel="True"
+                                     RelativePanel.AlignLeftWithPanel="True"
+                                     RelativePanel.AlignRightWithPanel="True"
+                                     Content="{Binding CurrentPage}" />
 
-        <StackPanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" Spacing="16"
+        <StackPanel RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True"
+                    Spacing="16"
                     Orientation="Horizontal">
-            <Button IsVisible="{Binding IsPreviousPageButtonShown}" Theme="{StaticResource GreyButton}" Content="Back" Command="{Binding NavigatePreviousPageCommand}"/>
-            <Button IsVisible="{Binding IsNextPageButtonShown}" Theme="{StaticResource BlueButton}" Content="Next" Command="{Binding NavigateNextPageCommand}"/>
-            <Button IsVisible="{Binding IsDoneButtonShown}" Theme="{StaticResource BlueButton}" Content="Done" Command="{Binding CompleteWizardCommand}"/>
+            <Button IsVisible="{Binding IsPreviousPageButtonShown}"
+                    Theme="{StaticResource GreyButton}"
+                    Content="Back"
+                    Command="{Binding NavigatePreviousPageCommand}" />
+            <Button IsVisible="{Binding IsNextPageButtonShown}"
+                    Theme="{StaticResource BlueButton}"
+                    Content="Next"
+                    Command="{Binding NavigateNextPageCommand}" />
+            <Button IsVisible="{Binding IsDoneButtonShown}"
+                    Theme="{StaticResource BlueButton}"
+                    Content="Done"
+                    Command="{Binding CompleteWizardCommand}" />
         </StackPanel>
     </RelativePanel>
-
 </Window>

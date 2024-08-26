@@ -3,19 +3,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
              x:Class="CourseEquivalencyDesktop.Views.DatabaseSelectionWizard.DatabaseSelectionWizardFinalizationPageView"
              x:DataType="vm:DatabaseSelectionWizardFinalizationPageViewModel">
 
     <Design.DataContext>
-        <vm:DatabaseSelectionWizardFinalizationPageViewModel/>
+        <vm:DatabaseSelectionWizardFinalizationPageViewModel />
     </Design.DataContext>
 
     <StackPanel>
-        <TextBlock
-            TextWrapping="Wrap"
-            Text="If you are happy with your choices on the previous pages, click Done to complete the process."/>
-
+        <TextBlock TextWrapping="Wrap"
+                   Text="If you are happy with your choices on the previous pages, click Done to complete the process." />
     </StackPanel>
-
 </UserControl>

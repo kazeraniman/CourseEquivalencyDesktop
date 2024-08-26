@@ -10,9 +10,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CourseEquivalencyDesktop.ViewModels.Universities;
 
-/// <summary>
-/// ViewModel which represents a <see cref="CourseEquivalencyDesktop.Models.University"/> to be created.
-/// </summary>
 public partial class CreateOrEditUniversityViewModel : ViewModelBase
 {
     public class CreateOrEditUniversityEventArgs : EventArgs
@@ -20,17 +17,23 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
         public University? University { get; init; }
     }
 
+    #region Constants
     private const string CREATE_TEXT = "Create University";
     private const string EDIT_TEXT = "Edit University";
+    #endregion
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
-    [Required]
+    #region Fields
+    private readonly DatabaseService databaseService;
+    private readonly University? university;
+    private readonly bool isCreate;
+    #endregion
+
+    #region Properties
+    #region Observable Properties
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))] [Required]
     private string name = string.Empty;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
-    [Url]
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))] [Url]
     private string? url;
 
     [ObservableProperty]
@@ -38,15 +41,15 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
     [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
     private bool isCreating;
 
-    [ObservableProperty]
-    private string windowAndButtonText;
+    [ObservableProperty] private string windowAndButtonText;
+    #endregion
+    #endregion
 
+    #region Events
     public event EventHandler? OnRequestCloseWindow;
+    #endregion
 
-    private readonly DatabaseService databaseService;
-    private readonly University? university;
-    private readonly bool isCreate;
-
+    #region Constructors
     public CreateOrEditUniversityViewModel()
     {
         Utility.Utility.AssertDesignMode();
@@ -65,7 +68,9 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
         Name = university?.Name ?? string.Empty;
         Url = university?.Url;
     }
+    #endregion
 
+    #region Handlers
     partial void OnUrlChanged(string? value)
     {
         if (string.IsNullOrEmpty(value))
@@ -76,7 +81,9 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
 
         ValidateProperty(value, nameof(Url));
     }
+    #endregion
 
+    #region Command Execution Checks
     private bool CanCancel()
     {
         return !IsCreating;
@@ -86,7 +93,9 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
     {
         return !(IsCreating || HasErrors || string.IsNullOrWhiteSpace(Name));
     }
+    #endregion
 
+    #region Commands
     [RelayCommand(CanExecute = nameof(CanCreateOrEdit))]
     private async Task CreateOrEdit()
     {
@@ -123,7 +132,8 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
 
         async Task Update()
         {
-            var editingUniversity = await databaseService.Universities.FirstOrDefaultAsync(uni => uni.Id == university!.Id);
+            var editingUniversity =
+                await databaseService.Universities.FirstOrDefaultAsync(uni => uni.Id == university!.Id);
             if (editingUniversity is null)
             {
                 // TODO: Proper error handling dialog box
@@ -131,7 +141,9 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
                 return;
             }
 
-            var doesNameExist = await databaseService.Universities.AnyAsync(uni => uni.Name == preparedName && uni.Id != editingUniversity.Id);
+            var doesNameExist =
+                await databaseService.Universities.AnyAsync(uni =>
+                    uni.Name == preparedName && uni.Id != editingUniversity.Id);
             if (doesNameExist)
             {
                 // TODO: Proper error handling dialog box
@@ -177,4 +189,5 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
     {
         OnRequestCloseWindow?.Invoke(this, EventArgs.Empty);
     }
+    #endregion
 }

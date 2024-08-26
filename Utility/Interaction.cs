@@ -5,11 +5,12 @@ using System.Windows.Input;
 namespace CourseEquivalencyDesktop.Utility;
 
 /// <summary>
-/// Simple implementation of Interaction pattern from ReactiveUI framework.
-/// https://www.reactiveui.net/docs/handbook/interactions/
+///     Simple implementation of Interaction pattern from ReactiveUI framework.
+///     https://www.reactiveui.net/docs/handbook/interactions/
 /// </summary>
 /// <remarks>
-/// Taken from the AvaloniaUI tutorials: https://github.com/AvaloniaUI/Avalonia.Samples/tree/main/src/Avalonia.Samples/ViewInteraction/MvvmDialogSample#step1-create-the-interaction-class
+///     Taken from the AvaloniaUI tutorials:
+///     https://github.com/AvaloniaUI/Avalonia.Samples/tree/main/src/Avalonia.Samples/ViewInteraction/MvvmDialogSample#step1-create-the-interaction-class
 /// </remarks>
 public sealed class Interaction<TInput, TOutput> : IDisposable, ICommand
 {
@@ -17,7 +18,7 @@ public sealed class Interaction<TInput, TOutput> : IDisposable, ICommand
     private Func<TInput, Task<TOutput>>? _handler;
 
     /// <summary>
-    /// Performs the requested interaction <see langword="async"/>. Returns the result provided by the View
+    ///     Performs the requested interaction <see langword="async" />. Returns the result provided by the View
     /// </summary>
     /// <param name="input">The input parameter</param>
     /// <returns>The result of the interaction</returns>
@@ -33,7 +34,7 @@ public sealed class Interaction<TInput, TOutput> : IDisposable, ICommand
     }
 
     /// <summary>
-    /// Registers a handler to our Interaction
+    ///     Registers a handler to our Interaction
     /// </summary>
     /// <param name="handler">the handler to register</param>
     /// <returns>a disposable object to clean up memory if not in use anymore/></returns>
@@ -55,9 +56,15 @@ public sealed class Interaction<TInput, TOutput> : IDisposable, ICommand
         _handler = null;
     }
 
-    public bool CanExecute(object? parameter) => _handler is not null;
+    public bool CanExecute(object? parameter)
+    {
+        return _handler is not null;
+    }
 
-    public void Execute(object? parameter) => HandleAsync((TInput?)parameter!);
+    public void Execute(object? parameter)
+    {
+        HandleAsync((TInput?)parameter!);
+    }
 
     public event EventHandler? CanExecuteChanged;
 }

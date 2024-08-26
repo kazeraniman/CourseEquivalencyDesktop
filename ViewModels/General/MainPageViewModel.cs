@@ -9,11 +9,15 @@ namespace CourseEquivalencyDesktop.ViewModels.General;
 
 public partial class MainPageViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    private NavigationPageInfo currentPage;
-
+    #region Properties
     public NavigationPageInfo[] Pages { get; init; }
 
+    #region Observable Properties
+    [ObservableProperty] private NavigationPageInfo currentPage;
+    #endregion
+    #endregion
+
+    #region Constructors
     public MainPageViewModel()
     {
         if (Design.IsDesignMode)
@@ -29,10 +33,12 @@ public partial class MainPageViewModel : ViewModelBase
             Pages =
             [
                 new NavigationPageInfo("Home", "HomeIconData", new HomePageViewModel()),
-                new NavigationPageInfo("Universities", "UniversityIconData", Ioc.Default.GetRequiredService<UniversitiesPageViewModel>())
+                new NavigationPageInfo("Universities", "UniversityIconData",
+                    Ioc.Default.GetRequiredService<UniversitiesPageViewModel>())
             ];
         }
 
         currentPage = Pages[0];
     }
+    #endregion
 }

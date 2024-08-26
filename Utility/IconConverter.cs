@@ -8,6 +8,9 @@ using Avalonia.Styling;
 
 namespace CourseEquivalencyDesktop.Utility;
 
+/// <summary>
+///     Custom converter which retrieves data for the path given an icon name.
+/// </summary>
 public class IconConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

@@ -12,19 +12,25 @@ namespace CourseEquivalencyDesktop.Views.General;
 
 public partial class MainWindow : Window
 {
+    #region Fields
     private IDisposable? spawnDatabaseSelectionWizardInteractionDisposable;
+    #endregion
 
+    #region Constructors
     public MainWindow()
     {
         InitializeComponent();
     }
+    #endregion
 
+    #region Avalonia Life Cycle
     protected override void OnDataContextChanged(EventArgs e)
     {
         spawnDatabaseSelectionWizardInteractionDisposable?.Dispose();
         if (DataContext is MainWindowViewModel vm)
         {
-            spawnDatabaseSelectionWizardInteractionDisposable = vm.SpawnDatabaseSelectionWizardInteraction.RegisterHandler(SpawnDatabaseSelectionWizardWindow);
+            spawnDatabaseSelectionWizardInteractionDisposable =
+                vm.SpawnDatabaseSelectionWizardInteraction.RegisterHandler(SpawnDatabaseSelectionWizardWindow);
         }
 
         base.OnDataContextChanged(e);
@@ -46,7 +52,9 @@ public partial class MainWindow : Window
 
         spawnDatabaseSelectionWizardInteractionDisposable?.Dispose();
     }
+    #endregion
 
+    #region Interaction Handlers
     private Task<bool?> SpawnDatabaseSelectionWizardWindow(bool? _)
     {
         var databaseSelectionWizardViewModel = Ioc.Default.GetRequiredService<DatabaseSelectionWizardViewModel>();
@@ -69,4 +77,5 @@ public partial class MainWindow : Window
 
         return databaseSelectionWizardWindow.ShowDialog<bool?>(this);
     }
+    #endregion
 }
