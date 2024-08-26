@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
+using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,20 +21,34 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
     #region Constants
     private const string CREATE_TEXT = "Create University";
     private const string EDIT_TEXT = "Edit University";
+    private const string UNIVERSITY_NAME_EXISTS_TITLE = "University Exists";
+    private const string UNIVERSITY_NAME_EXISTS_BODY = "A university with this name already exists.";
+    private const string UNIVERSITY_EDITING_NOT_EXIST_TITLE = "University Doesn't Exist";
+    private const string UNIVERSITY_EDITING_NOT_EXIST_BODY = "The university you are trying to edit does not exist.";
+    private const string UNIVERSITY_FAILED_SAVE_TITLE = "University Changes Failed";
+
+    private const string UNIVERSITY_FAILED_SAVE_BODY =
+        "An error occurred and the university changes could not be made.";
     #endregion
 
     #region Fields
     private readonly DatabaseService databaseService;
+    private readonly GenericDialogService genericDialogService;
+
     private readonly University? university;
     private readonly bool isCreate;
     #endregion
 
     #region Properties
     #region Observable Properties
-    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))] [Required]
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
+    [Required]
     private string name = string.Empty;
 
-    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))] [Url]
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
+    [Url]
     private string? url;
 
     [ObservableProperty]
@@ -41,7 +56,8 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
     [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
     private bool isCreating;
 
-    [ObservableProperty] private string windowAndButtonText;
+    [ObservableProperty]
+    private string windowAndButtonText;
     #endregion
     #endregion
 
@@ -55,12 +71,15 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
         Utility.Utility.AssertDesignMode();
 
         databaseService = new DatabaseService();
+        genericDialogService = new GenericDialogService();
         WindowAndButtonText = CREATE_TEXT;
     }
 
-    public CreateOrEditUniversityViewModel(University? university, DatabaseService databaseService)
+    public CreateOrEditUniversityViewModel(University? university, DatabaseService databaseService,
+        GenericDialogService genericDialogService)
     {
         this.databaseService = databaseService;
+        this.genericDialogService = genericDialogService;
         this.university = university;
         isCreate = university is null;
         WindowAndButtonText = isCreate ? CREATE_TEXT : EDIT_TEXT;
@@ -116,8 +135,8 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
             var doesNameExist = await databaseService.Universities.AnyAsync(uni => uni.Name == preparedName);
             if (doesNameExist)
             {
-                // TODO: Proper error handling dialog box
-                Console.WriteLine("A university with this name already exists.");
+                await genericDialogService.OpenGenericDialog(UNIVERSITY_NAME_EXISTS_TITLE,
+                    UNIVERSITY_NAME_EXISTS_BODY, Constants.GenericStrings.OKAY);
                 return;
             }
 
@@ -136,8 +155,8 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
                 await databaseService.Universities.FirstOrDefaultAsync(uni => uni.Id == university!.Id);
             if (editingUniversity is null)
             {
-                // TODO: Proper error handling dialog box
-                Console.WriteLine("Editing a university which does not exist.");
+                await genericDialogService.OpenGenericDialog(UNIVERSITY_EDITING_NOT_EXIST_TITLE,
+                    UNIVERSITY_EDITING_NOT_EXIST_BODY, Constants.GenericStrings.OKAY);
                 return;
             }
 
@@ -146,8 +165,8 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
                     uni.Name == preparedName && uni.Id != editingUniversity.Id);
             if (doesNameExist)
             {
-                // TODO: Proper error handling dialog box
-                Console.WriteLine("A university with this name already exists.");
+                await genericDialogService.OpenGenericDialog(UNIVERSITY_NAME_EXISTS_TITLE,
+                    UNIVERSITY_NAME_EXISTS_BODY, Constants.GenericStrings.OKAY);
                 return;
             }
 
@@ -173,8 +192,8 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
         void SaveChangesFailedHandler(object? sender, SaveChangesFailedEventArgs e)
         {
             Unsubscribe();
-            // TODO: Proper error handling dialog box
-            Console.WriteLine("Failed to create university.");
+            _ = genericDialogService.OpenGenericDialog(UNIVERSITY_FAILED_SAVE_TITLE,
+                UNIVERSITY_FAILED_SAVE_BODY, Constants.GenericStrings.OKAY);
         }
 
         void SaveChangesSuccessHandler(object? sender, SavedChangesEventArgs e)

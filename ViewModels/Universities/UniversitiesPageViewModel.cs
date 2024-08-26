@@ -15,6 +15,18 @@ namespace CourseEquivalencyDesktop.ViewModels.Universities;
 
 public partial class UniversitiesPageViewModel : ViewModelBase
 {
+    #region Constants
+    private const string UNIVERSITY_DELETE_TITLE = "Delete University?";
+
+    private const string UNIVERSITY_DELETE_BODY =
+        "Are you sure you wish to delete the university \"{0}\"?\nThis action cannot be undone and will delete all associated courses, student, and study plans.";
+
+    private const string UNIVERSITY_FAILED_DELETE_TITLE = "University Deletion Failed";
+
+    private const string UNIVERSITY_FAILED_DELETE_BODY =
+        "An error occurred and the university changes could not be saved.";
+    #endregion
+
     #region Fields
     public readonly Interaction<University?, University?> CreateOrEditUniversityInteraction = new();
 
@@ -22,6 +34,7 @@ public partial class UniversitiesPageViewModel : ViewModelBase
 
     private readonly DatabaseService databaseService;
     private readonly UserSettingsService userSettingsService;
+    private readonly GenericDialogService genericDialogService;
     #endregion
 
     #region Properties
@@ -47,13 +60,16 @@ public partial class UniversitiesPageViewModel : ViewModelBase
 
         databaseService = new DatabaseService();
         userSettingsService = new UserSettingsService();
+        genericDialogService = new GenericDialogService();
         UniversitiesCollectionView = new DataGridCollectionView(universities);
     }
 
-    public UniversitiesPageViewModel(DatabaseService databaseService, UserSettingsService userSettingsService)
+    public UniversitiesPageViewModel(DatabaseService databaseService, UserSettingsService userSettingsService,
+        GenericDialogService genericDialogService)
     {
         this.databaseService = databaseService;
         this.userSettingsService = userSettingsService;
+        this.genericDialogService = genericDialogService;
 
         UniversitiesCollectionView = new DataGridCollectionView(universities)
         {
@@ -147,7 +163,14 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     [RelayCommand]
     private async Task DeleteUniversity(University university)
     {
-        // TODO: Confirmation Dialog
+        var shouldDelete = await genericDialogService.OpenGenericDialog(UNIVERSITY_DELETE_TITLE,
+            string.Format(UNIVERSITY_DELETE_BODY, university.Name), Constants.GenericStrings.DELETE,
+            Constants.GenericStrings.CANCEL);
+        if (shouldDelete is null or false)
+        {
+            return;
+        }
+
         databaseService.Universities.Remove(university);
         databaseService.SaveChangesFailed += SaveChangesFailedHandler;
         databaseService.SavedChanges += SaveChangesSuccessHandler;
@@ -162,8 +185,8 @@ public partial class UniversitiesPageViewModel : ViewModelBase
         void SaveChangesFailedHandler(object? sender, SaveChangesFailedEventArgs e)
         {
             Unsubscribe();
-            // TODO: Proper error handling dialog box
-            Console.WriteLine("Failed to delete university.");
+            _ = genericDialogService.OpenGenericDialog(UNIVERSITY_FAILED_DELETE_TITLE,
+                UNIVERSITY_FAILED_DELETE_BODY, Constants.GenericStrings.OKAY);
         }
 
         void SaveChangesSuccessHandler(object? sender, SavedChangesEventArgs e)
