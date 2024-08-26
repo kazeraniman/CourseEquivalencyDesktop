@@ -1,0 +1,37 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.General"
+        mc:Ignorable="d"
+        d:DesignWidth="400"
+        d:DesignHeight="200"
+        x:Class="CourseEquivalencyDesktop.Views.General.GenericDialogWindow"
+        x:DataType="vm:GenericDialogWindowViewModel"
+        Title="{Binding TitleText}"
+        WindowStartupLocation="CenterOwner"
+        SizeToContent="WidthAndHeight">
+
+    <Design.DataContext>
+        <vm:GenericDialogWindowViewModel />
+    </Design.DataContext>
+
+    <StackPanel Margin="20"
+                Spacing="15">
+        <TextBlock Text="{Binding BodyText}"
+                   TextAlignment="Center" />
+        <StackPanel Orientation="Horizontal"
+                    Spacing="10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom">
+            <Button Theme="{StaticResource GreyButton}"
+                    IsVisible="{Binding SecondaryButtonText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                    Content="{Binding SecondaryButtonText, FallbackValue=none}"
+                    Command="{Binding SecondaryCommand}" />
+            <Button Theme="{StaticResource BlueButton}"
+                    Content="{Binding PrimaryButtonText}"
+                    Command="{Binding PrimaryCommand}"
+                    IsDefault="True" />
+        </StackPanel>
+    </StackPanel>
+</Window>
