@@ -19,7 +19,7 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     private const string UNIVERSITY_DELETE_TITLE = "Delete University?";
 
     private const string UNIVERSITY_DELETE_BODY =
-        "Are you sure you wish to delete the university \"{0}\"?\nThis action cannot be undone and will delete all associated courses, student, and study plans.";
+        "Are you sure you wish to delete \"{0}\"?\nThis action cannot be undone and will delete all associated courses, student, and study plans.";
 
     private const string UNIVERSITY_FAILED_DELETE_TITLE = "University Deletion Failed";
 
