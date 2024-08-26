@@ -1,4 +1,6 @@
 ﻿using System;
+using Avalonia;
+using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -27,6 +29,9 @@ public partial class GenericDialogWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     private bool isSecondaryButtonCancel;
+
+    [ObservableProperty]
+    private ControlTheme? primaryButtonTheme;
     #endregion
     #endregion
 
@@ -45,13 +50,19 @@ public partial class GenericDialogWindowViewModel : ViewModelBase
     }
 
     public GenericDialogWindowViewModel(string titleText, string bodyText, string primaryButtonText,
-        string? secondaryButtonText, bool isCloseable, bool isSecondaryButtonCancel)
+        string? secondaryButtonText, bool isCloseable, bool isSecondaryButtonCancel, string primaryButtonThemeName)
     {
         TitleText = titleText;
         BodyText = bodyText;
         PrimaryButtonText = primaryButtonText;
         SecondaryButtonText = secondaryButtonText;
         IsSecondaryButtonCancel = isSecondaryButtonCancel && isCloseable;
+
+        if (Application.Current!.TryGetResource(primaryButtonThemeName, ThemeVariant.Default, out var buttonTheme) &&
+            buttonTheme is ControlTheme controlTheme)
+        {
+            PrimaryButtonTheme = controlTheme;
+        }
     }
     #endregion
 

@@ -3,50 +3,65 @@
              x:Class="CourseEquivalencyDesktop.App"
              xmlns:utility="clr-namespace:CourseEquivalencyDesktop.Utility"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
-        <utility:ViewLocator/>
+        <utility:ViewLocator />
     </Application.DataTemplates>
 
     <Application.Styles>
         <FluentTheme />
 
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
 
         <!-- Shape textboxes used for form inputs so that the contents don't look tight. -->
         <Style Selector="TextBox.FormInputTextBox">
-            <Setter Property="Padding" Value="10,10,0,10"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding"
+                    Value="10,10,0,10" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="FontWeight"
+                    Value="SemiBold" />
 
             <!-- Add a margin to paths used as icons in textboxes so that they don't hug so tightly. -->
             <Style Selector="^ Path">
-                <Setter Property="Margin" Value="10,0,0,0"/>
-                <Setter Property="Stroke" Value="{DynamicResource TextGrey500}"/>
-                <Setter Property="Stretch" Value="Uniform"/>
-                <Setter Property="Height" Value="14"/>
-                <Setter Property="Width" Value="14"/>
+                <Setter Property="Margin"
+                        Value="10,0,0,0" />
+                <Setter Property="Stroke"
+                        Value="{DynamicResource TextGrey500}" />
+                <Setter Property="Stretch"
+                        Value="Uniform" />
+                <Setter Property="Height"
+                        Value="14" />
+                <Setter Property="Width"
+                        Value="14" />
             </Style>
 
             <!-- Turn icons in textboxes black when focused. -->
             <Style Selector="^:focus Path">
-                <Setter Property="Stroke" Value="Black"/>
+                <Setter Property="Stroke"
+                        Value="Black" />
             </Style>
         </Style>
 
         <!-- Draw the svg paths properly. -->
         <Style Selector="Path">
-            <Setter Property="Stroke" Value="Black"/>
-            <Setter Property="StrokeThickness" Value="1.25"/>
-            <Setter Property="StrokeLineCap" Value="Round"/>
-            <Setter Property="StrokeJoin" Value="Round"/>
+            <Setter Property="Stroke"
+                    Value="Black" />
+            <Setter Property="StrokeThickness"
+                    Value="1.25" />
+            <Setter Property="StrokeLineCap"
+                    Value="Round" />
+            <Setter Property="StrokeJoin"
+                    Value="Round" />
         </Style>
 
         <!-- Page headers. -->
         <Style Selector="TextBlock.PageHeader">
-            <Setter Property="FontSize" Value="24"/>
-            <Setter Property="LineHeight" Value="32"/>
+            <Setter Property="FontSize"
+                    Value="24" />
+            <Setter Property="LineHeight"
+                    Value="32" />
         </Style>
     </Application.Styles>
 
@@ -81,45 +96,81 @@
         <Color x:Key="BackgroundBlue400">#60a5fa</Color>
         <Color x:Key="BackgroundBlue500">#3b82f6</Color>
         <Color x:Key="BackgroundSky100">#e0f2fe</Color>
+        <Color x:Key="BackgroundRed500">#ef4444</Color>
+        <Color x:Key="BackgroundRed400">#f87171</Color>
         <Color x:Key="TextGrey500">#6b7280</Color>
         <Color x:Key="TextGrey600">#4b5563</Color>
         <Color x:Key="TextBlue600">#2563eb</Color>
 
         <!-- Themes -->
         <!-- Basic button theme for inheritance. -->
-        <ControlTheme x:Key="BaseButton" TargetType="Button">
-            <Setter Property="FontSize" Value="14"></Setter>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="FontWeight" Value="500"/>
-            <Setter Property="Padding" Value="16,0"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="CornerRadius" Value="8"/>
+        <ControlTheme x:Key="BaseButton"
+                      TargetType="Button">
+            <Setter Property="FontSize"
+                    Value="14" />
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Center" />
+            <Setter Property="FontWeight"
+                    Value="500" />
+            <Setter Property="Padding"
+                    Value="16,0" />
+            <Setter Property="Height"
+                    Value="40" />
+            <Setter Property="CornerRadius"
+                    Value="8" />
 
             <Style Selector="^:pointerover">
-                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Cursor"
+                        Value="Hand" />
             </Style>
 
             <Style Selector="^:disabled">
-                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="Opacity"
+                        Value="0.5" />
             </Style>
         </ControlTheme>
 
         <!-- Standard grey button. -->
-        <ControlTheme x:Key="GreyButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
-            <Setter Property="Background" Value="{StaticResource BackgroundGrey100}"/>
-            <Setter Property="Foreground" Value="{StaticResource TextGrey600}"/>
+        <ControlTheme x:Key="GreyButton"
+                      TargetType="Button"
+                      BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Background"
+                    Value="{StaticResource BackgroundGrey100}" />
+            <Setter Property="Foreground"
+                    Value="{StaticResource TextGrey600}" />
             <Style Selector="^:pointerover">
-                <Setter Property="Background" Value="{StaticResource BackgroundGrey200}"/>
+                <Setter Property="Background"
+                        Value="{StaticResource BackgroundGrey200}" />
             </Style>
         </ControlTheme>
 
         <!-- Standard blue button. -->
-        <ControlTheme x:Key="BlueButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
-            <Setter Property="Background" Value="{StaticResource BackgroundBlue500}"/>
-            <Setter Property="Foreground" Value="White"/>
+        <ControlTheme x:Key="BlueButton"
+                      TargetType="Button"
+                      BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Background"
+                    Value="{StaticResource BackgroundBlue500}" />
+            <Setter Property="Foreground"
+                    Value="White" />
             <Style Selector="^:pointerover">
-                <Setter Property="Background" Value="{StaticResource BackgroundBlue400}"/>
+                <Setter Property="Background"
+                        Value="{StaticResource BackgroundBlue400}" />
+            </Style>
+        </ControlTheme>
+
+        <!-- Standard red button. -->
+        <ControlTheme x:Key="RedButton"
+                      TargetType="Button"
+                      BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Background"
+                    Value="{StaticResource BackgroundRed500}" />
+            <Setter Property="Foreground"
+                    Value="White" />
+            <Style Selector="^:pointerover">
+                <Setter Property="Background"
+                        Value="{StaticResource BackgroundRed400}" />
             </Style>
         </ControlTheme>
     </Application.Resources>

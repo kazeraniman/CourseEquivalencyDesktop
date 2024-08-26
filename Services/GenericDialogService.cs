@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
 using CourseEquivalencyDesktop.Views.General;
 
@@ -11,7 +12,7 @@ public class GenericDialogService
 {
     public async Task<bool?> OpenGenericDialog(string titleText, string bodyText,
         string primaryButtonText, string? secondaryButtonText = null, bool isCloseable = true,
-        bool isSecondaryButtonCancel = true)
+        bool isSecondaryButtonCancel = true, string primaryButtonThemeName = Constants.ResourceNames.BLUE_BUTTON)
     {
         if (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -26,7 +27,7 @@ public class GenericDialogService
 
         var genericDialogWindowViewModel =
             new GenericDialogWindowViewModel(titleText, bodyText, primaryButtonText, secondaryButtonText,
-                isCloseable, isSecondaryButtonCancel);
+                isCloseable, isSecondaryButtonCancel, primaryButtonThemeName);
         var genericDialogWindow = new GenericDialogWindow
         {
             DataContext = genericDialogWindowViewModel

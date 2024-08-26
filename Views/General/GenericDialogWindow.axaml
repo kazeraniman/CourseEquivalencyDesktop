@@ -33,7 +33,7 @@
                     IsCancel="{Binding IsSecondaryButtonCancel}"
                     Content="{Binding SecondaryButtonText, FallbackValue=none}"
                     Command="{Binding SecondaryCommand}" />
-            <Button Theme="{StaticResource BlueButton}"
+            <Button Theme="{Binding PrimaryButtonTheme, TargetNullValue={StaticResource BlueButton}}"
                     Content="{Binding PrimaryButtonText}"
                     Command="{Binding PrimaryCommand}"
                     IsDefault="True" />

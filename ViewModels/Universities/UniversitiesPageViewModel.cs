@@ -165,7 +165,7 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     {
         var shouldDelete = await genericDialogService.OpenGenericDialog(UNIVERSITY_DELETE_TITLE,
             string.Format(UNIVERSITY_DELETE_BODY, university.Name), Constants.GenericStrings.DELETE,
-            Constants.GenericStrings.CANCEL);
+            Constants.GenericStrings.CANCEL, primaryButtonThemeName: Constants.ResourceNames.RED_BUTTON);
         if (shouldDelete is null or false)
         {
             return;
