@@ -21,12 +21,14 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<FileDialogService>();
         collection.AddSingleton<UserSettingsService>();
         collection.AddSingleton<DatabaseService>();
+        collection.AddSingleton<GenericDialogService>();
         collection.AddTransient<DatabaseSelectionWizardViewModel>();
         collection.AddTransient<UniversitiesPageViewModel>();
         collection.AddTransient<CreateOrEditUniversityViewModelFactory>(provider => university =>
         {
             var databaseService = provider.GetRequiredService<DatabaseService>();
-            return new CreateOrEditUniversityViewModel(university, databaseService);
+            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
+            return new CreateOrEditUniversityViewModel(university, databaseService, genericDialogService);
         });
     }
     #endregion

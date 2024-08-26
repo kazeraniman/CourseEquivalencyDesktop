@@ -10,16 +10,20 @@
         x:DataType="vm:GenericDialogWindowViewModel"
         Title="{Binding TitleText}"
         WindowStartupLocation="CenterOwner"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight"
+        CanResize="False"
+        MinWidth="400"
+        MaxWidth="800">
 
     <Design.DataContext>
         <vm:GenericDialogWindowViewModel />
     </Design.DataContext>
 
     <StackPanel Margin="20"
-                Spacing="15">
+                Spacing="40">
         <TextBlock Text="{Binding BodyText}"
-                   TextAlignment="Center" />
+                   TextAlignment="Center"
+                   TextWrapping="Wrap" />
         <StackPanel Orientation="Horizontal"
                     Spacing="10"
                     HorizontalAlignment="Right"

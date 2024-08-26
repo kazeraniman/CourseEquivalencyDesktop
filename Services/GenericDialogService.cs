@@ -34,7 +34,7 @@ public class GenericDialogService
             genericDialogWindow.Close((args as GenericDialogWindowViewModel.GenericDialogEventArgs)?.WasPrimary);
         genericDialogWindow.Closing += (result, e) =>
         {
-            if (!isCloseable && result is null)
+            if (!(isCloseable || e.IsProgrammatic))
             {
                 e.Cancel = true;
             }
