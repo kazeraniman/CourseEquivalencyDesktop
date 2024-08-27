@@ -1,0 +1,120 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Courses"
+        xmlns:m="using:CourseEquivalencyDesktop.Models"
+        mc:Ignorable="d"
+        d:DesignWidth="900"
+        d:DesignHeight="750"
+        x:Class="CourseEquivalencyDesktop.Views.Courses.CreateOrEditCourseWindow"
+        x:DataType="vm:CreateOrEditCourseViewModel"
+        Title="{Binding WindowAndButtonText}"
+        CanResize="False"
+        Width="900"
+        Height="750"
+        WindowStartupLocation="CenterOwner">
+
+    <Design.DataContext>
+        <vm:CreateOrEditCourseViewModel />
+    </Design.DataContext>
+
+    <RelativePanel Margin="20">
+        <Border RelativePanel.AlignTopWithPanel="True"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                Background="{StaticResource BackgroundGrey50}"
+                Padding="24"
+                CornerRadius="6">
+            <StackPanel Spacing="16">
+                <StackPanel Spacing="5">
+                    <Label FontWeight="Bold"
+                           Content="Select a university"
+                           Target="UniversityComboBox" />
+                    <ComboBox x:Name="UniversityComboBox"
+                              ItemsSource="{Binding Universities}"
+                              PlaceholderText="Select a university"
+                              SelectedItem="{Binding University}"
+                              HorizontalAlignment="Stretch">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate DataType="m:University">
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Spacing="5">
+                    <Label FontWeight="Bold"
+                           Content="Enter a name"
+                           Target="NameTextBox" />
+                    <TextBox x:Name="NameTextBox"
+                             Classes="FormInputTextBox"
+                             Watermark="Linear Circuits"
+                             Text="{Binding Name}">
+                        <TextBox.InnerLeftContent>
+                            <Path Data="{StaticResource CourseIconData}" />
+                        </TextBox.InnerLeftContent>
+                    </TextBox>
+                </StackPanel>
+                <StackPanel Spacing="5">
+                    <Label FontWeight="Bold"
+                           Content="Enter an ID / Course Code"
+                           Target="CourseIdTextBox" />
+                    <TextBox x:Name="CourseIdTextBox"
+                             Classes="FormInputTextBox"
+                             Watermark="ECE 140"
+                             Text="{Binding CourseId}">
+                        <TextBox.InnerLeftContent>
+                            <Path Data="{StaticResource CourseCodeIconData}" />
+                        </TextBox.InnerLeftContent>
+                    </TextBox>
+                </StackPanel>
+                <StackPanel Spacing="5">
+                    <Label FontWeight="Bold"
+                           Content="Enter a URL (optional)"
+                           Target="UrlTextBox" />
+                    <TextBox x:Name="UrlTextBox"
+                             Classes="FormInputTextBox"
+                             Watermark="https://uwaterloo.ca/"
+                             Text="{Binding Url}">
+                        <TextBox.InnerLeftContent>
+                            <Path Data="{StaticResource LinkIconData}" />
+                        </TextBox.InnerLeftContent>
+                    </TextBox>
+                </StackPanel>
+                <StackPanel Spacing="5">
+                    <Label FontWeight="Bold"
+                           Content="Enter a description (optional)"
+                           Target="DescriptionTextBox" />
+                    <TextBox x:Name="DescriptionTextBox"
+                             Classes="FormInputTextBox"
+                             Watermark="Analysis of linear circuits. Voltage, current, resistance, capacitance, inductance, voltage source, current source, dependent sources, Ohm's Law, Kirchhoff's Laws, nodal analysis, mesh analysis, circuit transformations, operational amplifier circuits, time response, sinusoidal steady-state response. Preparing for, conducting, and reporting of laboratory experiments. [Offered: W,S]"
+                             Text="{Binding Description}"
+                             MinLines="10"
+                             TextWrapping="Wrap"
+                             VerticalContentAlignment="Top"
+                             HorizontalContentAlignment="Left"
+                             AcceptsReturn="True">
+                        <TextBox.InnerLeftContent>
+                            <Path Data="{StaticResource DescriptionIconData}" />
+                        </TextBox.InnerLeftContent>
+                    </TextBox>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <StackPanel RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True"
+                    Spacing="16"
+                    Orientation="Horizontal">
+            <Button Theme="{StaticResource GreyButton}"
+                    Content="Cancel"
+                    Command="{Binding CancelCommand}"
+                    IsCancel="True" />
+            <Button Theme="{StaticResource BlueButton}"
+                    Content="{Binding WindowAndButtonText}"
+                    Command="{Binding CreateOrEditCommand}"
+                    IsDefault="True" />
+        </StackPanel>
+    </RelativePanel>
+</Window>

@@ -1,4 +1,5 @@
 ﻿using CourseEquivalencyDesktop.Models;
+using CourseEquivalencyDesktop.ViewModels.Courses;
 using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,8 @@ public static class ServiceCollectionExtensions
 {
     #region Factories
     public delegate CreateOrEditUniversityViewModel CreateOrEditUniversityViewModelFactory(University? university);
+
+    public delegate CreateOrEditCourseViewModel CreateOrEditCourseViewModelFactory(Course? course);
     #endregion
 
     #region Services
@@ -24,11 +27,18 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<GenericDialogService>();
         collection.AddTransient<DatabaseSelectionWizardViewModel>();
         collection.AddTransient<UniversitiesPageViewModel>();
+        collection.AddTransient<CoursesPageViewModel>();
         collection.AddTransient<CreateOrEditUniversityViewModelFactory>(provider => university =>
         {
             var databaseService = provider.GetRequiredService<DatabaseService>();
             var genericDialogService = provider.GetRequiredService<GenericDialogService>();
             return new CreateOrEditUniversityViewModel(university, databaseService, genericDialogService);
+        });
+        collection.AddTransient<CreateOrEditCourseViewModelFactory>(provider => course =>
+        {
+            var databaseService = provider.GetRequiredService<DatabaseService>();
+            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
+            return new CreateOrEditCourseViewModel(course, databaseService, genericDialogService);
         });
     }
     #endregion
