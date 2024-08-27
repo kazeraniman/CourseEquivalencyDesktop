@@ -32,6 +32,7 @@
                            Content="Select a university"
                            Target="UniversityComboBox" />
                     <ComboBox x:Name="UniversityComboBox"
+                              Classes="FormInputTextBox"
                               ItemsSource="{Binding Universities}"
                               PlaceholderText="Select a university"
                               SelectedItem="{Binding University}"

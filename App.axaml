@@ -14,13 +14,13 @@
 
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
 
+        <!-- Shape textboxes and dropdowns used for form inputs so that the contents don't look tight. -->
         <Style Selector="TextBox.FormInputTextBox">
             <Setter Property="VerticalContentAlignment"
                     Value="Center" />
         </Style>
 
-        <!-- Shape textboxes used for form inputs so that the contents don't look tight. -->
-        <Style Selector="TextBox.FormInputTextBox, AutoCompleteBox.FormInputTextBox">
+        <Style Selector="TextBox.FormInputTextBox, ComboBox.FormInputTextBox">
             <Setter Property="Padding"
                     Value="10,10,0,10" />
             <Setter Property="FontWeight"
@@ -65,6 +65,12 @@
                     Value="24" />
             <Setter Property="LineHeight"
                     Value="32" />
+        </Style>
+
+        <!-- Hide data grid column separators. -->
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="AreSeparatorsVisible"
+                    Value="False" />
         </Style>
     </Application.Styles>
 
