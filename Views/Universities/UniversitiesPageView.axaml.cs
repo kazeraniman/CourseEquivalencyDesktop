@@ -70,19 +70,19 @@ public partial class UniversitiesPageView : UserControl
             return null;
         }
 
-        var createUniversityViewModel =
+        var createOrEditUniversityViewModel =
             Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditUniversityViewModelFactory>()(
                 university);
-        var createUniversityWindow = new CreateOrEditUniversityWindow
+        var createOrEditUniversityWindow = new CreateOrEditUniversityWindow
         {
-            DataContext = createUniversityViewModel
+            DataContext = createOrEditUniversityViewModel
         };
 
-        createUniversityViewModel.OnRequestCloseWindow += (_, args) =>
-            createUniversityWindow.Close((args as CreateOrEditUniversityViewModel.CreateOrEditUniversityEventArgs)
+        createOrEditUniversityViewModel.OnRequestCloseWindow += (_, args) =>
+            createOrEditUniversityWindow.Close((args as CreateOrEditUniversityViewModel.CreateOrEditUniversityEventArgs)
                 ?.University);
 
-        return await createUniversityWindow.ShowDialog<University>(window);
+        return await createOrEditUniversityWindow.ShowDialog<University>(window);
     }
     #endregion
 }

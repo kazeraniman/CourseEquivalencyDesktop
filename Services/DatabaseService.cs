@@ -19,6 +19,7 @@ public class DatabaseService : DbContext
 
     #region Properties
     public DbSet<University> Universities { get; set; }
+    public DbSet<Course> Courses { get; set; }
     #endregion
 
     #region Constructors
@@ -38,6 +39,17 @@ public class DatabaseService : DbContext
         optionsBuilder.UseSqlite(
             $"Data Source={(isDesignTime ? DESIGN_TIME_DB : Ioc.Default.GetRequiredService<UserSettingsService>().DatabaseFilePath)}");
         base.OnConfiguring(optionsBuilder);
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<University>()
+            .HasMany(e => e.Courses)
+            .WithOne(e => e.University)
+            .HasForeignKey(e => e.UniversityId)
+            .HasPrincipalKey(e => e.Id);
     }
     #endregion
 }

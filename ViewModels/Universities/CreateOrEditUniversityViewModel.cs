@@ -43,7 +43,7 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
     #region Observable Properties
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
-    [Required]
+    [Required(AllowEmptyStrings = false)]
     private string name = string.Empty;
 
     [ObservableProperty]
@@ -52,8 +52,7 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
     private string? url;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
-    [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
+    [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand), nameof(CancelCommand))]
     private bool isCreating;
 
     [ObservableProperty]
@@ -86,10 +85,18 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
 
         Name = university?.Name ?? string.Empty;
         Url = university?.Url;
+
+        // Ensure the button is disabled if invalid but don't trigger errors as they haven't performed any actions yet
+        CreateOrEditCommand.NotifyCanExecuteChanged();
     }
     #endregion
 
     #region Handlers
+    partial void OnNameChanged(string value)
+    {
+        ValidateProperty(value, nameof(Name));
+    }
+
     partial void OnUrlChanged(string? value)
     {
         if (string.IsNullOrEmpty(value))

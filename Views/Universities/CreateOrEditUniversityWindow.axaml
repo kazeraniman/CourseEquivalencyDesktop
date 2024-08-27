@@ -33,7 +33,7 @@
                     <TextBox x:Name="UniversityTextBox"
                              Classes="FormInputTextBox"
                              Watermark="University of Waterloo"
-                             Text="{Binding Name}">
+                             Text="{Binding Name, Mode=TwoWay}">
                         <TextBox.InnerLeftContent>
                             <Path Data="{StaticResource UniversityIconData}" />
                         </TextBox.InnerLeftContent>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,26 +12,26 @@ using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
 using Microsoft.EntityFrameworkCore;
 
-namespace CourseEquivalencyDesktop.ViewModels.Universities;
+namespace CourseEquivalencyDesktop.ViewModels.Courses;
 
-public partial class UniversitiesPageViewModel : ViewModelBase
+public partial class CoursesPageViewModel : ViewModelBase
 {
     #region Constants
-    private const string UNIVERSITY_DELETE_TITLE = "Delete University?";
+    private const string COURSE_DELETE_TITLE = "Delete University?";
 
-    private const string UNIVERSITY_DELETE_BODY =
+    private const string COURSE_DELETE_BODY =
         "Are you sure you wish to delete \"{0}\"?\nThis action cannot be undone and will delete all associated entries.";
 
-    private const string UNIVERSITY_FAILED_DELETE_TITLE = "University Deletion Failed";
+    private const string COURSE_FAILED_DELETE_TITLE = "Course Deletion Failed";
 
-    private const string UNIVERSITY_FAILED_DELETE_BODY =
-        "An error occurred and the university could not be deleted.";
+    private const string COURSE_FAILED_DELETE_BODY =
+        "An error occurred and the course could not be deleted.";
     #endregion
 
     #region Fields
-    public readonly Interaction<University?, University?> CreateOrEditUniversityInteraction = new();
+    public readonly Interaction<Course?, Course?> CreateOrEditCourseInteraction = new();
 
-    private readonly ObservableCollection<University> universities = [];
+    private readonly ObservableCollection<Course> courses = [];
 
     private readonly DatabaseService databaseService;
     private readonly UserSettingsService userSettingsService;
@@ -38,7 +39,7 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     #endregion
 
     #region Properties
-    public DataGridCollectionView UniversitiesCollectionView { get; init; }
+    public DataGridCollectionView CoursesCollectionView { get; init; }
 
     #region Observable Properties
     [ObservableProperty]
@@ -54,31 +55,31 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     #endregion
 
     #region Constructors
-    public UniversitiesPageViewModel()
+    public CoursesPageViewModel()
     {
         Utility.Utility.AssertDesignMode();
 
         databaseService = new DatabaseService();
         userSettingsService = new UserSettingsService();
         genericDialogService = new GenericDialogService();
-        UniversitiesCollectionView = new DataGridCollectionView(universities);
+        CoursesCollectionView = new DataGridCollectionView(courses);
     }
 
-    public UniversitiesPageViewModel(DatabaseService databaseService, UserSettingsService userSettingsService,
+    public CoursesPageViewModel(DatabaseService databaseService, UserSettingsService userSettingsService,
         GenericDialogService genericDialogService)
     {
         this.databaseService = databaseService;
         this.userSettingsService = userSettingsService;
         this.genericDialogService = genericDialogService;
 
-        UniversitiesCollectionView = new DataGridCollectionView(universities)
+        CoursesCollectionView = new DataGridCollectionView(courses)
         {
             Filter = Filter,
             PageSize = userSettingsService.DataGridPageSize
         };
 
-        UniversitiesCollectionView.PageChanged += PageChangedHandler;
-        universities.CollectionChanged += CollectionChangedHandler;
+        CoursesCollectionView.PageChanged += PageChangedHandler;
+        courses.CollectionChanged += CollectionChangedHandler;
     }
     #endregion
 
@@ -91,38 +92,40 @@ public partial class UniversitiesPageViewModel : ViewModelBase
 
     private void PageChangedHandler(object? sender, EventArgs e)
     {
-        CurrentHumanReadablePageIndex = UniversitiesCollectionView.PageIndex + 1;
+        CurrentHumanReadablePageIndex = CoursesCollectionView.PageIndex + 1;
     }
 
     partial void OnSearchTextChanged(string value)
     {
         // TODO: Debounce so this doesn't constantly happen
-        UniversitiesCollectionView.Refresh();
-        UniversitiesCollectionView.MoveToFirstPage();
+        CoursesCollectionView.Refresh();
+        CoursesCollectionView.MoveToFirstPage();
     }
 
     private bool Filter(object arg)
     {
-        if (arg is not University university)
+        if (arg is not Course course)
         {
             return false;
         }
 
-        return string.IsNullOrWhiteSpace(SearchText) || university.Name.CaseInsensitiveContains(SearchText);
+        return string.IsNullOrWhiteSpace(SearchText) || course.Name.CaseInsensitiveContains(SearchText) ||
+               course.University.Name.CaseInsensitiveContains(SearchText) ||
+               course.CourseId.CaseInsensitiveContains(SearchText);
     }
     #endregion
 
     #region Utility
-    public void UpdateUniversities()
+    public void UpdateCourses()
     {
-        universities.Clear();
-        universities.AddRange(databaseService.Universities);
+        courses.Clear();
+        courses.AddRange(databaseService.Courses);
     }
 
     private int GetPageCount()
     {
         return (int)Math.Ceiling(
-            (double)UniversitiesCollectionView.TotalItemCount / UniversitiesCollectionView.PageSize);
+            (double)CoursesCollectionView.TotalItemCount / CoursesCollectionView.PageSize);
     }
     #endregion
 
@@ -136,41 +139,46 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     {
         return CurrentHumanReadablePageIndex > 1;
     }
+
+    private bool CanCreateCourse()
+    {
+        return databaseService.Universities.Any();
+    }
     #endregion
 
     #region Commands
-    [RelayCommand]
-    private async Task CreateUniversity()
+    [RelayCommand(CanExecute = nameof(CanCreateCourse))]
+    private async Task CreateCourse()
     {
-        var universityToCreate = await CreateOrEditUniversityInteraction.HandleAsync(null);
-        if (universityToCreate is not null)
+        var courseToCreate = await CreateOrEditCourseInteraction.HandleAsync(null);
+        if (courseToCreate is not null)
         {
-            universities.Add(universityToCreate);
+            courses.Add(courseToCreate);
         }
     }
 
     [RelayCommand]
-    private async Task EditUniversity(University university)
+    private async Task EditCourse(Course course)
     {
-        var editedUniversity = await CreateOrEditUniversityInteraction.HandleAsync(university);
-        if (editedUniversity is not null)
+        var editedCourse = await CreateOrEditCourseInteraction.HandleAsync(course);
+        if (editedCourse is not null)
         {
-            UniversitiesCollectionView.Refresh();
+            CoursesCollectionView.Refresh();
         }
     }
 
     [RelayCommand]
-    private async Task DeleteUniversity(University university)
+    private async Task DeleteCourse(Course course)
     {
-        var shouldDelete = await genericDialogService.OpenGenericDialog(UNIVERSITY_DELETE_TITLE,
-            string.Format(UNIVERSITY_DELETE_BODY, university.Name), Constants.GenericStrings.DELETE,
+        var shouldDelete = await genericDialogService.OpenGenericDialog(COURSE_DELETE_TITLE,
+            string.Format(COURSE_DELETE_BODY, course.Name), Constants.GenericStrings.DELETE,
             Constants.GenericStrings.CANCEL, primaryButtonThemeName: Constants.ResourceNames.RED_BUTTON);
         if (shouldDelete is null or false)
         {
             return;
         }
 
-        databaseService.Universities.Remove(university);
+        databaseService.Courses.Remove(course);
         databaseService.SaveChangesFailed += SaveChangesFailedHandler;
         databaseService.SavedChanges += SaveChangesSuccessHandler;
         await databaseService.SaveChangesAsync();
@@ -184,27 +192,27 @@ public partial class UniversitiesPageViewModel : ViewModelBase
         void SaveChangesFailedHandler(object? sender, SaveChangesFailedEventArgs e)
         {
             Unsubscribe();
-            _ = genericDialogService.OpenGenericDialog(UNIVERSITY_FAILED_DELETE_TITLE,
-                UNIVERSITY_FAILED_DELETE_BODY, Constants.GenericStrings.OKAY);
+            _ = genericDialogService.OpenGenericDialog(COURSE_FAILED_DELETE_TITLE,
+                COURSE_FAILED_DELETE_BODY, Constants.GenericStrings.OKAY);
         }
 
         void SaveChangesSuccessHandler(object? sender, SavedChangesEventArgs e)
         {
             Unsubscribe();
-            universities.Remove(university);
+            courses.Remove(course);
         }
     }
 
     [RelayCommand(CanExecute = nameof(CanGoToNextPage))]
     private void NextPage()
     {
-        UniversitiesCollectionView.MoveToNextPage();
+        CoursesCollectionView.MoveToNextPage();
     }
 
     [RelayCommand(CanExecute = nameof(CanGoToPreviousPage))]
     private void PreviousPage()
     {
-        UniversitiesCollectionView.MoveToPreviousPage();
+        CoursesCollectionView.MoveToPreviousPage();
     }
     #endregion
 }

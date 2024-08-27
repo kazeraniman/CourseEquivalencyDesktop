@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CourseEquivalencyDesktop.Utility;
+using CourseEquivalencyDesktop.ViewModels.Courses;
 using CourseEquivalencyDesktop.ViewModels.Home;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 
@@ -13,7 +14,8 @@ public partial class MainPageViewModel : ViewModelBase
     public NavigationPageInfo[] Pages { get; init; }
 
     #region Observable Properties
-    [ObservableProperty] private NavigationPageInfo currentPage;
+    [ObservableProperty]
+    private NavigationPageInfo currentPage;
     #endregion
     #endregion
 
@@ -25,7 +27,8 @@ public partial class MainPageViewModel : ViewModelBase
             Pages =
             [
                 new NavigationPageInfo("Home", "HomeIconData", new HomePageViewModel()),
-                new NavigationPageInfo("Universities", "UniversityIconData", new UniversitiesPageViewModel())
+                new NavigationPageInfo("Universities", "UniversityIconData", new UniversitiesPageViewModel()),
+                new NavigationPageInfo("Courses", "CourseIconData", new CoursesPageViewModel())
             ];
         }
         else
@@ -34,7 +37,9 @@ public partial class MainPageViewModel : ViewModelBase
             [
                 new NavigationPageInfo("Home", "HomeIconData", new HomePageViewModel()),
                 new NavigationPageInfo("Universities", "UniversityIconData",
-                    Ioc.Default.GetRequiredService<UniversitiesPageViewModel>())
+                    Ioc.Default.GetRequiredService<UniversitiesPageViewModel>()),
+                new NavigationPageInfo("Courses", "CourseIconData",
+                    Ioc.Default.GetRequiredService<CoursesPageViewModel>())
             ];
         }
 
