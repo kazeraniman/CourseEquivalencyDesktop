@@ -5,6 +5,7 @@
              xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Universities"
              xmlns:m="using:CourseEquivalencyDesktop.Models"
              xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
+             xmlns:dgbc="using:CourseEquivalencyDesktop.Utility.DatGridBoundColumns"
              mc:Ignorable="d"
              d:DesignWidth="1280"
              d:DesignHeight="720"
@@ -43,7 +44,7 @@
                           CanUserResizeColumns="True"
                           IsReadOnly="True"
                           CanUserSortColumns="True"
-                          Height="450"
+                          Height="491"
                           RowBackground="White"
                           GridLinesVisibility="Horizontal"
                           ItemsSource="{Binding UniversitiesCollectionView}">
@@ -68,18 +69,9 @@
                         </ResourceDictionary>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="University"
-                                                Width="0.5*"
-                                                SortMemberPath="Name">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate DataType="m:University">
-                                    <SelectableTextBlock VerticalAlignment="Center"
-                                                         Padding="10,5"
-                                                         Text="{Binding Name}"
-                                                         ToolTip.Tip="{Binding Name}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <dgbc:DataGridSelectableTextColumn Header="University"
+                                                           Width="0.5*"
+                                                           Binding="{Binding Name, DataType=m:University}" />
                         <DataGridTemplateColumn Header="URL"
                                                 Width="0.5*"
                                                 SortMemberPath="Url">
@@ -93,6 +85,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+                        <DataGridTextColumn />
                         <DataGridTemplateColumn Header=""
                                                 Width="Auto"
                                                 CanUserSort="False"
