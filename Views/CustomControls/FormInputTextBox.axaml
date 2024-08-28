@@ -3,9 +3,11 @@
         xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls">
     <Design.PreviewWith>
         <controls:FormInputTextBox LabelText="Label"
-                                   TextBoxWatermark="Watermark"
-                                   TextBoxText="Text"
-                                   TextBoxIcon="{StaticResource HomeIconData}" />
+                                   Watermark="Watermark"
+                                   Icon="{StaticResource HomeIconData}"
+                                   MinLines="10"
+                                   MaxLines="10"
+                                   TextVerticalContentAlignment="Top" />
     </Design.PreviewWith>
 
     <Style Selector="controls|FormInputTextBox">
@@ -20,18 +22,24 @@
                     <Label x:Name="TextBoxLabel"
                            FontWeight="Bold"
                            Content="{TemplateBinding LabelText}"
-                           Target="{Binding #TextBox}" />
+                           Target="{Binding #MainTextBox}" />
                     <DataValidationErrors Errors="{TemplateBinding (DataValidationErrors.Errors)}">
-                        <TextBox x:Name="TextBox"
+                        <TextBox x:Name="MainTextBox"
                                  Classes="FormInputTextBox"
-                                 Watermark="{TemplateBinding TextBoxWatermark}"
-                                 Text="{Binding TextBoxText, RelativeSource={RelativeSource TemplatedParent}}">
+                                 Watermark="{TemplateBinding Watermark}"
+                                 MinLines="{TemplateBinding MinLines}"
+                                 MaxLines="{TemplateBinding MaxLines}"
+                                 TextWrapping="{TemplateBinding TextWrapping}"
+                                 AcceptsReturn="{TemplateBinding AcceptsReturn}"
+                                 HorizontalContentAlignment="{TemplateBinding TextHorizontalContentAlignment}"
+                                 VerticalContentAlignment="{TemplateBinding TextVerticalContentAlignment}"
+                                 Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBox.InnerLeftContent>
                                 <Path Classes="MyPath"
                                       Height="25"
                                       Width="25"
                                       x:Name="TextBoxPath"
-                                      Data="{Binding TextBoxIcon, RelativeSource={RelativeSource TemplatedParent}}" />
+                                      Data="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" />
                             </TextBox.InnerLeftContent>
                         </TextBox>
                     </DataValidationErrors>

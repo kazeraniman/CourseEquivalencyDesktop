@@ -46,69 +46,27 @@
                     </ComboBox>
                 </StackPanel>
                 <controls:FormInputTextBox LabelText="Enter a name"
-                                           TextBoxWatermark="Linear Circuits"
-                                           TextBoxText="{Binding Name}"
-                                           TextBoxIcon="{StaticResource CourseIconData}" />
-                <!-- <StackPanel Spacing="5"> -->
-                <!--     <Label FontWeight="Bold" -->
-                <!--            Content="Enter a name" -->
-                <!--            Target="NameTextBox" /> -->
-                <!--     <TextBox x:Name="NameTextBox" -->
-                <!--              Classes="FormInputTextBox" -->
-                <!--              Watermark="Linear Circuits" -->
-                <!--              Text="{Binding Name}"> -->
-                <!--         <TextBox.InnerLeftContent> -->
-                <!--             <Path Classes="MyPath" Data="{StaticResource CourseIconData}" /> -->
-                <!--         </TextBox.InnerLeftContent> -->
-                <!--     </TextBox> -->
-                <!-- </StackPanel> -->
-                <StackPanel Spacing="5">
-                    <Label FontWeight="Bold"
-                           Content="Enter an ID / Course Code"
-                           Target="CourseIdTextBox" />
-                    <TextBox x:Name="CourseIdTextBox"
-                             Classes="FormInputTextBox"
-                             Watermark="ECE 140"
-                             Text="{Binding CourseId}">
-                        <TextBox.InnerLeftContent>
-                            <Path Classes="MyPath"
-                                  Data="{StaticResource CourseCodeIconData}" />
-                        </TextBox.InnerLeftContent>
-                    </TextBox>
-                </StackPanel>
-                <StackPanel Spacing="5">
-                    <Label FontWeight="Bold"
-                           Content="Enter a URL (optional)"
-                           Target="UrlTextBox" />
-                    <TextBox x:Name="UrlTextBox"
-                             Classes="FormInputTextBox"
-                             Watermark="https://uwaterloo.ca/"
-                             Text="{Binding Url}">
-                        <TextBox.InnerLeftContent>
-                            <Path Classes="MyPath"
-                                  Data="{StaticResource LinkIconData}" />
-                        </TextBox.InnerLeftContent>
-                    </TextBox>
-                </StackPanel>
-                <StackPanel Spacing="5">
-                    <Label FontWeight="Bold"
-                           Content="Enter a description (optional)"
-                           Target="DescriptionTextBox" />
-                    <TextBox x:Name="DescriptionTextBox"
-                             Classes="FormInputTextBox"
-                             Watermark="Analysis of linear circuits. Voltage, current, resistance, capacitance, inductance, voltage source, current source, dependent sources, Ohm's Law, Kirchhoff's Laws, nodal analysis, mesh analysis, circuit transformations, operational amplifier circuits, time response, sinusoidal steady-state response. Preparing for, conducting, and reporting of laboratory experiments. [Offered: W,S]"
-                             Text="{Binding Description}"
-                             MinLines="10"
-                             TextWrapping="Wrap"
-                             VerticalContentAlignment="Top"
-                             HorizontalContentAlignment="Left"
-                             AcceptsReturn="True">
-                        <TextBox.InnerLeftContent>
-                            <Path Classes="MyPath"
-                                  Data="{StaticResource DescriptionIconData}" />
-                        </TextBox.InnerLeftContent>
-                    </TextBox>
-                </StackPanel>
+                                           Watermark="Linear Circuits"
+                                           Text="{Binding Name}"
+                                           Icon="{StaticResource CourseIconData}" />
+                <controls:FormInputTextBox LabelText="Enter an ID / Course Code"
+                                           Watermark="ECE 140"
+                                           Text="{Binding CourseId}"
+                                           Icon="{StaticResource CourseCodeIconData}" />
+                <controls:FormInputTextBox LabelText="Enter a URL (optional)"
+                                           Watermark="https://uwaterloo.ca/"
+                                           Text="{Binding Url}"
+                                           Icon="{StaticResource LinkIconData}" />
+                <controls:FormInputTextBox LabelText="Enter a description (optional)"
+                                           Watermark="Analysis of linear circuits. Voltage, current, resistance, capacitance, inductance, voltage source, current source, dependent sources, Ohm's Law, Kirchhoff's Laws, nodal analysis, mesh analysis, circuit transformations, operational amplifier circuits, time response, sinusoidal steady-state response. Preparing for, conducting, and reporting of laboratory experiments. [Offered: W,S]"
+                                           Text="{Binding Description}"
+                                           Icon="{StaticResource DescriptionIconData}"
+                                           MinLines="10"
+                                           MaxLines="10"
+                                           TextWrapping="Wrap"
+                                           AcceptsReturn="True"
+                                           TextHorizontalContentAlignment="Left"
+                                           TextVerticalContentAlignment="Top" />
             </StackPanel>
         </Border>
 
