@@ -5,6 +5,7 @@
              xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Courses"
              xmlns:m="using:CourseEquivalencyDesktop.Models"
              xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
+             xmlns:dgbc="using:CourseEquivalencyDesktop.Utility.DatGridBoundColumns"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
@@ -43,7 +44,7 @@
                           CanUserResizeColumns="True"
                           IsReadOnly="True"
                           CanUserSortColumns="True"
-                          Height="450"
+                          Height="491"
                           RowBackground="White"
                           GridLinesVisibility="Horizontal"
                           ItemsSource="{Binding CoursesCollectionView}">
@@ -68,42 +69,15 @@
                         </ResourceDictionary>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Code"
-                                                Width="0.11*"
-                                                SortMemberPath="CourseId">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate DataType="m:Course">
-                                    <SelectableTextBlock VerticalAlignment="Center"
-                                                         Padding="10,5"
-                                                         Text="{Binding CourseId}"
-                                                         ToolTip.Tip="{Binding CourseId}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Course"
-                                                Width="0.22*"
-                                                SortMemberPath="Name">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate DataType="m:Course">
-                                    <SelectableTextBlock VerticalAlignment="Center"
-                                                         Padding="10,5"
-                                                         Text="{Binding Name}"
-                                                         ToolTip.Tip="{Binding Name}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="University"
-                                                Width="0.22*"
-                                                SortMemberPath="University.Name">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate DataType="m:Course">
-                                    <SelectableTextBlock VerticalAlignment="Center"
-                                                         Padding="10,5"
-                                                         Text="{Binding University.Name}"
-                                                         ToolTip.Tip="{Binding University.Name}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <dgbc:DataGridSelectableTextColumn Header="Code"
+                                                           Width="0.11*"
+                                                           Binding="{Binding CourseId, DataType=m:Course}" />
+                        <dgbc:DataGridSelectableTextColumn Header="Name"
+                                                           Width="0.22*"
+                                                           Binding="{Binding Name, DataType=m:Course}" />
+                        <dgbc:DataGridSelectableTextColumn Header="University"
+                                                           Width="0.22*"
+                                                           Binding="{Binding University.Name, DataType=m:Course}" />
                         <DataGridTemplateColumn Header="URL"
                                                 Width="0.22*"
                                                 SortMemberPath="Url">
@@ -117,19 +91,9 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Description"
-                                                Width="0.22*"
-                                                SortMemberPath="Description">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate DataType="m:Course">
-                                    <SelectableTextBlock VerticalAlignment="Center"
-                                                         Padding="10,5"
-                                                         MaxHeight="30"
-                                                         Text="{Binding Description}"
-                                                         ToolTip.Tip="{Binding Description}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <dgbc:DataGridSelectableTextColumn Header="Description"
+                                                           Width="0.22*"
+                                                           Binding="{Binding Description, DataType=m:Course}" />
                         <DataGridTemplateColumn Header=""
                                                 Width="Auto"
                                                 CanUserSort="False"
