@@ -185,28 +185,18 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
 
         async Task Save()
         {
-            databaseService.SaveChangesFailed += SaveChangesFailedHandler;
-            databaseService.SavedChanges += SaveChangesSuccessHandler;
-            await databaseService.SaveChangesAsync();
+            await databaseService.SaveChangesAsyncWithCallbacks(SaveChangesSuccessHandler, SaveChangesFailedHandler);
         }
 
-        void Unsubscribe()
+        void SaveChangesSuccessHandler()
         {
-            databaseService.SaveChangesFailed -= SaveChangesFailedHandler;
-            databaseService.SavedChanges -= SaveChangesSuccessHandler;
+            OnRequestCloseWindow?.Invoke(this, new CreateOrEditUniversityEventArgs { University = modifiedUniversity });
         }
 
-        void SaveChangesFailedHandler(object? sender, SaveChangesFailedEventArgs e)
+        void SaveChangesFailedHandler()
         {
-            Unsubscribe();
             _ = genericDialogService.OpenGenericDialog(UNIVERSITY_FAILED_SAVE_TITLE,
                 UNIVERSITY_FAILED_SAVE_BODY, Constants.GenericStrings.OKAY);
-        }
-
-        void SaveChangesSuccessHandler(object? sender, SavedChangesEventArgs e)
-        {
-            Unsubscribe();
-            OnRequestCloseWindow?.Invoke(this, new CreateOrEditUniversityEventArgs { University = modifiedUniversity });
         }
     }
 

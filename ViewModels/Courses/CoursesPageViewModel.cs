@@ -10,7 +10,6 @@ using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
-using Microsoft.EntityFrameworkCore;
 
 namespace CourseEquivalencyDesktop.ViewModels.Courses;
 
@@ -179,27 +178,17 @@ public partial class CoursesPageViewModel : ViewModelBase
         }
 
         databaseService.Courses.Remove(course);
-        databaseService.SaveChangesFailed += SaveChangesFailedHandler;
-        databaseService.SavedChanges += SaveChangesSuccessHandler;
-        await databaseService.SaveChangesAsync();
+        await databaseService.SaveChangesAsyncWithCallbacks(SaveChangesSuccessHandler, SaveChangesFailedHandler);
 
-        void Unsubscribe()
+        void SaveChangesSuccessHandler()
         {
-            databaseService.SaveChangesFailed -= SaveChangesFailedHandler;
-            databaseService.SavedChanges -= SaveChangesSuccessHandler;
+            courses.Remove(course);
         }
 
-        void SaveChangesFailedHandler(object? sender, SaveChangesFailedEventArgs e)
+        void SaveChangesFailedHandler()
         {
-            Unsubscribe();
             _ = genericDialogService.OpenGenericDialog(COURSE_FAILED_DELETE_TITLE,
                 COURSE_FAILED_DELETE_BODY, Constants.GenericStrings.OKAY);
-        }
-
-        void SaveChangesSuccessHandler(object? sender, SavedChangesEventArgs e)
-        {
-            Unsubscribe();
-            courses.Remove(course);
         }
     }
 
