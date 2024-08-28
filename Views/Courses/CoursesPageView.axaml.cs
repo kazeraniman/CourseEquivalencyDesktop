@@ -38,7 +38,8 @@ public partial class CoursesPageView : UserControl
             return;
         }
 
-        CoursesDataGrid.Columns[1].Sort(ListSortDirection.Ascending); // TODO: Why doesn't this work?
+        coursesPageViewModel.UpdateCourses();
+        CoursesDataGrid.Columns[1].Sort(ListSortDirection.Ascending);
     }
 
     protected override void OnUnloaded(RoutedEventArgs e)

@@ -38,6 +38,7 @@ public partial class UniversitiesPageView : UserControl
             return;
         }
 
+        universitiesPageViewModel.UpdateUniversities();
         UniversitiesDataGrid.Columns[0].Sort(ListSortDirection.Ascending);
     }
 

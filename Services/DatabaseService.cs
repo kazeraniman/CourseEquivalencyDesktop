@@ -75,7 +75,8 @@ public class DatabaseService : DbContext
             .HasMany(e => e.Courses)
             .WithOne(e => e.University)
             .HasForeignKey(e => e.UniversityId)
-            .HasPrincipalKey(e => e.Id);
+            .HasPrincipalKey(e => e.Id)
+            .OnDelete(DeleteBehavior.Cascade);
     }
     #endregion
 
