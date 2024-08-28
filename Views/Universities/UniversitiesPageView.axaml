@@ -72,20 +72,9 @@
                         <dgbc:DataGridSelectableTextColumn Header="University"
                                                            Width="0.5*"
                                                            Binding="{Binding Name, DataType=m:University}" />
-                        <DataGridTemplateColumn Header="URL"
-                                                Width="0.5*"
-                                                SortMemberPath="Url">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate DataType="m:University">
-                                    <HyperlinkButton VerticalAlignment="Center"
-                                                     Padding="10,5"
-                                                     Content="{Binding Url}"
-                                                     ToolTip.Tip="{Binding Url}"
-                                                     NavigateUri="{Binding Url}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn />
+                        <dgbc:DataGridLinkColumn Header="URL"
+                                                 Width="0.5*"
+                                                 Binding="{Binding Url, DataType=m:University}" />
                         <DataGridTemplateColumn Header=""
                                                 Width="Auto"
                                                 CanUserSort="False"
