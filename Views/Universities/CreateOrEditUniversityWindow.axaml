@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Universities"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
         mc:Ignorable="d"
         d:DesignWidth="800"
         d:DesignHeight="340"
@@ -26,34 +27,15 @@
                 Padding="24"
                 CornerRadius="6">
             <StackPanel Spacing="16">
-                <StackPanel Spacing="5">
-                    <Label FontWeight="Bold"
-                           Content="Enter a name"
-                           Target="UniversityTextBox" />
-                    <TextBox x:Name="UniversityTextBox"
-                             Classes="FormInputTextBox"
-                             Watermark="University of Waterloo"
-                             Text="{Binding Name, Mode=TwoWay}">
-                        <TextBox.InnerLeftContent>
-                            <Path Classes="MyPath"
-                                  Data="{StaticResource UniversityIconData}" />
-                        </TextBox.InnerLeftContent>
-                    </TextBox>
-                </StackPanel>
-                <StackPanel Spacing="5">
-                    <Label FontWeight="Bold"
-                           Content="Enter a URL (optional)"
-                           Target="UrlTextBox" />
-                    <TextBox x:Name="UrlTextBox"
-                             Classes="FormInputTextBox"
-                             Watermark="https://uwaterloo.ca/"
-                             Text="{Binding Url}">
-                        <TextBox.InnerLeftContent>
-                            <Path Classes="MyPath"
-                                  Data="{StaticResource LinkIconData}" />
-                        </TextBox.InnerLeftContent>
-                    </TextBox>
-                </StackPanel>
+                <controls:FormInputTextBox x:Name="UniversityTextBox"
+                                           LabelText="Enter a name"
+                                           Watermark="University of Waterloo"
+                                           Text="{Binding Name}"
+                                           Icon="{StaticResource UniversityIconData}" />
+                <controls:FormInputTextBox LabelText="Enter a URL (optional)"
+                                           Watermark="https://uwaterloo.ca/"
+                                           Text="{Binding Url}"
+                                           Icon="{StaticResource LinkIconData}" />
             </StackPanel>
         </Border>
 
