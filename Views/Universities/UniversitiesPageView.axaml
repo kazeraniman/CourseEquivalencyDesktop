@@ -22,7 +22,7 @@
         <Grid RowDefinitions="Auto, *, Auto"
               ColumnDefinitions="*, Auto">
             <controls:InputTextBox Watermark="Search universities..."
-                                   Text="{Binding SearchText}"
+                                   Text="{Binding SearchText, Mode=TwoWay}"
                                    Icon="{StaticResource SearchIconData}"
                                    Grid.Row="0"
                                    Grid.Column="0" />

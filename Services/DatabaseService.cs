@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using System;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CourseEquivalencyDesktop.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +24,11 @@ public class DatabaseService : DbContext
     public DbSet<Course> Courses { get; set; }
     #endregion
 
+    #region Events
+    public event Action? OnSaveChangesSucceeded;
+    public event Action? OnSaveChangesFailed;
+    #endregion
+
     #region Constructors
     public DatabaseService()
     {
@@ -33,11 +40,30 @@ public class DatabaseService : DbContext
     }
     #endregion
 
+    #region Handlers
+    private void SaveChangesSuccessHandler(object? _0, SavedChangesEventArgs _1)
+    {
+        OnSaveChangesSucceeded?.Invoke();
+    }
+
+    private void SaveChangedFailedHandler(object? _0, SaveChangesFailedEventArgs _1)
+    {
+        OnSaveChangesFailed?.Invoke();
+    }
+    #endregion
+
     #region DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite(
             $"Data Source={(isDesignTime ? DESIGN_TIME_DB : Ioc.Default.GetRequiredService<UserSettingsService>().DatabaseFilePath)}");
+
+        if (!isDesignTime)
+        {
+            SaveChangesFailed += SaveChangedFailedHandler;
+            SavedChanges += SaveChangesSuccessHandler;
+        }
+
         base.OnConfiguring(optionsBuilder);
     }
 
@@ -50,6 +76,20 @@ public class DatabaseService : DbContext
             .WithOne(e => e.University)
             .HasForeignKey(e => e.UniversityId)
             .HasPrincipalKey(e => e.Id);
+    }
+    #endregion
+
+    #region Additional Functionality
+    public async Task SaveChangesAsyncWithCallbacks(Action? onSaveChangesSucceeded = null,
+        Action? onSaveChangesFailed = null)
+    {
+        OnSaveChangesSucceeded += onSaveChangesSucceeded;
+        OnSaveChangesFailed += onSaveChangesFailed;
+
+        await SaveChangesAsync();
+
+        OnSaveChangesSucceeded -= onSaveChangesSucceeded;
+        OnSaveChangesFailed -= onSaveChangesFailed;
     }
     #endregion
 }
