@@ -70,8 +70,6 @@ public partial class UniversitiesPageViewModel : ViewModelBase
         this.userSettingsService = userSettingsService;
         this.genericDialogService = genericDialogService;
 
-        UpdateUniversities();
-
         UniversitiesCollectionView = new DataGridCollectionView(universities)
         {
             Filter = Filter,

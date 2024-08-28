@@ -72,8 +72,6 @@ public partial class CoursesPageViewModel : ViewModelBase
         this.userSettingsService = userSettingsService;
         this.genericDialogService = genericDialogService;
 
-        UpdateCourses();
-
         CoursesCollectionView = new DataGridCollectionView(courses)
         {
             Filter = Filter,
@@ -118,7 +116,7 @@ public partial class CoursesPageViewModel : ViewModelBase
     #endregion
 
     #region Utility
-    private void UpdateCourses()
+    public void UpdateCourses()
     {
         courses.Clear();
 
