@@ -131,7 +131,7 @@
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
 
         <!-- Shape textboxes and dropdowns used for form inputs so that the contents don't look tight. -->
-        <Style Selector="TextBox.FormInputTextBox, ComboBox.FormInputTextBox">
+        <Style Selector="TextBox.StyledTextBox, ComboBox.StyledTextBox">
             <Setter Property="Padding"
                     Value="10,10,0,10" />
             <Setter Property="FontWeight"
@@ -191,6 +191,7 @@
         </Style>
 
         <!-- Custom controls. -->
+        <StyleInclude Source="Views/CustomControls/InputTextBox.axaml" />
         <StyleInclude Source="Views/CustomControls/FormInputTextBox.axaml" />
     </Application.Styles>
 </Application>

@@ -1,0 +1,43 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls">
+    <Design.PreviewWith>
+        <controls:InputTextBox Watermark="Watermark"
+                               Icon="{StaticResource HomeIconData}"
+                               MinLines="10"
+                               MaxLines="10"
+                               TextVerticalContentAlignment="Top" />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|InputTextBox">
+        <Style Selector="^:error Border">
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource SystemControlErrorTextForegroundBrush}" />
+        </Style>
+
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DataValidationErrors Errors="{TemplateBinding (DataValidationErrors.Errors)}">
+                    <TextBox x:Name="MainTextBox"
+                             Classes="StyledTextBox"
+                             Watermark="{TemplateBinding Watermark}"
+                             MinLines="{TemplateBinding MinLines}"
+                             MaxLines="{TemplateBinding MaxLines}"
+                             TextWrapping="{TemplateBinding TextWrapping}"
+                             AcceptsReturn="{TemplateBinding AcceptsReturn}"
+                             HorizontalContentAlignment="{TemplateBinding TextHorizontalContentAlignment}"
+                             VerticalContentAlignment="{TemplateBinding TextVerticalContentAlignment}"
+                             Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}">
+                        <TextBox.InnerLeftContent>
+                            <Path Classes="MyPath"
+                                  Height="25"
+                                  Width="25"
+                                  x:Name="TextBoxPath"
+                                  Data="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </TextBox.InnerLeftContent>
+                    </TextBox>
+                </DataValidationErrors>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

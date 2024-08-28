@@ -25,7 +25,7 @@
                            Target="{Binding #MainTextBox}" />
                     <DataValidationErrors Errors="{TemplateBinding (DataValidationErrors.Errors)}">
                         <TextBox x:Name="MainTextBox"
-                                 Classes="FormInputTextBox"
+                                 Classes="StyledTextBox"
                                  Watermark="{TemplateBinding Watermark}"
                                  MinLines="{TemplateBinding MinLines}"
                                  MaxLines="{TemplateBinding MaxLines}"
