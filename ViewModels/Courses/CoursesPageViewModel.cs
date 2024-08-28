@@ -10,6 +10,7 @@ using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseEquivalencyDesktop.ViewModels.Courses;
 
@@ -71,6 +72,8 @@ public partial class CoursesPageViewModel : ViewModelBase
         this.userSettingsService = userSettingsService;
         this.genericDialogService = genericDialogService;
 
+        UpdateCourses();
+
         CoursesCollectionView = new DataGridCollectionView(courses)
         {
             Filter = Filter,
@@ -115,10 +118,12 @@ public partial class CoursesPageViewModel : ViewModelBase
     #endregion
 
     #region Utility
-    public void UpdateCourses()
+    private void UpdateCourses()
     {
         courses.Clear();
-        courses.AddRange(databaseService.Courses);
+
+        // Using the Include to eagerly load the universities so they are ready on first page view
+        courses.AddRange(databaseService.Courses.Include(course => course.University));
     }
 
     private int GetPageCount()
@@ -159,11 +164,7 @@ public partial class CoursesPageViewModel : ViewModelBase
     [RelayCommand]
     private async Task EditCourse(Course course)
     {
-        var editedCourse = await CreateOrEditCourseInteraction.HandleAsync(course);
-        if (editedCourse is not null)
-        {
-            CoursesCollectionView.Refresh();
-        }
+        await CreateOrEditCourseInteraction.HandleAsync(course);
     }
 
     [RelayCommand]
