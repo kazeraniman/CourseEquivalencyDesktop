@@ -28,23 +28,19 @@
                 Padding="24"
                 CornerRadius="6">
             <StackPanel Spacing="16">
-                <StackPanel Spacing="5">
-                    <Label FontWeight="Bold"
-                           Content="Select a university"
-                           Target="UniversityComboBox" />
-                    <ComboBox x:Name="UniversityComboBox"
-                              Classes="FormInputTextBox"
-                              ItemsSource="{Binding Universities}"
-                              PlaceholderText="Select a university"
-                              SelectedItem="{Binding University}"
-                              HorizontalAlignment="Stretch">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate DataType="m:University">
-                                <TextBlock Text="{Binding Name}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
+                <controls:FormInputComboBox x:Name="UniversityComboBox"
+                                            LabelText="Select a university"
+                                            ItemsSource="{Binding Universities}"
+                                            PlaceholderText="Select a university"
+                                            SelectedItem="{Binding University}"
+                                            HorizontalAlignment="Stretch"
+                                            Icon="{StaticResource UniversityIconData}">
+                    <controls:FormInputComboBox.ItemTemplate>
+                        <DataTemplate DataType="m:University">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </controls:FormInputComboBox.ItemTemplate>
+                </controls:FormInputComboBox>
                 <controls:FormInputTextBox LabelText="Enter a name"
                                            Watermark="Linear Circuits"
                                            Text="{Binding Name}"

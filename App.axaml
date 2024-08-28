@@ -1,7 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="CourseEquivalencyDesktop.App"
              xmlns:utility="clr-namespace:CourseEquivalencyDesktop.Utility"
+             xmlns:controls="clr-namespace:CourseEquivalencyDesktop.Views.CustomControls"
+             x:Class="CourseEquivalencyDesktop.App"
              RequestedThemeVariant="Default">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -131,7 +132,7 @@
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
 
         <!-- Shape textboxes and dropdowns used for form inputs so that the contents don't look tight. -->
-        <Style Selector="TextBox.StyledTextBox, ComboBox.StyledTextBox">
+        <Style Selector="TextBox.StyledTextBox, controls|FormInputComboBox.StyledTextBox">
             <Setter Property="Padding"
                     Value="10,10,0,10" />
             <Setter Property="FontWeight"
@@ -193,5 +194,6 @@
         <!-- Custom controls. -->
         <StyleInclude Source="Views/CustomControls/InputTextBox.axaml" />
         <StyleInclude Source="Views/CustomControls/FormInputTextBox.axaml" />
+        <StyleInclude Source="Views/CustomControls/FormInputComboBox.axaml" />
     </Application.Styles>
 </Application>
