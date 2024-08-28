@@ -33,7 +33,8 @@
                 Margin="5,0,0,0"
                 Theme="{StaticResource GreyButton}"
                 Command="{Binding Path=((vm:DatabaseSelectionWizardViewModel)DataContext).SelectExistingDatabaseCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=v:DatabaseSelectionWizardWindow}}">
-            <Path Data="{StaticResource FilePickIconData}" />
+            <Path Classes="MyPath"
+                  Data="{StaticResource FilePickIconData}" />
         </Button>
     </Grid>
 </UserControl>

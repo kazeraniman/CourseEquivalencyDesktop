@@ -27,7 +27,8 @@
                      Grid.Row="0"
                      Grid.Column="0">
                 <TextBox.InnerLeftContent>
-                    <Path Data="{StaticResource SearchIconData}" />
+                    <Path Classes="MyPath"
+                          Data="{StaticResource SearchIconData}" />
                 </TextBox.InnerLeftContent>
             </TextBox>
             <Button Theme="{StaticResource BlueButton}"
@@ -148,14 +149,16 @@
                                                 CommandParameter="{Binding}"
                                                 Margin="5"
                                                 ToolTip.Tip="Edit">
-                                            <Path Data="{StaticResource EditIconData}" />
+                                            <Path Classes="MyPath"
+                                                  Data="{StaticResource EditIconData}" />
                                         </Button>
                                         <Button Theme="{StaticResource GreyButton}"
                                                 Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).DeleteCourseCommand}"
                                                 CommandParameter="{Binding}"
                                                 Margin="5"
                                                 ToolTip.Tip="Delete">
-                                            <Path Data="{StaticResource DeleteIconData}" />
+                                            <Path Classes="MyPath"
+                                                  Data="{StaticResource DeleteIconData}" />
                                         </Button>
                                     </StackPanel>
                                 </DataTemplate>
@@ -173,7 +176,8 @@
                 <Button Theme="{StaticResource GreyButton}"
                         Command="{Binding PreviousPageCommand}"
                         ToolTip.Tip="Previous Page">
-                    <Path Height="25"
+                    <Path Classes="MyPath"
+                          Height="25"
                           Width="25"
                           Data="{StaticResource PageLeftIconData}" />
                 </Button>
@@ -191,7 +195,8 @@
                 <Button Theme="{StaticResource GreyButton}"
                         Command="{Binding NextPageCommand}"
                         ToolTip.Tip="Next Page">
-                    <Path Height="25"
+                    <Path Classes="MyPath"
+                          Height="25"
                           Width="25"
                           Data="{StaticResource PageRightIconData}" />
                 </Button>

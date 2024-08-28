@@ -71,7 +71,8 @@
                     <DataTemplate DataType="u:NavigationPageInfo">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="10">
-                            <Path Height="25"
+                            <Path Classes="MyPath"
+                                  Height="25"
                                   Data="{Binding Icon, Converter={StaticResource IconConverter}}" />
                             <TextBlock Text="{Binding Name}"
                                        VerticalAlignment="Center" />

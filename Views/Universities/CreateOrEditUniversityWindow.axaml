@@ -35,7 +35,8 @@
                              Watermark="University of Waterloo"
                              Text="{Binding Name, Mode=TwoWay}">
                         <TextBox.InnerLeftContent>
-                            <Path Data="{StaticResource UniversityIconData}" />
+                            <Path Classes="MyPath"
+                                  Data="{StaticResource UniversityIconData}" />
                         </TextBox.InnerLeftContent>
                     </TextBox>
                 </StackPanel>
@@ -48,7 +49,8 @@
                              Watermark="https://uwaterloo.ca/"
                              Text="{Binding Url}">
                         <TextBox.InnerLeftContent>
-                            <Path Data="{StaticResource LinkIconData}" />
+                            <Path Classes="MyPath"
+                                  Data="{StaticResource LinkIconData}" />
                         </TextBox.InnerLeftContent>
                     </TextBox>
                 </StackPanel>
