@@ -70,6 +70,8 @@ public partial class UniversitiesPageViewModel : ViewModelBase
         this.userSettingsService = userSettingsService;
         this.genericDialogService = genericDialogService;
 
+        UpdateUniversities();
+
         UniversitiesCollectionView = new DataGridCollectionView(universities)
         {
             Filter = Filter,
@@ -151,11 +153,7 @@ public partial class UniversitiesPageViewModel : ViewModelBase
     [RelayCommand]
     private async Task EditUniversity(University university)
     {
-        var editedUniversity = await CreateOrEditUniversityInteraction.HandleAsync(university);
-        if (editedUniversity is not null)
-        {
-            UniversitiesCollectionView.Refresh();
-        }
+        await CreateOrEditUniversityInteraction.HandleAsync(university);
     }
 
     [RelayCommand]
