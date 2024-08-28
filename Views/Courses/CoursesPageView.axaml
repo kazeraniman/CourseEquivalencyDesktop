@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Courses"
              xmlns:m="using:CourseEquivalencyDesktop.Models"
+             xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
@@ -20,17 +21,11 @@
                    Classes="PageHeader" />
         <Grid RowDefinitions="Auto, *, Auto"
               ColumnDefinitions="*, Auto">
-            <TextBox x:Name="SearchTextBox"
-                     Classes="FormInputTextBox"
-                     Watermark="Search courses..."
-                     Text="{Binding SearchText}"
-                     Grid.Row="0"
-                     Grid.Column="0">
-                <TextBox.InnerLeftContent>
-                    <Path Classes="MyPath"
-                          Data="{StaticResource SearchIconData}" />
-                </TextBox.InnerLeftContent>
-            </TextBox>
+            <controls:InputTextBox Watermark="Search courses..."
+                                   Text="{Binding SearchText}"
+                                   Icon="{StaticResource SearchIconData}"
+                                   Grid.Row="0"
+                                   Grid.Column="0" />
             <Button Theme="{StaticResource BlueButton}"
                     Content="Create Course"
                     Command="{Binding CreateCourseCommand}"
