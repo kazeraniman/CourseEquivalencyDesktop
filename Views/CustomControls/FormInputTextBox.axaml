@@ -1,0 +1,42 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls">
+    <Design.PreviewWith>
+        <controls:FormInputTextBox LabelText="Label"
+                                   TextBoxWatermark="Watermark"
+                                   TextBoxText="Text"
+                                   TextBoxIcon="{StaticResource HomeIconData}" />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|FormInputTextBox">
+        <Style Selector="^:error Border">
+            <Setter Property="BorderBrush"
+                    Value="{StaticResource SystemControlErrorTextForegroundBrush}" />
+        </Style>
+
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel Spacing="5">
+                    <Label x:Name="TextBoxLabel"
+                           FontWeight="Bold"
+                           Content="{TemplateBinding LabelText}"
+                           Target="{Binding #TextBox}" />
+                    <DataValidationErrors Errors="{TemplateBinding (DataValidationErrors.Errors)}">
+                        <TextBox x:Name="TextBox"
+                                 Classes="FormInputTextBox"
+                                 Watermark="{TemplateBinding TextBoxWatermark}"
+                                 Text="{Binding TextBoxText, RelativeSource={RelativeSource TemplatedParent}}">
+                            <TextBox.InnerLeftContent>
+                                <Path Classes="MyPath"
+                                      Height="25"
+                                      Width="25"
+                                      x:Name="TextBoxPath"
+                                      Data="{Binding TextBoxIcon, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </TextBox.InnerLeftContent>
+                        </TextBox>
+                    </DataValidationErrors>
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

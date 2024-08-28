@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Courses"
         xmlns:m="using:CourseEquivalencyDesktop.Models"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
         mc:Ignorable="d"
         d:DesignWidth="900"
         d:DesignHeight="750"
@@ -44,19 +45,23 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-                <StackPanel Spacing="5">
-                    <Label FontWeight="Bold"
-                           Content="Enter a name"
-                           Target="NameTextBox" />
-                    <TextBox x:Name="NameTextBox"
-                             Classes="FormInputTextBox"
-                             Watermark="Linear Circuits"
-                             Text="{Binding Name}">
-                        <TextBox.InnerLeftContent>
-                            <Path Data="{StaticResource CourseIconData}" />
-                        </TextBox.InnerLeftContent>
-                    </TextBox>
-                </StackPanel>
+                <controls:FormInputTextBox LabelText="Enter a name"
+                                           TextBoxWatermark="Linear Circuits"
+                                           TextBoxText="{Binding Name}"
+                                           TextBoxIcon="{StaticResource CourseIconData}" />
+                <!-- <StackPanel Spacing="5"> -->
+                <!--     <Label FontWeight="Bold" -->
+                <!--            Content="Enter a name" -->
+                <!--            Target="NameTextBox" /> -->
+                <!--     <TextBox x:Name="NameTextBox" -->
+                <!--              Classes="FormInputTextBox" -->
+                <!--              Watermark="Linear Circuits" -->
+                <!--              Text="{Binding Name}"> -->
+                <!--         <TextBox.InnerLeftContent> -->
+                <!--             <Path Classes="MyPath" Data="{StaticResource CourseIconData}" /> -->
+                <!--         </TextBox.InnerLeftContent> -->
+                <!--     </TextBox> -->
+                <!-- </StackPanel> -->
                 <StackPanel Spacing="5">
                     <Label FontWeight="Bold"
                            Content="Enter an ID / Course Code"
@@ -66,7 +71,8 @@
                              Watermark="ECE 140"
                              Text="{Binding CourseId}">
                         <TextBox.InnerLeftContent>
-                            <Path Data="{StaticResource CourseCodeIconData}" />
+                            <Path Classes="MyPath"
+                                  Data="{StaticResource CourseCodeIconData}" />
                         </TextBox.InnerLeftContent>
                     </TextBox>
                 </StackPanel>
@@ -79,7 +85,8 @@
                              Watermark="https://uwaterloo.ca/"
                              Text="{Binding Url}">
                         <TextBox.InnerLeftContent>
-                            <Path Data="{StaticResource LinkIconData}" />
+                            <Path Classes="MyPath"
+                                  Data="{StaticResource LinkIconData}" />
                         </TextBox.InnerLeftContent>
                     </TextBox>
                 </StackPanel>
@@ -97,7 +104,8 @@
                              HorizontalContentAlignment="Left"
                              AcceptsReturn="True">
                         <TextBox.InnerLeftContent>
-                            <Path Data="{StaticResource DescriptionIconData}" />
+                            <Path Classes="MyPath"
+                                  Data="{StaticResource DescriptionIconData}" />
                         </TextBox.InnerLeftContent>
                     </TextBox>
                 </StackPanel>

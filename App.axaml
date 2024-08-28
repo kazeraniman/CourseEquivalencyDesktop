@@ -9,71 +9,6 @@
         <utility:ViewLocator />
     </Application.DataTemplates>
 
-    <Application.Styles>
-        <FluentTheme />
-
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
-
-        <!-- Shape textboxes and dropdowns used for form inputs so that the contents don't look tight. -->
-        <Style Selector="TextBox.FormInputTextBox">
-            <Setter Property="VerticalContentAlignment"
-                    Value="Center" />
-        </Style>
-
-        <Style Selector="TextBox.FormInputTextBox, ComboBox.FormInputTextBox">
-            <Setter Property="Padding"
-                    Value="10,10,0,10" />
-            <Setter Property="FontWeight"
-                    Value="SemiBold" />
-
-            <!-- Add a margin to paths used as icons in textboxes so that they don't hug so tightly. -->
-            <Style Selector="^ Path">
-                <Setter Property="Margin"
-                        Value="10,0,0,0" />
-                <Setter Property="Stroke"
-                        Value="{DynamicResource TextGrey500}" />
-                <Setter Property="Stretch"
-                        Value="Uniform" />
-                <Setter Property="Height"
-                        Value="14" />
-                <Setter Property="Width"
-                        Value="14" />
-            </Style>
-
-            <!-- Turn icons in textboxes black when focused. -->
-            <Style Selector="^:focus Path">
-                <Setter Property="Stroke"
-                        Value="Black" />
-            </Style>
-        </Style>
-
-        <!-- Draw the svg paths properly. -->
-        <Style Selector="Path">
-            <Setter Property="Stroke"
-                    Value="Black" />
-            <Setter Property="StrokeThickness"
-                    Value="1.25" />
-            <Setter Property="StrokeLineCap"
-                    Value="Round" />
-            <Setter Property="StrokeJoin"
-                    Value="Round" />
-        </Style>
-
-        <!-- Page headers. -->
-        <Style Selector="TextBlock.PageHeader">
-            <Setter Property="FontSize"
-                    Value="24" />
-            <Setter Property="LineHeight"
-                    Value="32" />
-        </Style>
-
-        <!-- Hide data grid column separators. -->
-        <Style Selector="DataGridColumnHeader">
-            <Setter Property="AreSeparatorsVisible"
-                    Value="False" />
-        </Style>
-    </Application.Styles>
-
     <Application.Resources>
         <!-- Icons from https://heroicons.com/ -->
         <!-- link -->
@@ -189,4 +124,78 @@
             </Style>
         </ControlTheme>
     </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+
+        <!-- Shape textboxes and dropdowns used for form inputs so that the contents don't look tight. -->
+        <Style Selector="TextBox.FormInputTextBox">
+            <Setter Property="VerticalContentAlignment"
+                    Value="Center" />
+        </Style>
+
+        <Style Selector="TextBox.FormInputTextBox, ComboBox.FormInputTextBox">
+            <Setter Property="Padding"
+                    Value="10,10,0,10" />
+            <Setter Property="FontWeight"
+                    Value="SemiBold" />
+
+            <!-- Add a margin to paths used as icons in textboxes so that they don't hug so tightly. -->
+            <Style Selector="^ Path.MyPath">
+                <Setter Property="Margin"
+                        Value="10,0,0,0" />
+                <Setter Property="Stroke"
+                        Value="{StaticResource TextGrey500}" />
+                <Setter Property="Stretch"
+                        Value="Uniform" />
+                <Setter Property="Height"
+                        Value="14" />
+                <Setter Property="Width"
+                        Value="14" />
+            </Style>
+
+            <!-- Turn icons in textboxes black when focused. -->
+            <Style Selector="^:focus Path.MyPath">
+                <Setter Property="Stroke"
+                        Value="Black" />
+            </Style>
+        </Style>
+
+        <!-- Draw the svg paths properly. -->
+        <Style Selector="Path.MyPath">
+            <Setter Property="Stroke"
+                    Value="Black" />
+            <Setter Property="StrokeThickness"
+                    Value="1.25" />
+            <Setter Property="StrokeLineCap"
+                    Value="Round" />
+            <Setter Property="StrokeJoin"
+                    Value="Round" />
+        </Style>
+
+        <!-- Page headers. -->
+        <Style Selector="TextBlock.PageHeader">
+            <Setter Property="FontSize"
+                    Value="24" />
+            <Setter Property="LineHeight"
+                    Value="32" />
+        </Style>
+
+        <!-- Hide data grid column separators. -->
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="AreSeparatorsVisible"
+                    Value="False" />
+        </Style>
+
+        <!-- Validation -->
+        <Style Selector="DataValidationErrors">
+            <Setter Property="Theme"
+                    Value="{DynamicResource TooltipDataValidationErrors}" />
+        </Style>
+
+        <!-- Custom controls. -->
+        <StyleInclude Source="Views/CustomControls/FormInputTextBox.axaml" />
+    </Application.Styles>
 </Application>
