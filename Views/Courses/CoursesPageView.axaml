@@ -44,7 +44,7 @@
                           CanUserResizeColumns="True"
                           IsReadOnly="True"
                           CanUserSortColumns="True"
-                          Height="491"
+                          Height="542"
                           RowBackground="White"
                           GridLinesVisibility="Horizontal"
                           ItemsSource="{Binding CoursesCollectionView}">
