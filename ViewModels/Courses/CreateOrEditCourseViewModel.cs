@@ -1,9 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
@@ -12,13 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CourseEquivalencyDesktop.ViewModels.Courses;
 
-public partial class CreateOrEditCourseViewModel : ViewModelBase
+public partial class CreateOrEditCourseViewModel : BaseCreateOrEditViewModel<Course>
 {
-    public class CreateOrEditCourseEventArgs : EventArgs
-    {
-        public Course? Course { get; init; }
-    }
-
     #region Constants
     private const string CREATE_TEXT = "Create Course";
     private const string EDIT_TEXT = "Edit Course";
@@ -26,21 +19,12 @@ public partial class CreateOrEditCourseViewModel : ViewModelBase
     private const string COURSE_CODE_EXISTS_BODY = "A course with this course code already exists in this university.";
     private const string COURSE_EDITING_NOT_EXIST_TITLE = "Course Doesn't Exist";
     private const string COURSE_EDITING_NOT_EXIST_BODY = "The course you are trying to edit does not exist.";
-    private const string COURSE_FAILED_SAVE_TITLE = "Course Changes Failed";
-
-    private const string COURSE_FAILED_SAVE_BODY =
-        "An error occurred and the course changes could not be made.";
-    #endregion
-
-    #region Fields
-    private readonly DatabaseService databaseService;
-    private readonly GenericDialogService genericDialogService;
-
-    private readonly Course? course;
-    private readonly bool isCreate;
     #endregion
 
     #region Properties
+    protected override string FailedSaveTitle => "Course Changes Failed";
+    protected override string FailedSaveBody => "An error occurred and the course changes could not be made.";
+
     #region Observable Properties
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
@@ -66,41 +50,22 @@ public partial class CreateOrEditCourseViewModel : ViewModelBase
     private string? description;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand), nameof(CancelCommand))]
-    private bool isCreating;
-
-    [ObservableProperty]
-    private string windowAndButtonText;
-
-    [ObservableProperty]
     private University[] universities;
     #endregion
-    #endregion
-
-    #region Events
-    public event EventHandler? OnRequestCloseWindow;
     #endregion
 
     #region Constructors
     public CreateOrEditCourseViewModel()
     {
-        Utility.Utility.AssertDesignMode();
-
-        databaseService = new DatabaseService();
-        genericDialogService = new GenericDialogService();
         WindowAndButtonText = CREATE_TEXT;
-        universities = [];
+        Universities = [];
         University = new University();
     }
 
     public CreateOrEditCourseViewModel(Course? course, DatabaseService databaseService,
-        GenericDialogService genericDialogService)
+        GenericDialogService genericDialogService) : base(course, databaseService, genericDialogService)
     {
-        this.databaseService = databaseService;
-        this.genericDialogService = genericDialogService;
-        this.course = course;
-        isCreate = course is null;
-        WindowAndButtonText = isCreate ? CREATE_TEXT : EDIT_TEXT;
+        WindowAndButtonText = IsCreate ? CREATE_TEXT : EDIT_TEXT;
 
         Name = course?.Name ?? string.Empty;
         CourseId = course?.CourseId ?? string.Empty;
@@ -140,27 +105,20 @@ public partial class CreateOrEditCourseViewModel : ViewModelBase
     #endregion
 
     #region Command Execution Checks
-    private bool CanCancel()
+    protected override bool CanCreateOrEdit()
     {
-        return !IsCreating;
-    }
-
-    private bool CanCreateOrEdit()
-    {
-        return !(IsCreating || HasErrors || string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(CourseId));
+        return base.CanCreateOrEdit() && !(string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(CourseId));
     }
     #endregion
 
     #region Commands
-    [RelayCommand(CanExecute = nameof(CanCreateOrEdit))]
-    private async Task CreateOrEdit()
+    protected override async Task CreateOrEditInherited()
     {
-        Course modifiedCourse;
         var preparedName = Name.Trim();
         var preparedUrl = Url?.Trim();
         var preparedCourseId = CourseId.Trim();
         var preparedDescription = Description?.Trim();
-        if (isCreate)
+        if (IsCreate)
         {
             await Create();
         }
@@ -171,16 +129,16 @@ public partial class CreateOrEditCourseViewModel : ViewModelBase
 
         async Task Create()
         {
-            var doesCourseIdExist = await databaseService.Courses.AnyAsync(cou =>
+            var doesCourseIdExist = await DatabaseService.Courses.AnyAsync(cou =>
                 cou.UniversityId == University.Id && cou.CourseId == preparedCourseId);
             if (doesCourseIdExist)
             {
-                await genericDialogService.OpenGenericDialog(COURSE_CODE_EXISTS_TITLE,
+                await GenericDialogService.OpenGenericDialog(COURSE_CODE_EXISTS_TITLE,
                     COURSE_CODE_EXISTS_BODY, Constants.GenericStrings.OKAY);
                 return;
             }
 
-            var entityEntry = await databaseService.AddAsync(new Course
+            var entityEntry = await DatabaseService.AddAsync(new Course
             {
                 University = University,
                 Name = preparedName,
@@ -188,26 +146,25 @@ public partial class CreateOrEditCourseViewModel : ViewModelBase
                 Url = preparedUrl,
                 Description = preparedDescription
             });
-            modifiedCourse = entityEntry.Entity;
-            await Save();
+            await SaveChanges(entityEntry.Entity);
         }
 
         async Task Update()
         {
             var editingCourse =
-                await databaseService.Courses.FirstOrDefaultAsync(cou => cou.Id == course!.Id);
+                await DatabaseService.Courses.FirstOrDefaultAsync(cou => cou.Id == Item!.Id);
             if (editingCourse is null)
             {
-                await genericDialogService.OpenGenericDialog(COURSE_EDITING_NOT_EXIST_TITLE,
+                await GenericDialogService.OpenGenericDialog(COURSE_EDITING_NOT_EXIST_TITLE,
                     COURSE_EDITING_NOT_EXIST_BODY, Constants.GenericStrings.OKAY);
                 return;
             }
 
-            var doesCourseIdExist = await databaseService.Courses.AnyAsync(cou =>
+            var doesCourseIdExist = await DatabaseService.Courses.AnyAsync(cou =>
                 cou.UniversityId == University.Id && cou.CourseId == preparedCourseId && cou.Id != editingCourse.Id);
             if (doesCourseIdExist)
             {
-                await genericDialogService.OpenGenericDialog(COURSE_CODE_EXISTS_TITLE,
+                await GenericDialogService.OpenGenericDialog(COURSE_CODE_EXISTS_TITLE,
                     COURSE_CODE_EXISTS_BODY, Constants.GenericStrings.OKAY);
                 return;
             }
@@ -217,31 +174,8 @@ public partial class CreateOrEditCourseViewModel : ViewModelBase
             editingCourse.CourseId = preparedCourseId;
             editingCourse.Url = preparedUrl;
             editingCourse.Description = preparedDescription;
-            modifiedCourse = editingCourse;
-            await Save();
+            await SaveChanges(editingCourse);
         }
-
-        async Task Save()
-        {
-            await databaseService.SaveChangesAsyncWithCallbacks(SaveChangesSuccessHandler, SaveChangesFailedHandler);
-        }
-
-        void SaveChangesSuccessHandler()
-        {
-            OnRequestCloseWindow?.Invoke(this, new CreateOrEditCourseEventArgs { Course = modifiedCourse });
-        }
-
-        void SaveChangesFailedHandler()
-        {
-            _ = genericDialogService.OpenGenericDialog(COURSE_FAILED_SAVE_TITLE,
-                COURSE_FAILED_SAVE_BODY, Constants.GenericStrings.OKAY);
-        }
-    }
-
-    [RelayCommand(CanExecute = nameof(CanCancel))]
-    private void Cancel()
-    {
-        OnRequestCloseWindow?.Invoke(this, EventArgs.Empty);
     }
     #endregion
 }
