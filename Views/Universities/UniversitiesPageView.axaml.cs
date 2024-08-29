@@ -6,6 +6,7 @@ using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
+using CourseEquivalencyDesktop.ViewModels.General;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 
 namespace CourseEquivalencyDesktop.Views.Universities;
@@ -79,8 +80,8 @@ public partial class UniversitiesPageView : UserControl
         };
 
         createOrEditUniversityViewModel.OnRequestCloseWindow += (_, args) =>
-            createOrEditUniversityWindow.Close((args as CreateOrEditUniversityViewModel.CreateOrEditUniversityEventArgs)
-                ?.University);
+            createOrEditUniversityWindow.Close((args as BaseCreateOrEditViewModel<University>.CreateOrEditEventArgs)
+                ?.Item);
 
         return await createOrEditUniversityWindow.ShowDialog<University>(window);
     }

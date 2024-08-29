@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.ViewModels.Courses;
+using CourseEquivalencyDesktop.ViewModels.General;
 
 namespace CourseEquivalencyDesktop.Views.Courses;
 
@@ -79,8 +80,8 @@ public partial class CoursesPageView : UserControl
         };
 
         createOrEditCourseViewModel.OnRequestCloseWindow += (_, args) =>
-            createOrEditCourseWindow.Close((args as CreateOrEditCourseViewModel.CreateOrEditCourseEventArgs)
-                ?.Course);
+            createOrEditCourseWindow.Close((args as BaseCreateOrEditViewModel<Course>.CreateOrEditEventArgs)
+                ?.Item);
 
         return await createOrEditCourseWindow.ShowDialog<Course>(window);
     }

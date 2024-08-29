@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
@@ -11,13 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CourseEquivalencyDesktop.ViewModels.Universities;
 
-public partial class CreateOrEditUniversityViewModel : ViewModelBase
+public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel<University>
 {
-    public class CreateOrEditUniversityEventArgs : EventArgs
-    {
-        public University? University { get; init; }
-    }
-
     #region Constants
     private const string CREATE_TEXT = "Create University";
     private const string EDIT_TEXT = "Edit University";
@@ -25,21 +18,12 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
     private const string UNIVERSITY_NAME_EXISTS_BODY = "A university with this name already exists.";
     private const string UNIVERSITY_EDITING_NOT_EXIST_TITLE = "University Doesn't Exist";
     private const string UNIVERSITY_EDITING_NOT_EXIST_BODY = "The university you are trying to edit does not exist.";
-    private const string UNIVERSITY_FAILED_SAVE_TITLE = "University Changes Failed";
-
-    private const string UNIVERSITY_FAILED_SAVE_BODY =
-        "An error occurred and the university changes could not be made.";
-    #endregion
-
-    #region Fields
-    private readonly DatabaseService databaseService;
-    private readonly GenericDialogService genericDialogService;
-
-    private readonly University? university;
-    private readonly bool isCreate;
     #endregion
 
     #region Properties
+    protected override string FailedSaveTitle => "University Changes Failed";
+    protected override string FailedSaveBody => "An error occurred and the university changes could not be made.";
+
     #region Observable Properties
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
@@ -50,38 +34,19 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
     [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
     [Url]
     private string? url;
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand), nameof(CancelCommand))]
-    private bool isCreating;
-
-    [ObservableProperty]
-    private string windowAndButtonText;
     #endregion
-    #endregion
-
-    #region Events
-    public event EventHandler? OnRequestCloseWindow;
     #endregion
 
     #region Constructors
     public CreateOrEditUniversityViewModel()
     {
-        Utility.Utility.AssertDesignMode();
-
-        databaseService = new DatabaseService();
-        genericDialogService = new GenericDialogService();
         WindowAndButtonText = CREATE_TEXT;
     }
 
     public CreateOrEditUniversityViewModel(University? university, DatabaseService databaseService,
-        GenericDialogService genericDialogService)
+        GenericDialogService genericDialogService) : base(university, databaseService, genericDialogService)
     {
-        this.databaseService = databaseService;
-        this.genericDialogService = genericDialogService;
-        this.university = university;
-        isCreate = university is null;
-        WindowAndButtonText = isCreate ? CREATE_TEXT : EDIT_TEXT;
+        WindowAndButtonText = IsCreate ? CREATE_TEXT : EDIT_TEXT;
 
         Name = university?.Name ?? string.Empty;
         Url = university?.Url;
@@ -110,25 +75,18 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
     #endregion
 
     #region Command Execution Checks
-    private bool CanCancel()
+    protected override bool CanCreateOrEdit()
     {
-        return !IsCreating;
-    }
-
-    private bool CanCreateOrEdit()
-    {
-        return !(IsCreating || HasErrors || string.IsNullOrWhiteSpace(Name));
+        return base.CanCreateOrEdit() && !string.IsNullOrWhiteSpace(Name);
     }
     #endregion
 
     #region Commands
-    [RelayCommand(CanExecute = nameof(CanCreateOrEdit))]
-    private async Task CreateOrEdit()
+    protected override async Task CreateOrEditInherited()
     {
-        University modifiedUniversity;
         var preparedName = Name.Trim();
         var preparedUrl = Url?.Trim();
-        if (isCreate)
+        if (IsCreate)
         {
             await Create();
         }
@@ -139,71 +97,47 @@ public partial class CreateOrEditUniversityViewModel : ViewModelBase
 
         async Task Create()
         {
-            var doesNameExist = await databaseService.Universities.AnyAsync(uni => uni.Name == preparedName);
+            var doesNameExist = await DatabaseService.Universities.AnyAsync(uni => uni.Name == preparedName);
             if (doesNameExist)
             {
-                await genericDialogService.OpenGenericDialog(UNIVERSITY_NAME_EXISTS_TITLE,
+                await GenericDialogService.OpenGenericDialog(UNIVERSITY_NAME_EXISTS_TITLE,
                     UNIVERSITY_NAME_EXISTS_BODY, Constants.GenericStrings.OKAY);
                 return;
             }
 
-            var entityEntry = await databaseService.AddAsync(new University
+            var entityEntry = await DatabaseService.AddAsync(new University
             {
                 Name = preparedName,
                 Url = preparedUrl
             });
-            modifiedUniversity = entityEntry.Entity;
-            await Save();
+            await SaveChanges(entityEntry.Entity);
         }
 
         async Task Update()
         {
             var editingUniversity =
-                await databaseService.Universities.FirstOrDefaultAsync(uni => uni.Id == university!.Id);
+                await DatabaseService.Universities.FirstOrDefaultAsync(uni => uni.Id == Item!.Id);
             if (editingUniversity is null)
             {
-                await genericDialogService.OpenGenericDialog(UNIVERSITY_EDITING_NOT_EXIST_TITLE,
+                await GenericDialogService.OpenGenericDialog(UNIVERSITY_EDITING_NOT_EXIST_TITLE,
                     UNIVERSITY_EDITING_NOT_EXIST_BODY, Constants.GenericStrings.OKAY);
                 return;
             }
 
             var doesNameExist =
-                await databaseService.Universities.AnyAsync(uni =>
+                await DatabaseService.Universities.AnyAsync(uni =>
                     uni.Name == preparedName && uni.Id != editingUniversity.Id);
             if (doesNameExist)
             {
-                await genericDialogService.OpenGenericDialog(UNIVERSITY_NAME_EXISTS_TITLE,
+                await GenericDialogService.OpenGenericDialog(UNIVERSITY_NAME_EXISTS_TITLE,
                     UNIVERSITY_NAME_EXISTS_BODY, Constants.GenericStrings.OKAY);
                 return;
             }
 
             editingUniversity.Name = preparedName;
             editingUniversity.Url = preparedUrl;
-            modifiedUniversity = editingUniversity;
-            await Save();
+            await SaveChanges(editingUniversity);
         }
-
-        async Task Save()
-        {
-            await databaseService.SaveChangesAsyncWithCallbacks(SaveChangesSuccessHandler, SaveChangesFailedHandler);
-        }
-
-        void SaveChangesSuccessHandler()
-        {
-            OnRequestCloseWindow?.Invoke(this, new CreateOrEditUniversityEventArgs { University = modifiedUniversity });
-        }
-
-        void SaveChangesFailedHandler()
-        {
-            _ = genericDialogService.OpenGenericDialog(UNIVERSITY_FAILED_SAVE_TITLE,
-                UNIVERSITY_FAILED_SAVE_BODY, Constants.GenericStrings.OKAY);
-        }
-    }
-
-    [RelayCommand(CanExecute = nameof(CanCancel))]
-    private void Cancel()
-    {
-        OnRequestCloseWindow?.Invoke(this, EventArgs.Empty);
     }
     #endregion
 }
