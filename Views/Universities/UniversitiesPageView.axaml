@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Universities"
              xmlns:m="using:CourseEquivalencyDesktop.Models"
-             xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
+             xmlns:general="using:CourseEquivalencyDesktop.Views.General"
              xmlns:dgbc="using:CourseEquivalencyDesktop.Utility.DatGridBoundColumns"
              mc:Ignorable="d"
              d:DesignWidth="1280"
@@ -16,131 +16,51 @@
         <vm:UniversitiesPageViewModel />
     </Design.DataContext>
 
-    <StackPanel x:Name="PageRoot"
-                Spacing="30">
-        <TextBlock Text="Universities"
-                   Classes="PageHeader" />
-        <Grid RowDefinitions="Auto, *, Auto"
-              ColumnDefinitions="*, Auto">
-            <controls:InputTextBox Watermark="Search universities..."
-                                   Text="{Binding SearchText, Mode=TwoWay}"
-                                   Icon="{StaticResource SearchIconData}"
-                                   Grid.Row="0"
-                                   Grid.Column="0" />
-            <Button Theme="{StaticResource BlueButton}"
-                    Content="Create University"
-                    Command="{Binding CreateCommand}"
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Margin="8,0,0,0" />
-            <Border Grid.Row="1"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Background="{StaticResource BackgroundGrey50}"
-                    Padding="10"
-                    Margin="0,20"
-                    CornerRadius="6">
-                <DataGrid x:Name="UniversitiesDataGrid"
-                          CanUserResizeColumns="True"
-                          IsReadOnly="True"
-                          CanUserSortColumns="True"
-                          Height="542"
-                          RowBackground="White"
-                          GridLinesVisibility="Horizontal"
-                          ItemsSource="{Binding ItemsCollectionView}">
-                    <DataGrid.Resources>
-                        <ResourceDictionary>
-                            <!-- These keys may be faded as they aren't used, but they are necessary to provide the overrides. -->
-                            <!-- ReSharper disable once Xaml.RedundantResource -->
-                            <SolidColorBrush x:Key="DataGridCellFocusVisualPrimaryBrush"
-                                             Color="Transparent" />
-                            <!-- ReSharper disable once Xaml.RedundantResource -->
-                            <SolidColorBrush x:Key="DataGridCellFocusVisualSecondaryBrush"
-                                             Color="Transparent" />
-                            <!-- ReSharper disable once Xaml.RedundantResource -->
-                            <SolidColorBrush x:Key="DataGridRowHoveredBackgroundColor"
-                                             Color="Transparent" />
-                            <!-- ReSharper disable once Xaml.RedundantResource -->
-                            <SolidColorBrush x:Key="DataGridRowSelectedUnfocusedBackgroundBrush"
-                                             Color="Transparent" />
-                            <!-- ReSharper disable once Xaml.RedundantResource -->
-                            <SolidColorBrush x:Key="DataGridRowSelectedHoveredUnfocusedBackgroundBrush"
-                                             Color="Transparent" />
-                        </ResourceDictionary>
-                    </DataGrid.Resources>
-                    <DataGrid.Columns>
-                        <dgbc:DataGridSelectableTextColumn Header="University"
-                                                           Width="0.5*"
-                                                           Binding="{Binding Name, DataType=m:University}" />
-                        <dgbc:DataGridLinkColumn Header="URL"
-                                                 Width="0.5*"
-                                                 Binding="{Binding Url, DataType=m:University}" />
-                        <DataGridTemplateColumn Header=""
-                                                Width="Auto"
-                                                CanUserSort="False"
-                                                CanUserResize="False">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate DataType="m:University">
-                                    <StackPanel Orientation="Horizontal"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center">
-                                        <Button Theme="{StaticResource GreyButton}"
-                                                Command="{Binding #PageRoot.((vm:UniversitiesPageViewModel)DataContext).EditCommand}"
-                                                CommandParameter="{Binding}"
-                                                Margin="5"
-                                                ToolTip.Tip="Edit">
-                                            <Path Classes="MyPath"
-                                                  Data="{StaticResource EditIconData}" />
-                                        </Button>
-                                        <Button Theme="{StaticResource GreyButton}"
-                                                Command="{Binding #PageRoot.((vm:UniversitiesPageViewModel)DataContext).DeleteCommand}"
-                                                CommandParameter="{Binding}"
-                                                Margin="5"
-                                                ToolTip.Tip="Delete">
-                                            <Path Classes="MyPath"
-                                                  Data="{StaticResource DeleteIconData}" />
-                                        </Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Border>
-            <StackPanel Grid.Column="0"
-                        Grid.Row="2"
-                        Grid.ColumnSpan="2"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        Spacing="20">
-                <Button Theme="{StaticResource GreyButton}"
-                        Command="{Binding PreviousPageCommand}"
-                        ToolTip.Tip="Previous Page">
-                    <Path Classes="MyPath"
-                          Height="25"
-                          Width="25"
-                          Data="{StaticResource PageLeftIconData}" />
-                </Button>
-                <Border Padding="15, 10"
-                        Background="{StaticResource BackgroundBlue500}"
-                        ToolTip.Tip="Current Page"
-                        CornerRadius="6">
-                    <TextBlock Text="{Binding CurrentHumanReadablePageIndex}"
-                               MinWidth="20"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               TextAlignment="Center" />
-                </Border>
-                <Button Theme="{StaticResource GreyButton}"
-                        Command="{Binding NextPageCommand}"
-                        ToolTip.Tip="Next Page">
-                    <Path Classes="MyPath"
-                          Height="25"
-                          Width="25"
-                          Data="{StaticResource PageRightIconData}" />
-                </Button>
-            </StackPanel>
-        </Grid>
-    </StackPanel>
+    <general:BasePageView x:Name="PageRoot"
+                          Header="Universities"
+                          SearchText="{Binding SearchText}"
+                          DefaultSortColumnIndex="0"
+                          CreateCommand="{Binding CreateCommand}"
+                          PreviousPageCommand="{Binding PreviousPageCommand}"
+                          NextPageCommand="{Binding NextPageCommand}"
+                          ItemsSource="{Binding ItemsCollectionView, Mode=TwoWay}"
+                          CurrentHumanReadablePageIndex="{Binding CurrentHumanReadablePageIndex}">
+        <general:BasePageView.DataGridColumns>
+            <dgbc:DataGridSelectableTextColumn Header="University"
+                                               Width="0.5*"
+                                               Binding="{Binding Name, DataType=m:University}" />
+            <dgbc:DataGridLinkColumn Header="URL"
+                                     Width="0.5*"
+                                     Binding="{Binding Url, DataType=m:University}" />
+            <DataGridTemplateColumn Header=""
+                                    Width="Auto"
+                                    CanUserSort="False"
+                                    CanUserResize="False">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate DataType="m:University">
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center">
+                            <Button Theme="{StaticResource GreyButton}"
+                                    Command="{Binding #PageRoot.((vm:UniversitiesPageViewModel)DataContext).EditCommand}"
+                                    CommandParameter="{Binding}"
+                                    Margin="5"
+                                    ToolTip.Tip="Edit">
+                                <Path Classes="MyPath"
+                                      Data="{StaticResource EditIconData}" />
+                            </Button>
+                            <Button Theme="{StaticResource GreyButton}"
+                                    Command="{Binding #PageRoot.((vm:UniversitiesPageViewModel)DataContext).DeleteCommand}"
+                                    CommandParameter="{Binding}"
+                                    Margin="5"
+                                    ToolTip.Tip="Delete">
+                                <Path Classes="MyPath"
+                                      Data="{StaticResource DeleteIconData}" />
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </general:BasePageView.DataGridColumns>
+    </general:BasePageView>
 </UserControl>
