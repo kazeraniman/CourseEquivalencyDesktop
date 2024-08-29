@@ -29,7 +29,7 @@
                                    Grid.Column="0" />
             <Button Theme="{StaticResource BlueButton}"
                     Content="Create University"
-                    Command="{Binding CreateUniversityCommand}"
+                    Command="{Binding CreateCommand}"
                     Grid.Row="0"
                     Grid.Column="1"
                     Margin="8,0,0,0" />
@@ -47,7 +47,7 @@
                           Height="542"
                           RowBackground="White"
                           GridLinesVisibility="Horizontal"
-                          ItemsSource="{Binding UniversitiesCollectionView}">
+                          ItemsSource="{Binding ItemsCollectionView}">
                     <DataGrid.Resources>
                         <ResourceDictionary>
                             <!-- These keys may be faded as they aren't used, but they are necessary to provide the overrides. -->
@@ -85,7 +85,7 @@
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Center">
                                         <Button Theme="{StaticResource GreyButton}"
-                                                Command="{Binding #PageRoot.((vm:UniversitiesPageViewModel)DataContext).EditUniversityCommand}"
+                                                Command="{Binding #PageRoot.((vm:UniversitiesPageViewModel)DataContext).EditCommand}"
                                                 CommandParameter="{Binding}"
                                                 Margin="5"
                                                 ToolTip.Tip="Edit">
@@ -93,7 +93,7 @@
                                                   Data="{StaticResource EditIconData}" />
                                         </Button>
                                         <Button Theme="{StaticResource GreyButton}"
-                                                Command="{Binding #PageRoot.((vm:UniversitiesPageViewModel)DataContext).DeleteUniversityCommand}"
+                                                Command="{Binding #PageRoot.((vm:UniversitiesPageViewModel)DataContext).DeleteCommand}"
                                                 CommandParameter="{Binding}"
                                                 Margin="5"
                                                 ToolTip.Tip="Delete">

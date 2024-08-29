@@ -38,7 +38,7 @@ public partial class CoursesPageView : UserControl
             return;
         }
 
-        coursesPageViewModel.UpdateCourses();
+        coursesPageViewModel.UpdateItems();
         CoursesDataGrid.Columns[1].Sort(ListSortDirection.Ascending);
     }
 
@@ -55,7 +55,7 @@ public partial class CoursesPageView : UserControl
         if (DataContext is CoursesPageViewModel vm)
         {
             createCourseInteractionDisposable =
-                vm.CreateOrEditCourseInteraction.RegisterHandler(SpawnCreateUniversityWindow);
+                vm.CreateOrEditInteraction.RegisterHandler(SpawnCreateUniversityWindow);
         }
 
         base.OnDataContextChanged(e);
