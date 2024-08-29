@@ -195,5 +195,8 @@
         <StyleInclude Source="Views/CustomControls/InputTextBox.axaml" />
         <StyleInclude Source="Views/CustomControls/FormInputTextBox.axaml" />
         <StyleInclude Source="Views/CustomControls/FormInputComboBox.axaml" />
+
+        <!-- Template views. -->
+        <StyleInclude Source="Views/General/BasePageView.axaml" />
     </Application.Styles>
 </Application>

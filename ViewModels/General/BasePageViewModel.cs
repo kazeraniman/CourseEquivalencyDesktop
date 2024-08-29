@@ -125,7 +125,12 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Mod
     [RelayCommand]
     private async Task Edit(T item)
     {
-        await CreateOrEditInteraction.HandleAsync(item);
+        var modifiedItem = await CreateOrEditInteraction.HandleAsync(item);
+        if (modifiedItem is not null)
+        {
+            // This is needed to reload the sort in case the order changed (the values should be correctly propagated without this)
+            ItemsCollectionView.Refresh();
+        }
     }
 
     [RelayCommand]

@@ -1,0 +1,112 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.General"
+        xmlns:customControls="using:CourseEquivalencyDesktop.Views.CustomControls">
+    <Design.PreviewWith>
+        <controls:BasePageView Header="Header"
+                               SearchText="Search Text">
+            <controls:BasePageView.DataGridColumns>
+                <DataGridTextColumn Header="Col A" />
+                <DataGridTextColumn Header="Col B" />
+            </controls:BasePageView.DataGridColumns>
+        </controls:BasePageView>
+    </Design.PreviewWith>
+
+    <Style Selector="controls|BasePageView">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel x:Name="PageRoot"
+                            Spacing="30">
+                    <TextBlock Text="{TemplateBinding Header}"
+                               Classes="PageHeader" />
+                    <Grid RowDefinitions="Auto, *, Auto"
+                          ColumnDefinitions="*, Auto">
+                        <customControls:InputTextBox Watermark="Search..."
+                                                     Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                     Icon="{StaticResource SearchIconData}"
+                                                     Grid.Row="0"
+                                                     Grid.Column="0" />
+                        <Button Theme="{StaticResource BlueButton}"
+                                Content="Create"
+                                Command="{Binding CreateCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="8,0,0,0" />
+                        <Border Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                Background="{StaticResource BackgroundGrey50}"
+                                Padding="10"
+                                Margin="0,20"
+                                CornerRadius="6">
+                            <DataGrid x:Name="DataGrid"
+                                      CanUserResizeColumns="True"
+                                      IsReadOnly="True"
+                                      CanUserSortColumns="True"
+                                      Height="542"
+                                      RowBackground="White"
+                                      GridLinesVisibility="Horizontal"
+                                      ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                                <DataGrid.Resources>
+                                    <ResourceDictionary>
+                                        <!-- These keys may be faded as they aren't used, but they are necessary to provide the overrides. -->
+                                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                                        <SolidColorBrush x:Key="DataGridCellFocusVisualPrimaryBrush"
+                                                         Color="Transparent" />
+                                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                                        <SolidColorBrush x:Key="DataGridCellFocusVisualSecondaryBrush"
+                                                         Color="Transparent" />
+                                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                                        <SolidColorBrush x:Key="DataGridRowHoveredBackgroundColor"
+                                                         Color="Transparent" />
+                                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                                        <SolidColorBrush x:Key="DataGridRowSelectedUnfocusedBackgroundBrush"
+                                                         Color="Transparent" />
+                                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                                        <SolidColorBrush x:Key="DataGridRowSelectedHoveredUnfocusedBackgroundBrush"
+                                                         Color="Transparent" />
+                                    </ResourceDictionary>
+                                </DataGrid.Resources>
+                            </DataGrid>
+                        </Border>
+                        <StackPanel Grid.Column="0"
+                                    Grid.Row="2"
+                                    Grid.ColumnSpan="2"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Spacing="20">
+                            <Button Theme="{StaticResource GreyButton}"
+                                    Command="{Binding PreviousPageCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ToolTip.Tip="Previous Page">
+                                <Path Classes="MyPath"
+                                      Height="25"
+                                      Width="25"
+                                      Data="{StaticResource PageLeftIconData}" />
+                            </Button>
+                            <Border Padding="15, 10"
+                                    Background="{StaticResource BackgroundBlue500}"
+                                    ToolTip.Tip="Current Page"
+                                    CornerRadius="6">
+                                <TextBlock
+                                    Text="{Binding CurrentHumanReadablePageIndex, RelativeSource={RelativeSource TemplatedParent}}"
+                                    MinWidth="20"
+                                    Foreground="White"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    TextAlignment="Center" />
+                            </Border>
+                            <Button Theme="{StaticResource GreyButton}"
+                                    Command="{Binding NextPageCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                    ToolTip.Tip="Next Page">
+                                <Path Classes="MyPath"
+                                      Height="25"
+                                      Width="25"
+                                      Data="{StaticResource PageRightIconData}" />
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>
