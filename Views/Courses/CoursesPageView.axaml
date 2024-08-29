@@ -29,7 +29,7 @@
                                    Grid.Column="0" />
             <Button Theme="{StaticResource BlueButton}"
                     Content="Create Course"
-                    Command="{Binding CreateCourseCommand}"
+                    Command="{Binding CreateCommand}"
                     Grid.Row="0"
                     Grid.Column="1"
                     Margin="8,0,0,0" />
@@ -47,7 +47,7 @@
                           Height="542"
                           RowBackground="White"
                           GridLinesVisibility="Horizontal"
-                          ItemsSource="{Binding CoursesCollectionView}">
+                          ItemsSource="{Binding ItemsCollectionView}">
                     <DataGrid.Resources>
                         <ResourceDictionary>
                             <!-- These keys may be faded as they aren't used, but they are necessary to provide the overrides. -->
@@ -94,7 +94,7 @@
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Center">
                                         <Button Theme="{StaticResource GreyButton}"
-                                                Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).EditCourseCommand}"
+                                                Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).EditCommand}"
                                                 CommandParameter="{Binding}"
                                                 Margin="5"
                                                 ToolTip.Tip="Edit">
@@ -102,7 +102,7 @@
                                                   Data="{StaticResource EditIconData}" />
                                         </Button>
                                         <Button Theme="{StaticResource GreyButton}"
-                                                Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).DeleteCourseCommand}"
+                                                Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).DeleteCommand}"
                                                 CommandParameter="{Binding}"
                                                 Margin="5"
                                                 ToolTip.Tip="Delete">

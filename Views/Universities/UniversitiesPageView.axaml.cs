@@ -38,7 +38,7 @@ public partial class UniversitiesPageView : UserControl
             return;
         }
 
-        universitiesPageViewModel.UpdateUniversities();
+        universitiesPageViewModel.UpdateItems();
         UniversitiesDataGrid.Columns[0].Sort(ListSortDirection.Ascending);
     }
 
@@ -55,7 +55,7 @@ public partial class UniversitiesPageView : UserControl
         if (DataContext is UniversitiesPageViewModel vm)
         {
             createUniversityInteractionDisposable =
-                vm.CreateOrEditUniversityInteraction.RegisterHandler(SpawnCreateUniversityWindow);
+                vm.CreateOrEditInteraction.RegisterHandler(SpawnCreateUniversityWindow);
         }
 
         base.OnDataContextChanged(e);
