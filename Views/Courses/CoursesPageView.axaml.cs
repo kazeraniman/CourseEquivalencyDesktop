@@ -20,7 +20,7 @@ public partial class CoursesPageView : BasePageViewCodeBehind<Course>
     #endregion
 
     #region BasePageViewCodeBehind
-    protected override (BaseCreateOrEditViewModel<Course>, BaseCreateOrEditWindow) CreateViewModelAndWindow(
+    protected override (BaseCreateOrEditViewModel<Course>, BaseCreateOrEditWindowCodeBehind) CreateViewModelAndWindow(
         Course? item)
     {
         var viewModel =

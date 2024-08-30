@@ -3,7 +3,7 @@ using CourseEquivalencyDesktop.Views.General;
 
 namespace CourseEquivalencyDesktop.Views.Universities;
 
-public partial class CreateOrEditUniversityWindow : BaseCreateOrEditWindow
+public partial class CreateOrEditUniversityWindow : BaseCreateOrEditWindowCodeBehind
 {
     #region Constructors
     public CreateOrEditUniversityWindow()

@@ -1,0 +1,39 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.General">
+    <Design.PreviewWith>
+        <controls:BaseCreateOrEditWindow />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|BaseCreateOrEditWindow">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <RelativePanel Margin="20">
+                    <Border RelativePanel.AlignTopWithPanel="True"
+                            RelativePanel.AlignLeftWithPanel="True"
+                            RelativePanel.AlignRightWithPanel="True"
+                            Background="{StaticResource BackgroundGrey50}"
+                            Padding="24"
+                            CornerRadius="6">
+                        <StackPanel x:Name="ContentsStackPanel"
+                                    Spacing="16" />
+                    </Border>
+
+                    <StackPanel RelativePanel.AlignBottomWithPanel="True"
+                                RelativePanel.AlignRightWithPanel="True"
+                                Spacing="16"
+                                Orientation="Horizontal">
+                        <Button Theme="{StaticResource GreyButton}"
+                                Content="Cancel"
+                                Command="{Binding CancelCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                IsCancel="True" />
+                        <Button Theme="{StaticResource BlueButton}"
+                                Content="{TemplateBinding WindowAndButtonText}"
+                                Command="{Binding CreateOrEditCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                IsDefault="True" />
+                    </StackPanel>
+                </RelativePanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

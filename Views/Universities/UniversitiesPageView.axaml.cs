@@ -20,8 +20,9 @@ public partial class UniversitiesPageView : BasePageViewCodeBehind<University>
     #endregion
 
     #region BasePageViewCodeBehind
-    protected override (BaseCreateOrEditViewModel<University>, BaseCreateOrEditWindow) CreateViewModelAndWindow(
-        University? item)
+    protected override (BaseCreateOrEditViewModel<University>, BaseCreateOrEditWindowCodeBehind)
+        CreateViewModelAndWindow(
+            University? item)
     {
         var viewModel =
             Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditUniversityViewModelFactory>()(item);

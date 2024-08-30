@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Input;
 using Avalonia;
@@ -110,19 +109,7 @@ public class BasePageView : TemplatedControl
     #region Constructors
     public BasePageView()
     {
-        void ColumnsChangedHandler(object? sender, NotifyCollectionChangedEventArgs args)
-        {
-            if (dataGrid is null)
-            {
-                return;
-            }
-
-            dataGrid.Columns.Clear();
-            dataGrid.Columns.AddRange(DataGridColumns);
-        }
-
         DataGridColumns = [];
-        // DataGridColumns.CollectionChanged += ColumnsChangedHandler;
     }
     #endregion
 
