@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
 using Avalonia.Collections;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
@@ -17,6 +18,7 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Mod
     public readonly Interaction<T?, T?> CreateOrEditInteraction = new();
 
     protected readonly ObservableCollection<T> Items = [];
+    private readonly DispatcherTimer searchDebounceTimer = new();
 
     protected readonly DatabaseService DatabaseService;
     private readonly UserSettingsService userSettingsService;
@@ -61,6 +63,9 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Mod
         this.userSettingsService = userSettingsService;
         this.genericDialogService = genericDialogService;
 
+        searchDebounceTimer.Interval = userSettingsService.SearchDebounceSecondsTimeSpan;
+        searchDebounceTimer.Tick += SearchDebounce;
+
         ItemsCollectionView = new DataGridCollectionView(Items)
         {
             Filter = Filter,
@@ -69,6 +74,13 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Mod
 
         ItemsCollectionView.PageChanged += PageChangedHandler;
         Items.CollectionChanged += CollectionChangedHandler;
+    }
+    #endregion
+
+    #region Finalizer
+    ~BasePageViewModel()
+    {
+        searchDebounceTimer.Stop();
     }
     #endregion
 
@@ -86,9 +98,15 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Mod
 
     partial void OnSearchTextChanged(string value)
     {
-        // TODO: Debounce so this doesn't constantly happen
+        searchDebounceTimer.Stop();
+        searchDebounceTimer.Start();
+    }
+
+    private void SearchDebounce(object? sender, EventArgs eventArgs)
+    {
         ItemsCollectionView.Refresh();
         ItemsCollectionView.MoveToFirstPage();
+        searchDebounceTimer.Stop();
     }
     #endregion
 

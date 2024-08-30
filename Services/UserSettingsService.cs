@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CourseEquivalencyDesktop.Models;
+using CourseEquivalencyDesktop.Utility;
 
 namespace CourseEquivalencyDesktop.Services;
 
@@ -35,6 +36,8 @@ public class UserSettingsService
     #region Properties
     public string? DatabaseFilePath => userSettings.DatabaseFilePath;
     public int DataGridPageSize => userSettings.DataGridPageSize;
+    public double SearchDebounceSeconds => userSettings.SearchDebounceSeconds;
+    public TimeSpan SearchDebounceSecondsTimeSpan => TimeSpan.FromSeconds(userSettings.SearchDebounceSeconds);
     #endregion
 
     #region File Management
@@ -91,6 +94,21 @@ public class UserSettingsService
         }
 
         userSettings.DataGridPageSize = dataGridPageSize;
+        await SaveSettings();
+    }
+
+    /// <summary>
+    ///     Set the search debounce seconds in memory and file.
+    /// </summary>
+    /// <param name="searchDebounceSeconds">The new value of the search debounce seconds.</param>
+    public async Task SetSearchDebounceSeconds(double searchDebounceSeconds)
+    {
+        if (searchDebounceSeconds.IsApproximatelyEqual(SearchDebounceSeconds))
+        {
+            return;
+        }
+
+        userSettings.SearchDebounceSeconds = searchDebounceSeconds;
         await SaveSettings();
     }
     #endregion
