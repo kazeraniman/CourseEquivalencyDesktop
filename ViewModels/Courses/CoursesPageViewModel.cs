@@ -2,6 +2,7 @@
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseEquivalencyDesktop.ViewModels.Courses;
 
@@ -31,7 +32,9 @@ public class CoursesPageViewModel : BasePageViewModel<Course>
     public override void UpdateItems()
     {
         Items.Clear();
-        Items.AddRange(DatabaseService.Courses);
+
+        // Using the Include to eagerly load the universities so they are ready on first page view
+        Items.AddRange(DatabaseService.Courses.Include(course => course.University));
     }
 
     protected override void Remove(Course item)
