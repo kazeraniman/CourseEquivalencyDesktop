@@ -34,7 +34,7 @@ public abstract partial class BaseCreateOrEditViewModel<T> : ViewModelBase where
 
     [ObservableProperty]
     // ReSharper disable once InconsistentNaming
-    private string? windowAndButtonText;
+    private string windowAndButtonText = "INHERITED, PLEASE OVERRIDE";
     #endregion
     #endregion
 
