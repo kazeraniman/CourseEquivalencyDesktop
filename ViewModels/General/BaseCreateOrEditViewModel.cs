@@ -8,7 +8,7 @@ using CourseEquivalencyDesktop.Utility;
 
 namespace CourseEquivalencyDesktop.ViewModels.General;
 
-public abstract partial class BaseCreateOrEditViewModel<T> : ViewModelBase where T : ModelBase
+public abstract partial class BaseCreateOrEditViewModel<T> : ViewModelBase where T : BaseModel
 {
     public class CreateOrEditEventArgs : EventArgs
     {

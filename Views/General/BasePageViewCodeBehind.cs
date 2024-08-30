@@ -7,7 +7,7 @@ using CourseEquivalencyDesktop.ViewModels.General;
 
 namespace CourseEquivalencyDesktop.Views.General;
 
-public abstract class BasePageViewCodeBehind<T> : UserControl where T : ModelBase
+public abstract class BasePageViewCodeBehind<T> : UserControl where T : BaseModel
 {
     #region Fields
     private IDisposable? createInteractionDisposable;

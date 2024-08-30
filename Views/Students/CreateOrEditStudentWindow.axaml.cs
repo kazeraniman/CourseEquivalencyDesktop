@@ -1,12 +1,12 @@
 ﻿using Avalonia.Interactivity;
 using CourseEquivalencyDesktop.Views.General;
 
-namespace CourseEquivalencyDesktop.Views.Courses;
+namespace CourseEquivalencyDesktop.Views.Students;
 
-public partial class CreateOrEditCourseWindow : BaseCreateOrEditWindowCodeBehind
+public partial class CreateOrEditStudentWindow : BaseCreateOrEditWindowCodeBehind
 {
     #region Constructors
-    public CreateOrEditCourseWindow()
+    public CreateOrEditStudentWindow()
     {
         InitializeComponent();
     }

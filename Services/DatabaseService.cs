@@ -22,6 +22,7 @@ public class DatabaseService : DbContext
     #region Properties
     public DbSet<University> Universities { get; set; }
     public DbSet<Course> Courses { get; set; }
+    public DbSet<Student> Students { get; set; }
     #endregion
 
     #region Events
@@ -77,6 +78,17 @@ public class DatabaseService : DbContext
             .HasForeignKey(e => e.UniversityId)
             .HasPrincipalKey(e => e.Id)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<University>()
+            .HasMany(e => e.Students)
+            .WithOne(e => e.University)
+            .HasForeignKey(e => e.UniversityId)
+            .HasPrincipalKey(e => e.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Student>()
+            .Property(e => e.Program)
+            .HasConversion<string>();
     }
     #endregion
 

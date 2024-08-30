@@ -45,7 +45,7 @@
             <controls:FormInputTextBox LabelText="Enter an ID / Course Code"
                                        Watermark="ECE 140"
                                        Text="{Binding CourseId}"
-                                       Icon="{StaticResource CourseCodeIconData}" />
+                                       Icon="{StaticResource CodeIconData}" />
             <controls:FormInputTextBox LabelText="Enter a URL (optional)"
                                        Watermark="https://uwaterloo.ca/"
                                        Text="{Binding Url}"

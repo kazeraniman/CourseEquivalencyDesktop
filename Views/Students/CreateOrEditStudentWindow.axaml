@@ -1,0 +1,104 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Students"
+        xmlns:m="using:CourseEquivalencyDesktop.Models"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
+        xmlns:general="using:CourseEquivalencyDesktop.Views.General"
+        mc:Ignorable="d"
+        d:DesignWidth="1000"
+        d:DesignHeight="825"
+        x:Class="CourseEquivalencyDesktop.Views.Students.CreateOrEditStudentWindow"
+        x:DataType="vm:CreateOrEditStudentViewModel"
+        Title="{Binding WindowAndButtonText}"
+        CanResize="False"
+        Width="1000"
+        Height="825"
+        WindowStartupLocation="CenterOwner">
+
+    <Design.DataContext>
+        <vm:CreateOrEditStudentViewModel />
+    </Design.DataContext>
+
+    <general:BaseCreateOrEditWindow WindowAndButtonText="{Binding WindowAndButtonText}"
+                                    CancelCommand="{Binding CancelCommand}"
+                                    CreateOrEditCommand="{Binding CreateOrEditCommand}">
+        <general:BaseCreateOrEditWindow.FormContents>
+            <controls:FormInputComboBox x:Name="UniversityComboBox"
+                                        LabelText="Select a university"
+                                        ItemsSource="{Binding Universities}"
+                                        PlaceholderText="Select a university"
+                                        SelectedItem="{Binding University}"
+                                        HorizontalAlignment="Stretch"
+                                        Icon="{StaticResource UniversityIconData}">
+                <controls:FormInputComboBox.ItemTemplate>
+                    <DataTemplate DataType="m:University">
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </controls:FormInputComboBox.ItemTemplate>
+            </controls:FormInputComboBox>
+            <controls:FormInputTextBox LabelText="Enter a name"
+                                       Watermark="John Smith"
+                                       Text="{Binding Name}"
+                                       Icon="{StaticResource StudentIconData}" />
+            <controls:FormInputTextBox LabelText="Enter an ID"
+                                       Watermark="12345678"
+                                       Text="{Binding StudentId}"
+                                       Icon="{StaticResource CodeIconData}" />
+            <StackPanel Spacing="5">
+                <Label FontWeight="Bold"
+                       Content="Set the plan" />
+                <Border Padding="10"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource BorderGreyAvaloniaControl}"
+                        CornerRadius="6"
+                        Background="{StaticResource BackgroundWhiteAvaloniaControl}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="20">
+                        <controls:FormInputComboBox LabelText="Choose program"
+                                                    ItemsSource="{Binding ProgramTypes}"
+                                                    PlaceholderText="Select a program"
+                                                    SelectedItem="{Binding Program}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Icon="{StaticResource ProgramIconData}"
+                                                    MinWidth="200">
+                            <controls:FormInputComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" />
+                                </DataTemplate>
+                            </controls:FormInputComboBox.ItemTemplate>
+                        </controls:FormInputComboBox>
+                        <controls:FormInputComboBox LabelText="Choose stream"
+                                                    ItemsSource="{Binding StreamTypes}"
+                                                    PlaceholderText="Select a stream"
+                                                    SelectedItem="{Binding Stream}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Icon="{StaticResource StreamIconData}"
+                                                    MinWidth="200">
+                            <controls:FormInputComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" />
+                                </DataTemplate>
+                            </controls:FormInputComboBox.ItemTemplate>
+                        </controls:FormInputComboBox>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+            <controls:FormInputTextBox LabelText="Enter an email (optional)"
+                                       Watermark="john@uwaterloo.ca"
+                                       Text="{Binding Email}"
+                                       Icon="{StaticResource EmailIconData}" />
+            <controls:FormInputTextBox LabelText="Enter notes (optional)"
+                                       Watermark="Anything you want to note about the student."
+                                       Text="{Binding Notes}"
+                                       Icon="{StaticResource DescriptionIconData}"
+                                       MinLines="10"
+                                       MaxLines="10"
+                                       TextWrapping="Wrap"
+                                       AcceptsReturn="True"
+                                       TextHorizontalContentAlignment="Left"
+                                       TextVerticalContentAlignment="Top" />
+        </general:BaseCreateOrEditWindow.FormContents>
+    </general:BaseCreateOrEditWindow>
+</Window>

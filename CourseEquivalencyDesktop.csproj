@@ -54,6 +54,14 @@
             <DependentUpon>UniversitiesPageView.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Views\Students\StudentsPageView.axaml.cs">
+            <DependentUpon>CoursesPageView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\Students\CreateOrEditStudentWindow.axaml.cs">
+            <DependentUpon>CreateOrEditCourseWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
