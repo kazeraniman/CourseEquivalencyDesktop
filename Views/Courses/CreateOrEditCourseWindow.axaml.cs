@@ -1,9 +1,9 @@
-﻿using Avalonia.Controls;
-using Avalonia.Interactivity;
+﻿using Avalonia.Interactivity;
+using CourseEquivalencyDesktop.Views.General;
 
 namespace CourseEquivalencyDesktop.Views.Courses;
 
-public partial class CreateOrEditCourseWindow : Window
+public partial class CreateOrEditCourseWindow : BaseCreateOrEditWindow
 {
     #region Constructors
     public CreateOrEditCourseWindow()

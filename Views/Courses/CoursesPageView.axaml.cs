@@ -1,19 +1,15 @@
-﻿using System;
-using System.Threading.Tasks;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using CommunityToolkit.Mvvm.DependencyInjection;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
-using CourseEquivalencyDesktop.ViewModels.Courses;
 using CourseEquivalencyDesktop.ViewModels.General;
+using CourseEquivalencyDesktop.Views.General;
 
 namespace CourseEquivalencyDesktop.Views.Courses;
 
-public partial class CoursesPageView : UserControl
+public partial class CoursesPageView : BasePageViewCodeBehind<Course>
 {
-    #region Fields
-    private IDisposable? createCourseInteractionDisposable;
+    #region Properties
+    protected override BasePageView BasePageView => PageRoot;
     #endregion
 
     #region Constructors
@@ -23,66 +19,18 @@ public partial class CoursesPageView : UserControl
     }
     #endregion
 
-    #region Avalonia Life Cycle
-    protected override void OnLoaded(RoutedEventArgs e)
+    #region BasePageViewCodeBehind
+    protected override (BaseCreateOrEditViewModel<Course>, BaseCreateOrEditWindow) CreateViewModelAndWindow(
+        Course? item)
     {
-        base.OnLoaded(e);
-
-        if (DataContext is not CoursesPageViewModel coursesPageViewModel)
+        var viewModel =
+            Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditCourseViewModelFactory>()(item);
+        var window = new CreateOrEditCourseWindow
         {
-            return;
-        }
-
-        if (Design.IsDesignMode)
-        {
-            return;
-        }
-
-        coursesPageViewModel.UpdateItems();
-        PageRoot.ApplyInitialSort();
-    }
-
-    protected override void OnUnloaded(RoutedEventArgs e)
-    {
-        base.OnUnloaded(e);
-
-        createCourseInteractionDisposable?.Dispose();
-    }
-
-    protected override void OnDataContextChanged(EventArgs e)
-    {
-        createCourseInteractionDisposable?.Dispose();
-        if (DataContext is CoursesPageViewModel vm)
-        {
-            createCourseInteractionDisposable =
-                vm.CreateOrEditInteraction.RegisterHandler(SpawnCreateUniversityWindow);
-        }
-
-        base.OnDataContextChanged(e);
-    }
-    #endregion
-
-    #region Interaction Handlers
-    private async Task<Course?> SpawnCreateUniversityWindow(Course? course)
-    {
-        if (TopLevel.GetTopLevel(this) is not Window window)
-        {
-            return null;
-        }
-
-        var createOrEditCourseViewModel =
-            Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditCourseViewModelFactory>()(
-                course);
-        var createOrEditCourseWindow = new CreateOrEditCourseWindow
-        {
-            DataContext = createOrEditCourseViewModel
+            DataContext = viewModel
         };
 
-        createOrEditCourseViewModel.OnRequestCloseWindow += (_, args) =>
-            createOrEditCourseWindow.Close((args as BaseCreateOrEditViewModel<Course>.CreateOrEditEventArgs)
-                ?.Item);
-
-        return await createOrEditCourseWindow.ShowDialog<Course>(window);
+        return (viewModel, window);
     }
     #endregion
 }
