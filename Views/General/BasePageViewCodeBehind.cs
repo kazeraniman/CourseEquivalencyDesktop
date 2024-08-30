@@ -74,6 +74,7 @@ public abstract class BasePageViewCodeBehind<T> : UserControl where T : ModelBas
     #endregion
 
     #region Overrideable Methods
-    protected abstract (BaseCreateOrEditViewModel<T>, BaseCreateOrEditWindow) CreateViewModelAndWindow(T? item);
+    protected abstract (BaseCreateOrEditViewModel<T>, BaseCreateOrEditWindowCodeBehind)
+        CreateViewModelAndWindow(T? item);
     #endregion
 }

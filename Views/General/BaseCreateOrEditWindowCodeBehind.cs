@@ -2,4 +2,4 @@
 
 namespace CourseEquivalencyDesktop.Views.General;
 
-public abstract class BaseCreateOrEditWindow : Window;
+public abstract class BaseCreateOrEditWindowCodeBehind : Window;

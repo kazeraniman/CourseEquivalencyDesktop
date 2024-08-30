@@ -198,5 +198,6 @@
 
         <!-- Template views. -->
         <StyleInclude Source="Views/General/BasePageView.axaml" />
+        <StyleInclude Source="Views/General/BaseCreateOrEditWindow.axaml" />
     </Application.Styles>
 </Application>

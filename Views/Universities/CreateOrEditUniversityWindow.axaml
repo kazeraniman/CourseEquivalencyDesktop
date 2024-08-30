@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Universities"
         xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
+        xmlns:general="using:CourseEquivalencyDesktop.Views.General"
         mc:Ignorable="d"
         d:DesignWidth="800"
         d:DesignHeight="300"
@@ -19,38 +20,19 @@
         <vm:CreateOrEditUniversityViewModel />
     </Design.DataContext>
 
-    <RelativePanel Margin="20">
-        <Border RelativePanel.AlignTopWithPanel="True"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.AlignRightWithPanel="True"
-                Background="{StaticResource BackgroundGrey50}"
-                Padding="24"
-                CornerRadius="6">
-            <StackPanel Spacing="16">
-                <controls:FormInputTextBox x:Name="UniversityTextBox"
-                                           LabelText="Enter a name"
-                                           Watermark="University of Waterloo"
-                                           Text="{Binding Name}"
-                                           Icon="{StaticResource UniversityIconData}" />
-                <controls:FormInputTextBox LabelText="Enter a URL (optional)"
-                                           Watermark="https://uwaterloo.ca/"
-                                           Text="{Binding Url}"
-                                           Icon="{StaticResource LinkIconData}" />
-            </StackPanel>
-        </Border>
-
-        <StackPanel RelativePanel.AlignBottomWithPanel="True"
-                    RelativePanel.AlignRightWithPanel="True"
-                    Spacing="16"
-                    Orientation="Horizontal">
-            <Button Theme="{StaticResource GreyButton}"
-                    Content="Cancel"
-                    Command="{Binding CancelCommand}"
-                    IsCancel="True" />
-            <Button Theme="{StaticResource BlueButton}"
-                    Content="{Binding WindowAndButtonText}"
-                    Command="{Binding CreateOrEditCommand}"
-                    IsDefault="True" />
-        </StackPanel>
-    </RelativePanel>
+    <general:BaseCreateOrEditWindow WindowAndButtonText="{Binding WindowAndButtonText}"
+                                    CancelCommand="{Binding CancelCommand}"
+                                    CreateOrEditCommand="{Binding CreateOrEditCommand}">
+        <general:BaseCreateOrEditWindow.FormContents>
+            <controls:FormInputTextBox x:Name="UniversityTextBox"
+                                       LabelText="Enter a name"
+                                       Watermark="University of Waterloo"
+                                       Text="{Binding Name}"
+                                       Icon="{StaticResource UniversityIconData}" />
+            <controls:FormInputTextBox LabelText="Enter a URL (optional)"
+                                       Watermark="https://uwaterloo.ca/"
+                                       Text="{Binding Url}"
+                                       Icon="{StaticResource LinkIconData}" />
+        </general:BaseCreateOrEditWindow.FormContents>
+    </general:BaseCreateOrEditWindow>
 </Window>
