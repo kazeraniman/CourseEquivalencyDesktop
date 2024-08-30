@@ -37,7 +37,8 @@
                                                                Binding="{Binding University.Name, DataType=m:Student}" />
             <dataGridBoundColumns:DataGridLinkColumn Header="Email"
                                                      Width="0.22*"
-                                                     Binding="{Binding Email, DataType=m:Student}" />
+                                                     Binding="{Binding Email, DataType=m:Student}"
+                                                     IsEmail="True" />
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="Notes"
                                                                Width="0.22*"
                                                                Binding="{Binding Notes, DataType=m:Student}" />

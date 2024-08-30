@@ -62,6 +62,10 @@
             <DependentUpon>CreateOrEditCourseWindow.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Views\CustomControls\ExtendedHyperlinkButton.axaml.cs">
+            <DependentUpon>ExtendedHyperlinkButton.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
