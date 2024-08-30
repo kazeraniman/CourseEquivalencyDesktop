@@ -1,18 +1,32 @@
 ﻿namespace CourseEquivalencyDesktop.Models;
 
-public class Course : BaseModel
+public class Student : BaseModel
 {
+    public enum ProgramType
+    {
+        Computer,
+        Electrical
+    }
+
+    public enum StreamType
+    {
+        Four,
+        Eight
+    }
+
     #region Fields
     private int id;
     // Handled by EF Core
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private string name;
-    private string courseId;
+    private string studentId;
     private University university;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private int universityId;
-    private string? url;
-    private string? description;
+    private string? email;
+    private string? notes;
+    private ProgramType program;
+    private StreamType stream;
     #endregion
 
     #region Properties
@@ -28,10 +42,10 @@ public class Course : BaseModel
         set => SetField(ref name, value);
     }
 
-    public string CourseId
+    public string StudentId
     {
-        get => courseId;
-        set => SetField(ref courseId, value);
+        get => studentId;
+        set => SetField(ref studentId, value);
     }
 
     public int UniversityId
@@ -46,16 +60,28 @@ public class Course : BaseModel
         set => SetField(ref university, value);
     }
 
-    public string? Url
+    public string? Email
     {
-        get => url;
-        set => SetField(ref url, value);
+        get => email;
+        set => SetField(ref email, value);
     }
 
-    public string? Description
+    public string? Notes
     {
-        get => description;
-        set => SetField(ref description, value);
+        get => notes;
+        set => SetField(ref notes, value);
+    }
+
+    public ProgramType Program
+    {
+        get => program;
+        set => SetField(ref program, value);
+    }
+
+    public StreamType Stream
+    {
+        get => stream;
+        set => SetField(ref stream, value);
     }
     #endregion
 }

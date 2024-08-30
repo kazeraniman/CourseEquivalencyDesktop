@@ -2,7 +2,7 @@
 
 namespace CourseEquivalencyDesktop.Models;
 
-public class University : ModelBase
+public class University : BaseModel
 {
     #region Fields
     private int id;
@@ -34,9 +34,12 @@ public class University : ModelBase
 
     // Handled by EF Core
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    // ReSharper disable once UnassignedGetOnlyAutoProperty
-    // ReSharper disable once CollectionNeverUpdated.Global
+    // ReSharper disable UnassignedGetOnlyAutoProperty
+    // ReSharper disable CollectionNeverUpdated.Global
     public ICollection<Course> Courses { get; }
+    public ICollection<Student> Students { get; }
+    // ReSharper restore CollectionNeverUpdated.Global
+    // ReSharper restore UnassignedGetOnlyAutoProperty
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     #endregion
 }

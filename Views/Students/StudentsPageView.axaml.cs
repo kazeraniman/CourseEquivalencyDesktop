@@ -3,29 +3,28 @@ using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.ViewModels.General;
 using CourseEquivalencyDesktop.Views.General;
-using CourseEquivalencyDesktop.Views.Students;
 
-namespace CourseEquivalencyDesktop.Views.Courses;
+namespace CourseEquivalencyDesktop.Views.Students;
 
-public partial class CoursesPageView : BasePageViewCodeBehind<Course>
+public partial class StudentsPageView : BasePageViewCodeBehind<Student>
 {
     #region Properties
     protected override BasePageView BasePageView => PageRoot;
     #endregion
 
     #region Constructors
-    public CoursesPageView()
+    public StudentsPageView()
     {
         InitializeComponent();
     }
     #endregion
 
     #region BasePageViewCodeBehind
-    protected override (BaseCreateOrEditViewModel<Course>, BaseCreateOrEditWindowCodeBehind) CreateViewModelAndWindow(
-        Course? item)
+    protected override (BaseCreateOrEditViewModel<Student>, BaseCreateOrEditWindowCodeBehind) CreateViewModelAndWindow(
+        Student? item)
     {
         var viewModel =
-            Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditCourseViewModelFactory>()(item);
+            Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditStudentViewModelFactory>()(item);
         var window = new CreateOrEditStudentWindow
         {
             DataContext = viewModel

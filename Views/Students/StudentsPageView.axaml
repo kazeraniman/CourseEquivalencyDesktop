@@ -2,22 +2,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Courses"
+             xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Students"
              xmlns:m="using:CourseEquivalencyDesktop.Models"
              xmlns:general="using:CourseEquivalencyDesktop.Views.General"
              xmlns:dataGridBoundColumns="clr-namespace:CourseEquivalencyDesktop.Utility.DataGridBoundColumns"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
-             x:Class="CourseEquivalencyDesktop.Views.Courses.CoursesPageView"
-             x:DataType="vm:CoursesPageViewModel">
+             x:Class="CourseEquivalencyDesktop.Views.Students.StudentsPageView"
+             x:DataType="vm:StudentsPageViewModel">
 
     <Design.DataContext>
-        <vm:CoursesPageViewModel />
+        <vm:StudentsPageViewModel />
     </Design.DataContext>
 
     <general:BasePageView x:Name="PageRoot"
-                          Header="Courses"
+                          Header="Students"
                           SearchText="{Binding SearchText}"
                           DefaultSortColumnIndex="1"
                           CreateCommand="{Binding CreateCommand}"
@@ -26,21 +26,21 @@
                           ItemsSource="{Binding ItemsCollectionView, Mode=TwoWay}"
                           CurrentHumanReadablePageIndex="{Binding CurrentHumanReadablePageIndex}">
         <general:BasePageView.DataGridColumns>
-            <dataGridBoundColumns:DataGridSelectableTextColumn Header="Code"
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="ID"
                                                                Width="0.11*"
-                                                               Binding="{Binding CourseId, DataType=m:Course}" />
-            <dataGridBoundColumns:DataGridSelectableTextColumn Header="Course"
+                                                               Binding="{Binding StudentId, DataType=m:Student}" />
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="Student"
                                                                Width="0.22*"
-                                                               Binding="{Binding Name, DataType=m:Course}" />
+                                                               Binding="{Binding Name, DataType=m:Student}" />
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="University"
                                                                Width="0.22*"
-                                                               Binding="{Binding University.Name, DataType=m:Course}" />
-            <dataGridBoundColumns:DataGridLinkColumn Header="URL"
+                                                               Binding="{Binding University.Name, DataType=m:Student}" />
+            <dataGridBoundColumns:DataGridLinkColumn Header="Email"
                                                      Width="0.22*"
-                                                     Binding="{Binding Url, DataType=m:Course}" />
-            <dataGridBoundColumns:DataGridSelectableTextColumn Header="Description"
+                                                     Binding="{Binding Email, DataType=m:Student}" />
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="Notes"
                                                                Width="0.22*"
-                                                               Binding="{Binding Description, DataType=m:Course}" />
+                                                               Binding="{Binding Notes, DataType=m:Student}" />
             <DataGridTemplateColumn Header=""
                                     Width="Auto"
                                     CanUserSort="False"
@@ -51,7 +51,7 @@
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center">
                             <Button Theme="{StaticResource GreyButton}"
-                                    Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).EditCommand}"
+                                    Command="{Binding #PageRoot.((vm:StudentsPageViewModel)DataContext).EditCommand}"
                                     CommandParameter="{Binding}"
                                     Margin="5"
                                     ToolTip.Tip="Edit">
@@ -59,7 +59,7 @@
                                       Data="{StaticResource EditIconData}" />
                             </Button>
                             <Button Theme="{StaticResource GreyButton}"
-                                    Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).DeleteCommand}"
+                                    Command="{Binding #PageRoot.((vm:StudentsPageViewModel)DataContext).DeleteCommand}"
                                     CommandParameter="{Binding}"
                                     Margin="5"
                                     ToolTip.Tip="Delete">

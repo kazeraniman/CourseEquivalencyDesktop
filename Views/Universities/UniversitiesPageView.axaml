@@ -5,7 +5,7 @@
              xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Universities"
              xmlns:m="using:CourseEquivalencyDesktop.Models"
              xmlns:general="using:CourseEquivalencyDesktop.Views.General"
-             xmlns:dgbc="using:CourseEquivalencyDesktop.Utility.DatGridBoundColumns"
+             xmlns:dataGridBoundColumns="clr-namespace:CourseEquivalencyDesktop.Utility.DataGridBoundColumns"
              mc:Ignorable="d"
              d:DesignWidth="1280"
              d:DesignHeight="720"
@@ -26,12 +26,12 @@
                           ItemsSource="{Binding ItemsCollectionView, Mode=TwoWay}"
                           CurrentHumanReadablePageIndex="{Binding CurrentHumanReadablePageIndex}">
         <general:BasePageView.DataGridColumns>
-            <dgbc:DataGridSelectableTextColumn Header="University"
-                                               Width="0.5*"
-                                               Binding="{Binding Name, DataType=m:University}" />
-            <dgbc:DataGridLinkColumn Header="URL"
-                                     Width="0.5*"
-                                     Binding="{Binding Url, DataType=m:University}" />
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="University"
+                                                               Width="0.5*"
+                                                               Binding="{Binding Name, DataType=m:University}" />
+            <dataGridBoundColumns:DataGridLinkColumn Header="URL"
+                                                     Width="0.5*"
+                                                     Binding="{Binding Url, DataType=m:University}" />
             <DataGridTemplateColumn Header=""
                                     Width="Auto"
                                     CanUserSort="False"

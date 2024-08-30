@@ -1,6 +1,7 @@
 ﻿using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.ViewModels.Courses;
 using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
+using CourseEquivalencyDesktop.ViewModels.Students;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,8 @@ public static class ServiceCollectionExtensions
     public delegate CreateOrEditUniversityViewModel CreateOrEditUniversityViewModelFactory(University? university);
 
     public delegate CreateOrEditCourseViewModel CreateOrEditCourseViewModelFactory(Course? course);
+
+    public delegate CreateOrEditStudentViewModel CreateOrEditStudentViewModelFactory(Student? course);
     #endregion
 
     #region Services
@@ -28,6 +31,7 @@ public static class ServiceCollectionExtensions
         collection.AddTransient<DatabaseSelectionWizardViewModel>();
         collection.AddTransient<UniversitiesPageViewModel>();
         collection.AddTransient<CoursesPageViewModel>();
+        collection.AddTransient<StudentsPageViewModel>();
         collection.AddTransient<CreateOrEditUniversityViewModelFactory>(provider => university =>
         {
             var databaseService = provider.GetRequiredService<DatabaseService>();
@@ -39,6 +43,12 @@ public static class ServiceCollectionExtensions
             var databaseService = provider.GetRequiredService<DatabaseService>();
             var genericDialogService = provider.GetRequiredService<GenericDialogService>();
             return new CreateOrEditCourseViewModel(course, databaseService, genericDialogService);
+        });
+        collection.AddTransient<CreateOrEditStudentViewModelFactory>(provider => student =>
+        {
+            var databaseService = provider.GetRequiredService<DatabaseService>();
+            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
+            return new CreateOrEditStudentViewModel(student, databaseService, genericDialogService);
         });
     }
     #endregion

@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.Courses;
 using CourseEquivalencyDesktop.ViewModels.Home;
+using CourseEquivalencyDesktop.ViewModels.Students;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 
 namespace CourseEquivalencyDesktop.ViewModels.General;
@@ -28,7 +29,8 @@ public partial class MainPageViewModel : ViewModelBase
             [
                 new NavigationPageInfo("Home", "HomeIconData", new HomePageViewModel()),
                 new NavigationPageInfo("Universities", "UniversityIconData", new UniversitiesPageViewModel()),
-                new NavigationPageInfo("Courses", "CourseIconData", new CoursesPageViewModel())
+                new NavigationPageInfo("Courses", "CourseIconData", new CoursesPageViewModel()),
+                new NavigationPageInfo("Students", "StudentIconData", new StudentsPageViewModel())
             ];
         }
         else
@@ -39,7 +41,9 @@ public partial class MainPageViewModel : ViewModelBase
                 new NavigationPageInfo("Universities", "UniversityIconData",
                     Ioc.Default.GetRequiredService<UniversitiesPageViewModel>()),
                 new NavigationPageInfo("Courses", "CourseIconData",
-                    Ioc.Default.GetRequiredService<CoursesPageViewModel>())
+                    Ioc.Default.GetRequiredService<CoursesPageViewModel>()),
+                new NavigationPageInfo("Students", "StudentIconData",
+                    Ioc.Default.GetRequiredService<StudentsPageViewModel>())
             ];
         }
 
