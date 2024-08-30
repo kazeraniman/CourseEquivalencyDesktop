@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Styling;
+using CourseEquivalencyDesktop.Views.CustomControls;
 
 namespace CourseEquivalencyDesktop.Utility.DataGridBoundColumns;
 
@@ -13,16 +14,30 @@ public class DataGridLinkColumn : DataGridBoundColumn
     private static readonly Thickness padding = new(10, 5);
     #endregion
 
+    #region Avalonia Properties
+    public static readonly StyledProperty<bool> IsEmailProperty =
+        AvaloniaProperty.Register<DataGridLinkColumn, bool>(nameof(IsEmail));
+    #endregion
+
+    #region Properties
+    public bool IsEmail
+    {
+        get => GetValue(IsEmailProperty);
+        set => SetValue(IsEmailProperty, value);
+    }
+    #endregion
+
     #region DataGridBoundColumn
     protected override Control GenerateElement(DataGridCell cell, object dataItem)
     {
-        var element = new HyperlinkButton
+        var element = new ExtendedHyperlinkButton
         {
             VerticalAlignment = VerticalAlignment.Center,
             Padding = padding,
+            IsEmail = IsEmail,
             Styles =
             {
-                new Style(ele => ele.Is<HyperlinkButton>())
+                new Style(ele => ele.Is<ExtendedHyperlinkButton>())
                 {
                     Setters =
                     {
