@@ -63,7 +63,7 @@ public partial class MainWindow : Window
     #endregion
 
     #region Interaction Handlers
-    private Task<bool?> SpawnDatabaseSelectionWizardWindow(bool? _)
+    private async Task<bool?> SpawnDatabaseSelectionWizardWindow(bool? _)
     {
         var databaseSelectionWizardViewModel = Ioc.Default.GetRequiredService<DatabaseSelectionWizardViewModel>();
         var genericDialogService = Ioc.Default.GetRequiredService<GenericDialogService>();
@@ -73,11 +73,11 @@ public partial class MainWindow : Window
         };
 
         databaseSelectionWizardViewModel.OnRequestCloseWindow += (_, _) => databaseSelectionWizardWindow.Close();
-        databaseSelectionWizardWindow.Closing += (_, e) =>
+        databaseSelectionWizardWindow.Closing += async (_, e) =>
         {
             if (string.IsNullOrEmpty(Ioc.Default.GetRequiredService<UserSettingsService>().DatabaseFilePath))
             {
-                genericDialogService.OpenGenericDialog(DATABASE_REQUIRED_TITLE, DATABASE_REQUIRED_BODY,
+                await genericDialogService.OpenGenericDialog(DATABASE_REQUIRED_TITLE, DATABASE_REQUIRED_BODY,
                     Constants.GenericStrings.OKAY, isCloseable: false);
 
                 // TODO: Maybe override the topbar so that it doesn't have close button at all and just add a cancel button myself that only works if there is a database set?
@@ -86,7 +86,7 @@ public partial class MainWindow : Window
             }
         };
 
-        return databaseSelectionWizardWindow.ShowDialog<bool?>(this);
+        return await databaseSelectionWizardWindow.ShowDialog<bool?>(this);
     }
     #endregion
 }

@@ -4,10 +4,13 @@ public class Course : ModelBase
 {
     #region Fields
     private int id;
+    // Handled by EF Core
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private string name;
     private string courseId;
-    private int universityId;
     private University university;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    private int universityId;
     private string? url;
     private string? description;
     #endregion
