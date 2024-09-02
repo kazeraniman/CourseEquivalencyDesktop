@@ -32,6 +32,13 @@ base_directory="${script_directory}/../"
 app_manifest="${base_directory}app.manifest"
 package_appx_manifest="${base_directory}CourseEquivalencyDesktopPackagingProject/Package.appxmanifest"
 
+# Ensure that this version doesn't already exist
+if git tag | grep -q "${tag_name}"
+then
+  echo "The version ${tag_name} already exists."
+  exit 1
+fi
+
 # Replace the version numbers in the manifests
 sed -i "s/assemblyIdentity .* name=\"ExCourseEquivalency\"/assemblyIdentity version=\"${full_version}\" name=\"ExCourseEquivalency\"/g" "${app_manifest}"
 sed -i "s/ Version=.* \/>/ Version=\"${full_version}\" \/>/g" "${package_appx_manifest}"
