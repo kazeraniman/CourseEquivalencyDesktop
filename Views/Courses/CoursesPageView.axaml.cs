@@ -3,7 +3,6 @@ using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.ViewModels.General;
 using CourseEquivalencyDesktop.Views.General;
-using CourseEquivalencyDesktop.Views.Students;
 
 namespace CourseEquivalencyDesktop.Views.Courses;
 
@@ -26,7 +25,7 @@ public partial class CoursesPageView : BasePageViewCodeBehind<Course>
     {
         var viewModel =
             Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditCourseViewModelFactory>()(item);
-        var window = new CreateOrEditStudentWindow
+        var window = new CreateOrEditCourseWindow
         {
             DataContext = viewModel
         };
