@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
 
 namespace CourseEquivalencyDesktop.Views.CustomControls;
@@ -29,6 +30,11 @@ public class ExtendedHyperlinkButton : HyperlinkButton
     {
         base.OnPropertyChanged(change);
 
+        if (change.Property == ContentProperty)
+        {
+            SetVisibility();
+        }
+
         if (!IsEmail)
         {
             return;
@@ -50,10 +56,15 @@ public class ExtendedHyperlinkButton : HyperlinkButton
         }
     }
 
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        SetVisibility();
+    }
+
     protected override void OnClick()
     {
-        base.OnClick();
-
         var uri = IsEmail ? emailUri : NavigateUri;
         if (uri is null)
         {
@@ -70,6 +81,13 @@ public class ExtendedHyperlinkButton : HyperlinkButton
                 SetCurrentValue(IsVisitedProperty, true);
             }
         }
+    }
+    #endregion
+
+    #region Helpers
+    private void SetVisibility()
+    {
+        IsVisible = Content is not null;
     }
     #endregion
 }
