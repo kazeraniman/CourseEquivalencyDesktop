@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Bas
 
     protected readonly DatabaseService DatabaseService;
     private readonly UserSettingsService userSettingsService;
-    private readonly GenericDialogService genericDialogService;
+    protected readonly GenericDialogService GenericDialogService;
     #endregion
 
     #region Properties
@@ -52,7 +53,7 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Bas
 
         DatabaseService = new DatabaseService();
         userSettingsService = new UserSettingsService();
-        genericDialogService = new GenericDialogService();
+        GenericDialogService = new GenericDialogService();
         ItemsCollectionView = new DataGridCollectionView(Items);
     }
 
@@ -61,7 +62,7 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Bas
     {
         DatabaseService = databaseService;
         this.userSettingsService = userSettingsService;
-        this.genericDialogService = genericDialogService;
+        GenericDialogService = genericDialogService;
 
         searchDebounceTimer.Interval = userSettingsService.SearchDebounceSecondsTimeSpan;
         searchDebounceTimer.Tick += SearchDebounce;
@@ -154,7 +155,7 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Bas
     [RelayCommand]
     private async Task Delete(T item)
     {
-        var shouldDelete = await genericDialogService.OpenGenericDialog(DeleteTitle, GetDeleteBody(item),
+        var shouldDelete = await GenericDialogService.OpenGenericDialog(DeleteTitle, GetDeleteBody(item),
             Constants.GenericStrings.DELETE, Constants.GenericStrings.CANCEL,
             primaryButtonThemeName: Constants.ResourceNames.RED_BUTTON);
         if (shouldDelete is null or false)
@@ -162,18 +163,21 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Bas
             return;
         }
 
-        Remove(item);
+        var itemsToRemove = await Remove(item);
 
         await DatabaseService.SaveChangesAsyncWithCallbacks(SaveChangesSuccessHandler, SaveChangesFailedHandler);
 
         void SaveChangesSuccessHandler()
         {
-            Items.Remove(item);
+            foreach (var itemToRemove in itemsToRemove)
+            {
+                Items.Remove(itemToRemove);
+            }
         }
 
         void SaveChangesFailedHandler()
         {
-            _ = genericDialogService.OpenGenericDialog(DeleteFailedTitle, DeleteFailedBody,
+            _ = GenericDialogService.OpenGenericDialog(DeleteFailedTitle, DeleteFailedBody,
                 Constants.GenericStrings.OKAY);
         }
     }
@@ -193,7 +197,7 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Bas
 
     #region Overrideable Methods
     public abstract void UpdateItems();
-    protected abstract void Remove(T item);
+    protected abstract Task<HashSet<T>> Remove(T item);
     protected abstract string GetDeleteBody(T item);
     protected abstract bool Filter(object arg);
     #endregion

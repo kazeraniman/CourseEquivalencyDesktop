@@ -1,4 +1,6 @@
-﻿namespace CourseEquivalencyDesktop.Models;
+﻿using System.Collections.Generic;
+
+namespace CourseEquivalencyDesktop.Models;
 
 public class Course : BaseModel
 {
@@ -57,5 +59,15 @@ public class Course : BaseModel
         get => description;
         set => SetField(ref description, value);
     }
+
+    // Handled by EF Core
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    // ReSharper disable UnassignedGetOnlyAutoProperty
+    // ReSharper disable CollectionNeverUpdated.Global
+    public ICollection<Course> Equivalencies { get; }
+    public ICollection<Course> EquivalenciesOf { get; }
+    // ReSharper restore CollectionNeverUpdated.Global
+    // ReSharper restore UnassignedGetOnlyAutoProperty
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     #endregion
 }

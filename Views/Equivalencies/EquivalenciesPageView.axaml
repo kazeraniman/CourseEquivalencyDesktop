@@ -1,0 +1,71 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:CourseEquivalencyDesktop.Models"
+             xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Equivalencies"
+             xmlns:general="using:CourseEquivalencyDesktop.Views.General"
+             xmlns:dataGridBoundColumns="clr-namespace:CourseEquivalencyDesktop.Utility.DataGridBoundColumns"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="CourseEquivalencyDesktop.Views.Equivalencies.EquivalenciesPageView"
+             x:DataType="vm:EquivalenciesPageViewModel">
+
+    <Design.DataContext>
+        <vm:EquivalenciesPageViewModel />
+    </Design.DataContext>
+
+    <general:BasePageView x:Name="PageRoot"
+                          Header="Equivalencies"
+                          SearchText="{Binding SearchText}"
+                          DefaultSortColumnIndex="1"
+                          PreviousPageCommand="{Binding PreviousPageCommand}"
+                          NextPageCommand="{Binding NextPageCommand}"
+                          ItemsSource="{Binding ItemsCollectionView, Mode=TwoWay}"
+                          CurrentHumanReadablePageIndex="{Binding CurrentHumanReadablePageIndex}"
+                          ShouldShowHeader="True"
+                          ShouldShowCreateButton="False">
+        <general:BasePageView.DataGridColumns>
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="Code A"
+                                                               Width="0.10*"
+                                                               Binding="{Binding Course.CourseId, DataType=m:CourseEquivalency}" />
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="Course A"
+                                                               Width="0.20*"
+                                                               Binding="{Binding Course.Name, DataType=m:CourseEquivalency}" />
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="University A"
+                                                               Width="0.20*"
+                                                               Binding="{Binding Course.University.Name, DataType=m:CourseEquivalency}" />
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="Code B"
+                                                               Width="0.10*"
+                                                               Binding="{Binding EquivalentCourse.CourseId, DataType=m:CourseEquivalency}" />
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="Course B"
+                                                               Width="0.20*"
+                                                               Binding="{Binding EquivalentCourse.Name, DataType=m:CourseEquivalency}" />
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="University B"
+                                                               Width="0.20*"
+                                                               Binding="{Binding EquivalentCourse.University.Name, DataType=m:CourseEquivalency}" />
+            <DataGridTemplateColumn Header=""
+                                    Width="Auto"
+                                    CanUserSort="False"
+                                    CanUserResize="False">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate DataType="m:CourseEquivalency">
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center">
+                            <Button Theme="{StaticResource GreyButton}"
+                                    Command="{Binding #PageRoot.((vm:EquivalenciesPageViewModel)DataContext).DeleteCommand}"
+                                    CommandParameter="{Binding}"
+                                    Margin="5"
+                                    ToolTip.Tip="Delete Equivalency">
+                                <Path Classes="MyPath"
+                                      Data="{StaticResource DeleteIconData}" />
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </general:BasePageView.DataGridColumns>
+    </general:BasePageView>
+</UserControl>

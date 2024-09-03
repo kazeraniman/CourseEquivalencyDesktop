@@ -17,16 +17,19 @@
             <ControlTemplate>
                 <StackPanel x:Name="PageRoot"
                             Spacing="30">
-                    <TextBlock Text="{TemplateBinding Header}"
+                    <TextBlock x:Name="PageHeader"
+                               Text="{TemplateBinding Header}"
                                Classes="PageHeader" />
                     <Grid RowDefinitions="Auto, *, Auto"
                           ColumnDefinitions="*, Auto">
-                        <customControls:InputTextBox Watermark="Search..."
+                        <customControls:InputTextBox x:Name="SearchBox"
+                                                     Watermark="Search..."
                                                      Text="{Binding SearchText, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                                      Icon="{StaticResource SearchIconData}"
                                                      Grid.Row="0"
                                                      Grid.Column="0" />
-                        <Button Theme="{StaticResource BlueButton}"
+                        <Button x:Name="CreateButton"
+                                Theme="{StaticResource BlueButton}"
                                 Content="Create"
                                 Command="{Binding CreateCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                 Grid.Row="0"
@@ -43,6 +46,7 @@
                                       CanUserResizeColumns="True"
                                       IsReadOnly="True"
                                       CanUserSortColumns="True"
+                                      RowHeight="50"
                                       Height="542"
                                       RowBackground="White"
                                       GridLinesVisibility="Horizontal"

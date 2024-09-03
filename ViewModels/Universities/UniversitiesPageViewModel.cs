@@ -1,4 +1,6 @@
-﻿using CourseEquivalencyDesktop.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
@@ -34,9 +36,10 @@ public class UniversitiesPageViewModel : BasePageViewModel<University>
         Items.AddRange(DatabaseService.Universities);
     }
 
-    protected override void Remove(University item)
+    protected override Task<HashSet<University>> Remove(University item)
     {
         DatabaseService.Universities.Remove(item);
+        return Task.FromResult<HashSet<University>>([item]);
     }
 
     protected override string GetDeleteBody(University item)

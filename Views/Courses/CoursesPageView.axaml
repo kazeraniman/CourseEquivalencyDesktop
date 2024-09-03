@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Courses"
              xmlns:m="using:CourseEquivalencyDesktop.Models"
+             xmlns:v="using:CourseEquivalencyDesktop.Views.Courses"
              xmlns:general="using:CourseEquivalencyDesktop.Views.General"
+             xmlns:utility="using:CourseEquivalencyDesktop.Utility"
              xmlns:dataGridBoundColumns="clr-namespace:CourseEquivalencyDesktop.Utility.DataGridBoundColumns"
              mc:Ignorable="d"
              d:DesignWidth="800"
@@ -24,7 +26,13 @@
                           PreviousPageCommand="{Binding PreviousPageCommand}"
                           NextPageCommand="{Binding NextPageCommand}"
                           ItemsSource="{Binding ItemsCollectionView, Mode=TwoWay}"
-                          CurrentHumanReadablePageIndex="{Binding CurrentHumanReadablePageIndex}">
+                          CurrentHumanReadablePageIndex="{Binding CurrentHumanReadablePageIndex}"
+                          ShouldShowHeader="{Binding ShouldShowHeader, RelativeSource={RelativeSource AncestorType=v:CoursesPageView}}"
+                          ShouldShowCreateButton="{Binding ShouldShowCreateButton, RelativeSource={RelativeSource AncestorType=v:CoursesPageView}}">
+        <general:BasePageView.Resources>
+            <utility:ShowCreateEquivalencyConverter x:Key="ShowCreateEquivalencyConverter" />
+            <utility:ShowDeleteEquivalencyConverter x:Key="ShowDeleteEquivalencyConverter" />
+        </general:BasePageView.Resources>
         <general:BasePageView.DataGridColumns>
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="Code"
                                                                Width="0.11*"
@@ -53,6 +61,7 @@
                             <Button Theme="{StaticResource GreyButton}"
                                     Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).EditCommand}"
                                     CommandParameter="{Binding}"
+                                    IsVisible="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).EquivalentCourse, Converter={x:Static ObjectConverters.IsNull}}"
                                     Margin="5"
                                     ToolTip.Tip="Edit">
                                 <Path Classes="MyPath"
@@ -61,8 +70,41 @@
                             <Button Theme="{StaticResource GreyButton}"
                                     Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).DeleteCommand}"
                                     CommandParameter="{Binding}"
+                                    IsVisible="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).EquivalentCourse, Converter={x:Static ObjectConverters.IsNull}}"
                                     Margin="5"
                                     ToolTip.Tip="Delete">
+                                <Path Classes="MyPath"
+                                      Data="{StaticResource DeleteIconData}" />
+                            </Button>
+                            <Button Theme="{StaticResource GreyButton}"
+                                    Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).CreateEquivalencyCommand}"
+                                    CommandParameter="{Binding}"
+                                    Margin="5"
+                                    ToolTip.Tip="Create Equivalency"
+                                    VerticalContentAlignment="Center"
+                                    HorizontalContentAlignment="Center">
+                                <Button.IsVisible>
+                                    <MultiBinding Converter="{StaticResource ShowCreateEquivalencyConverter}">
+                                        <Binding Path="Id" />
+                                        <Binding Path="#PageRoot.((vm:CoursesPageViewModel)DataContext)" />
+                                    </MultiBinding>
+                                </Button.IsVisible>
+                                <Path Classes="MyPath"
+                                      Data="{StaticResource EquivalencyIconData}" />
+                            </Button>
+                            <Button Theme="{StaticResource GreyButton}"
+                                    Command="{Binding #PageRoot.((vm:CoursesPageViewModel)DataContext).DeleteEquivalencyCommand}"
+                                    CommandParameter="{Binding}"
+                                    Margin="5"
+                                    ToolTip.Tip="Delete Equivalency"
+                                    VerticalContentAlignment="Center"
+                                    HorizontalContentAlignment="Center">
+                                <Button.IsVisible>
+                                    <MultiBinding Converter="{StaticResource ShowDeleteEquivalencyConverter}">
+                                        <Binding Path="Id" />
+                                        <Binding Path="#PageRoot.((vm:CoursesPageViewModel)DataContext)" />
+                                    </MultiBinding>
+                                </Button.IsVisible>
                                 <Path Classes="MyPath"
                                       Data="{StaticResource DeleteIconData}" />
                             </Button>

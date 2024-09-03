@@ -7,11 +7,17 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using CourseEquivalencyDesktop.Utility;
+using CourseEquivalencyDesktop.Views.CustomControls;
 
 namespace CourseEquivalencyDesktop.Views.General;
 
 public class BasePageView : TemplatedControl
 {
+    #region Constants
+    private const double DEFAULT_SPACING = 30;
+    private const double NO_HEADER_SPACING = 0;
+    #endregion
+
     #region Fields
     private DataGrid? dataGrid;
     #endregion
@@ -48,6 +54,12 @@ public class BasePageView : TemplatedControl
     public static readonly StyledProperty<string?> CurrentHumanReadablePageIndexProperty =
         AvaloniaProperty.Register<BasePageView, string?>(nameof(CurrentHumanReadablePageIndexProperty),
             defaultBindingMode: BindingMode.TwoWay);
+
+    public static readonly StyledProperty<bool> ShouldShowHeaderProperty =
+        AvaloniaProperty.Register<BasePageView, bool>(nameof(ShouldShowHeaderProperty), true);
+
+    public static readonly StyledProperty<bool> ShouldShowCreateButtonProperty =
+        AvaloniaProperty.Register<BasePageView, bool>(nameof(ShouldShowCreateButtonProperty), true);
     #endregion
 
     #region Properties
@@ -104,6 +116,18 @@ public class BasePageView : TemplatedControl
         get => GetValue(CurrentHumanReadablePageIndexProperty);
         set => SetValue(CurrentHumanReadablePageIndexProperty, value);
     }
+
+    public bool ShouldShowHeader
+    {
+        get => GetValue(ShouldShowHeaderProperty);
+        set => SetValue(ShouldShowHeaderProperty, value);
+    }
+
+    public bool ShouldShowCreateButton
+    {
+        get => GetValue(ShouldShowCreateButtonProperty);
+        set => SetValue(ShouldShowCreateButtonProperty, value);
+    }
     #endregion
 
     #region Constructors
@@ -124,9 +148,22 @@ public class BasePageView : TemplatedControl
             return;
         }
 
-
         dataGrid.Columns.Clear();
         dataGrid.Columns.AddRange(DataGridColumns);
+
+        var pageHeader = e.NameScope.Find<TextBlock>("PageHeader");
+        var pageRoot = e.NameScope.Find<StackPanel>("PageRoot");
+        if (pageRoot is not null && pageHeader is not null)
+        {
+            pageHeader.IsVisible = ShouldShowHeader;
+            pageRoot.Spacing = ShouldShowHeader ? DEFAULT_SPACING : NO_HEADER_SPACING;
+        }
+
+        var createButton = e.NameScope.Find<Button>("CreateButton");
+        if (createButton is not null)
+        {
+            createButton.IsVisible = ShouldShowCreateButton;
+        }
     }
     #endregion
 

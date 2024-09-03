@@ -1,6 +1,7 @@
 ﻿using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.ViewModels.Courses;
 using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
+using CourseEquivalencyDesktop.ViewModels.Equivalencies;
 using CourseEquivalencyDesktop.ViewModels.Students;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,11 +15,13 @@ namespace CourseEquivalencyDesktop.Services;
 public static class ServiceCollectionExtensions
 {
     #region Factories
+    public delegate CoursesPageViewModel CoursesPageViewModelFactory(Course? equivalentCourse);
+
     public delegate CreateOrEditUniversityViewModel CreateOrEditUniversityViewModelFactory(University? university);
 
     public delegate CreateOrEditCourseViewModel CreateOrEditCourseViewModelFactory(Course? course);
 
-    public delegate CreateOrEditStudentViewModel CreateOrEditStudentViewModelFactory(Student? course);
+    public delegate CreateOrEditStudentViewModel CreateOrEditStudentViewModelFactory(Student? student);
     #endregion
 
     #region Services
@@ -30,8 +33,16 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<GenericDialogService>();
         collection.AddTransient<DatabaseSelectionWizardViewModel>();
         collection.AddTransient<UniversitiesPageViewModel>();
-        collection.AddTransient<CoursesPageViewModel>();
         collection.AddTransient<StudentsPageViewModel>();
+        collection.AddTransient<EquivalenciesPageViewModel>();
+        collection.AddTransient<CoursesPageViewModelFactory>(provider => equivalentCourse =>
+        {
+            var databaseService = provider.GetRequiredService<DatabaseService>();
+            var userSettingsService = provider.GetRequiredService<UserSettingsService>();
+            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
+            return new CoursesPageViewModel(equivalentCourse, databaseService, userSettingsService,
+                genericDialogService);
+        });
         collection.AddTransient<CreateOrEditUniversityViewModelFactory>(provider => university =>
         {
             var databaseService = provider.GetRequiredService<DatabaseService>();

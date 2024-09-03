@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 
 namespace CourseEquivalencyDesktop.Models;
 
-public class BaseModel : INotifyPropertyChanged
+public abstract class BaseModel : INotifyPropertyChanged
 {
     #region INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    public virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

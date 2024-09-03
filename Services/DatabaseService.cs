@@ -23,6 +23,7 @@ public class DatabaseService : DbContext
     public DbSet<University> Universities { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<Student> Students { get; set; }
+    public DbSet<CourseEquivalency> Equivalencies { get; set; }
     #endregion
 
     #region Events
@@ -89,6 +90,13 @@ public class DatabaseService : DbContext
         modelBuilder.Entity<Student>()
             .Property(e => e.Program)
             .HasConversion<string>();
+
+        modelBuilder.Entity<Course>()
+            .HasMany(e => e.Equivalencies)
+            .WithMany(e => e.EquivalenciesOf)
+            .UsingEntity<CourseEquivalency>(
+                r => r.HasOne(j => j.Course).WithMany(),
+                l => l.HasOne(j => j.EquivalentCourse).WithMany());
     }
     #endregion
 
