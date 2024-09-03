@@ -107,6 +107,8 @@ public abstract partial class BasePageViewModel<T> : ViewModelBase where T : Bas
     {
         ItemsCollectionView.Refresh();
         ItemsCollectionView.MoveToFirstPage();
+        NextPageCommand.NotifyCanExecuteChanged();
+        PreviousPageCommand.NotifyCanExecuteChanged();
         searchDebounceTimer.Stop();
     }
     #endregion
