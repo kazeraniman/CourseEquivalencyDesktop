@@ -7,7 +7,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using CourseEquivalencyDesktop.Utility;
-using CourseEquivalencyDesktop.Views.CustomControls;
 
 namespace CourseEquivalencyDesktop.Views.General;
 
