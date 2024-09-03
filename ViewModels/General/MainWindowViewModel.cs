@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CourseEquivalencyDesktop.ViewModels.General;
 
-public partial class MainWindowViewModel : ViewModelBase
+public partial class MainWindowViewModel : BaseViewModel
 {
     #region Fields
     public readonly Interaction<bool?, bool?> SpawnDatabaseSelectionWizardInteraction = new();
@@ -17,7 +17,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     #region Properties
     #region Observable Properties
-    [ObservableProperty] private ViewModelBase currentContent = new MainPageLoadingViewModel();
+    [ObservableProperty] private BaseViewModel currentContent = new MainPageLoadingViewModel();
     #endregion
     #endregion
 

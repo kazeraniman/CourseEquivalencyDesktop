@@ -8,9 +8,9 @@ namespace CourseEquivalencyDesktop.Utility;
 /// <param name="name">The page's display name.</param>
 /// <param name="icon">The icon to use for navigation.</param>
 /// <param name="viewModel">The ViewModel for the page.</param>
-public class NavigationPageInfo(string name, string icon, ViewModelBase viewModel)
+public class NavigationPageInfo(string name, string icon, BaseViewModel viewModel)
 {
     public string Name { get; init; } = name;
     public string Icon { get; init; } = icon;
-    public ViewModelBase ViewModel { get; init; } = viewModel;
+    public BaseViewModel ViewModel { get; init; } = viewModel;
 }

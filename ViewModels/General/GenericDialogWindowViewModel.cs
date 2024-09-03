@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace CourseEquivalencyDesktop.ViewModels.General;
 
-public partial class GenericDialogWindowViewModel : ViewModelBase
+public partial class GenericDialogWindowViewModel : BaseViewModel
 {
     public class GenericDialogEventArgs : EventArgs
     {

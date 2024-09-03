@@ -2,6 +2,6 @@
 
 namespace CourseEquivalencyDesktop.ViewModels.Home;
 
-public class HomePageViewModel : ViewModelBase
+public class HomePageViewModel : BaseViewModel
 {
 }

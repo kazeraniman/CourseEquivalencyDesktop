@@ -14,7 +14,7 @@ public enum DatabaseSelectionOptions
     OpenExisting
 }
 
-public partial class DatabaseSelectionWizardViewModel : ViewModelBase
+public partial class DatabaseSelectionWizardViewModel : BaseViewModel
 {
     #region Constants
     private const string OPEN_EXISTING_DIALOG_TITLE = "Open Database";
@@ -48,7 +48,7 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     private string? newDatabaseFilePath;
 
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(NavigateNextPageCommand))]
-    private ViewModelBase currentPage;
+    private BaseViewModel currentPage;
 
     [ObservableProperty] private bool isNextPageButtonShown;
 
@@ -85,7 +85,7 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
 
     #region Handlers
     // ReSharper disable once UnusedParameterInPartialMethod
-    partial void OnCurrentPageChanged(ViewModelBase value)
+    partial void OnCurrentPageChanged(BaseViewModel value)
     {
         IsNextPageButtonShown = GetNextPage() is not null;
         IsPreviousPageButtonShown = GetPreviousPage() is not null;
@@ -94,7 +94,7 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
     #endregion
 
     #region Utility
-    private ViewModelBase? GetPreviousPage()
+    private BaseViewModel? GetPreviousPage()
     {
         return CurrentPage switch
         {
@@ -108,7 +108,7 @@ public partial class DatabaseSelectionWizardViewModel : ViewModelBase
         };
     }
 
-    private ViewModelBase? GetNextPage()
+    private BaseViewModel? GetNextPage()
     {
         return CurrentPage switch
         {
