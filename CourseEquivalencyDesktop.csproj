@@ -66,6 +66,14 @@
             <DependentUpon>ExtendedHyperlinkButton.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Views\Equivalencies\CreateEquivalencyWindow.axaml.cs">
+            <DependentUpon>CreateEquivalencyWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\Equivalencies\EquivalenciesPageView.axaml.cs">
+            <DependentUpon>CoursesPageView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

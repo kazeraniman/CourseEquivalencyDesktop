@@ -1,4 +1,9 @@
-﻿using CourseEquivalencyDesktop.Models;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
@@ -6,9 +11,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CourseEquivalencyDesktop.ViewModels.Courses;
 
-public class CoursesPageViewModel : BasePageViewModel<Course>
+public partial class CoursesPageViewModel : BasePageViewModel<Course>
 {
+    #region Fields
+    public readonly Interaction<Course?, Course?> CreateEquivalencyInteraction = new();
+    #endregion
+
+    #region Properties
+    #region Observable Properties
+    [ObservableProperty]
+    private Course? equivalentCourse;
+    #endregion
+    #endregion
+
     #region Constants
+    private const string CREATE_EQUIVALENCY_FAILED_TITLE = "Equivalency Creation Failed";
+    private const string CREATE_EQUIVALENCY_FAILED_BODY = "An error occurred and the equivalency could not be created.";
+    private const string DELETE_EQUIVALENCY_FAILED_TITLE = "Equivalency Deletion Failed";
+    private const string DELETE_EQUIVALENCY_FAILED_BODY = "An error occurred and the equivalency could not be deleted.";
+
     private const string COURSE_DELETE_BODY =
         "Are you sure you wish to delete \"{0}\"?\nThis action cannot be undone and will delete all associated entries.";
     #endregion
@@ -18,9 +39,11 @@ public class CoursesPageViewModel : BasePageViewModel<Course>
     {
     }
 
-    public CoursesPageViewModel(DatabaseService databaseService, UserSettingsService userSettingsService,
+    public CoursesPageViewModel(Course? equivalentCourse, DatabaseService databaseService,
+        UserSettingsService userSettingsService,
         GenericDialogService genericDialogService) : base(databaseService, userSettingsService, genericDialogService)
     {
+        EquivalentCourse = equivalentCourse;
     }
     #endregion
 
@@ -34,12 +57,14 @@ public class CoursesPageViewModel : BasePageViewModel<Course>
         Items.Clear();
 
         // Using the Include to eagerly load the universities so they are ready on first page view
-        Items.AddRange(DatabaseService.Courses.Include(course => course.University));
+        Items.AddRange(DatabaseService.Courses.Include(course => course.University)
+            .Include(course => course.Equivalencies));
     }
 
-    protected override void Remove(Course item)
+    protected override Task<HashSet<Course>> Remove(Course item)
     {
         DatabaseService.Courses.Remove(item);
+        return Task.FromResult<HashSet<Course>>([item]);
     }
 
     protected override string GetDeleteBody(Course item)
@@ -54,9 +79,68 @@ public class CoursesPageViewModel : BasePageViewModel<Course>
             return false;
         }
 
-        return string.IsNullOrWhiteSpace(SearchText) || course.Name.CaseInsensitiveContains(SearchText) ||
-               course.University.Name.CaseInsensitiveContains(SearchText) ||
-               course.CourseId.CaseInsensitiveContains(SearchText);
+        return (EquivalentCourse is null ||
+                EquivalentCourse.Id != course.Id) &&
+               (string.IsNullOrWhiteSpace(SearchText) ||
+                course.Name.CaseInsensitiveContains(SearchText) ||
+                course.University.Name.CaseInsensitiveContains(SearchText) ||
+                course.CourseId.CaseInsensitiveContains(SearchText));
+    }
+    #endregion
+
+    #region Commands
+    [RelayCommand]
+    private async Task CreateEquivalency(Course course)
+    {
+        if (EquivalentCourse is null)
+        {
+            await CreateEquivalencyInteraction.HandleAsync(course);
+            ItemsCollectionView.Refresh(); // TODO: Check if this is necessary
+            return;
+        }
+
+        course.Equivalencies.Add(EquivalentCourse);
+        EquivalentCourse.Equivalencies.Add(course);
+
+        await DatabaseService.SaveChangesAsyncWithCallbacks(SaveChangesSuccessHandler, SaveChangesFailedHandler);
+
+        void SaveChangesSuccessHandler()
+        {
+            // Force the binding to refresh since it is bound to the ID
+            course.OnPropertyChanged(nameof(course.Id));
+        }
+
+        void SaveChangesFailedHandler()
+        {
+            _ = GenericDialogService.OpenGenericDialog(CREATE_EQUIVALENCY_FAILED_TITLE, CREATE_EQUIVALENCY_FAILED_BODY,
+                Constants.GenericStrings.OKAY);
+        }
+    }
+
+    [RelayCommand]
+    private async Task DeleteEquivalency(Course course)
+    {
+        if (EquivalentCourse is null)
+        {
+            throw new UnreachableException("Should not be able to delete an equivalency without an equivalent course.");
+        }
+
+        course.Equivalencies.Remove(EquivalentCourse);
+        EquivalentCourse.Equivalencies.Remove(course);
+
+        await DatabaseService.SaveChangesAsyncWithCallbacks(SaveChangesSuccessHandler, SaveChangesFailedHandler);
+
+        void SaveChangesSuccessHandler()
+        {
+            // Force the binding to refresh since it is bound to the ID
+            course.OnPropertyChanged(nameof(course.Id));
+        }
+
+        void SaveChangesFailedHandler()
+        {
+            _ = GenericDialogService.OpenGenericDialog(DELETE_EQUIVALENCY_FAILED_TITLE, DELETE_EQUIVALENCY_FAILED_BODY,
+                Constants.GenericStrings.OKAY);
+        }
     }
     #endregion
 }
