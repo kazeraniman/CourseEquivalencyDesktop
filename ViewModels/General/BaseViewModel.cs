@@ -2,6 +2,6 @@
 
 namespace CourseEquivalencyDesktop.ViewModels.General;
 
-public class ViewModelBase : ObservableValidator
+public class BaseViewModel : ObservableValidator
 {
 }

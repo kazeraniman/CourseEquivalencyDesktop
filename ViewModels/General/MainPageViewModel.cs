@@ -11,7 +11,7 @@ using CourseEquivalencyDesktop.ViewModels.Universities;
 
 namespace CourseEquivalencyDesktop.ViewModels.General;
 
-public partial class MainPageViewModel : ViewModelBase
+public partial class MainPageViewModel : BaseViewModel
 {
     #region Properties
     public NavigationPageInfo[] Pages { get; init; }

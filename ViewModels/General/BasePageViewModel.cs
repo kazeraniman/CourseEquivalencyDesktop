@@ -13,7 +13,7 @@ using CourseEquivalencyDesktop.Utility;
 
 namespace CourseEquivalencyDesktop.ViewModels.General;
 
-public abstract partial class BasePageViewModel<T> : ViewModelBase where T : BaseModel
+public abstract partial class BasePageViewModel<T> : BaseViewModel where T : BaseModel
 {
     #region Fields
     public readonly Interaction<T?, T?> CreateOrEditInteraction = new();

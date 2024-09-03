@@ -1,5 +1,5 @@
 ﻿namespace CourseEquivalencyDesktop.ViewModels.General;
 
-public partial class MainPageLoadingViewModel : ViewModelBase
+public partial class MainPageLoadingViewModel : BaseViewModel
 {
 }
