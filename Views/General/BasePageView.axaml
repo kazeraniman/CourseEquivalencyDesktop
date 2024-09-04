@@ -20,7 +20,7 @@
                     <TextBlock x:Name="PageHeader"
                                Text="{TemplateBinding Header}"
                                Classes="PageHeader" />
-                    <Grid RowDefinitions="Auto, *, Auto"
+                    <Grid RowDefinitions="40, *, Auto"
                           ColumnDefinitions="*, Auto">
                         <customControls:InputTextBox x:Name="SearchBox"
                                                      Watermark="Search..."
