@@ -54,6 +54,19 @@
                                        Maximum="10"
                                        FormatString="0.0" />
                     </StackPanel>
+                    <StackPanel Spacing="5">
+                        <Label FontWeight="Bold"
+                               Content="Table Row Count"
+                               Target="TableRowCountNumericUpDown"
+                               ToolTip.Tip="The number of rows to display per page per table." />
+                        <NumericUpDown x:Name="TableRowCountNumericUpDown"
+                                       Classes="StyledTextBox"
+                                       Value="{Binding DataGridPageSize}"
+                                       Increment="1"
+                                       Minimum="1"
+                                       Maximum="100"
+                                       FormatString="0" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <Button Theme="{StaticResource BlueButton}"

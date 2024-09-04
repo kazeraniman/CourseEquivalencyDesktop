@@ -36,6 +36,11 @@ public partial class SettingsPageViewModel : BaseViewModel
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     [Required]
     private double searchDelay;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    [Required]
+    private int dataGridPageSize;
     #endregion
     #endregion
 
@@ -56,6 +61,7 @@ public partial class SettingsPageViewModel : BaseViewModel
         UserFullName = userSettingsService.UserFullName;
         UserEmail = userSettingsService.UserEmail;
         SearchDelay = userSettingsService.SearchDebounceSeconds;
+        DataGridPageSize = userSettingsService.DataGridPageSize;
 
         // Ensure the button is disabled if invalid but don't trigger errors as they haven't performed any actions yet
         SaveCommand.NotifyCanExecuteChanged();
@@ -77,6 +83,11 @@ public partial class SettingsPageViewModel : BaseViewModel
     {
         ValidateProperty(value, nameof(SearchDelay));
     }
+
+    partial void OnDataGridPageSizeChanged(int value)
+    {
+        ValidateProperty(value, nameof(DataGridPageSize));
+    }
     #endregion
 
     #region Command Execution Checks
@@ -97,6 +108,7 @@ public partial class SettingsPageViewModel : BaseViewModel
         userSettings.UserFullName = UserFullName;
         userSettings.UserEmail = UserEmail;
         userSettings.SearchDebounceSeconds = SearchDelay;
+        userSettings.DataGridPageSize = DataGridPageSize;
 
         await userSettingsService.SetAllUserSettings(userSettings);
 

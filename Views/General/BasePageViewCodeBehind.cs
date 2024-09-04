@@ -32,6 +32,7 @@ public abstract class BasePageViewCodeBehind<T> : UserControl where T : BaseMode
             return;
         }
 
+        basePageViewModel.ViewLoaded();
         basePageViewModel.UpdateItems();
         BasePageView.ApplyInitialSort();
     }

@@ -68,8 +68,7 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
 
         ItemsCollectionView = new DataGridCollectionView(Items)
         {
-            Filter = Filter,
-            PageSize = userSettingsService.DataGridPageSize
+            Filter = Filter
         };
 
         ItemsCollectionView.PageChanged += PageChangedHandler;
@@ -99,7 +98,6 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
     partial void OnSearchTextChanged(string value)
     {
         searchDebounceTimer.Stop();
-        searchDebounceTimer.Interval = userSettingsService.SearchDebounceSecondsTimeSpan; // Getting the latest value
         searchDebounceTimer.Start();
     }
 
@@ -202,5 +200,11 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
     protected abstract Task<HashSet<T>> Remove(T item);
     protected abstract string GetDeleteBody(T item);
     protected abstract bool Filter(object arg);
+
+    public virtual void ViewLoaded()
+    {
+        searchDebounceTimer.Interval = userSettingsService.SearchDebounceSecondsTimeSpan;
+        ItemsCollectionView.PageSize = userSettingsService.DataGridPageSize;
+    }
     #endregion
 }
