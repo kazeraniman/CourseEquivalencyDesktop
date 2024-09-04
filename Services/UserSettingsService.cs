@@ -34,10 +34,13 @@ public class UserSettingsService
     #endregion
 
     #region Properties
+    public UserSettings UserSettings => new(userSettings);
     public string? DatabaseFilePath => userSettings.DatabaseFilePath;
     public int DataGridPageSize => userSettings.DataGridPageSize;
     public double SearchDebounceSeconds => userSettings.SearchDebounceSeconds;
     public TimeSpan SearchDebounceSecondsTimeSpan => TimeSpan.FromSeconds(userSettings.SearchDebounceSeconds);
+    public string? UserFullName => userSettings.UserFullName;
+    public string? UserEmail => userSettings.UserEmail;
     #endregion
 
     #region File Management
@@ -67,6 +70,21 @@ public class UserSettingsService
     #endregion
 
     #region Setters
+    /// <summary>
+    ///     Set all the settings at once.
+    /// </summary>
+    /// <param name="newUserSettings">The new values of the user settings.</param>
+    public async Task SetAllUserSettings(UserSettings newUserSettings)
+    {
+        if (userSettings == newUserSettings)
+        {
+            return;
+        }
+
+        userSettings = newUserSettings;
+        await SaveSettings();
+    }
+
     /// <summary>
     ///     Set the database file path to memory and file.
     /// </summary>
@@ -109,6 +127,36 @@ public class UserSettingsService
         }
 
         userSettings.SearchDebounceSeconds = searchDebounceSeconds;
+        await SaveSettings();
+    }
+
+    /// <summary>
+    ///     Set the user full name to memory and file.
+    /// </summary>
+    /// <param name="userFullName">The new value of the user full name.</param>
+    public async Task SetUserFullName(string? userFullName)
+    {
+        if (userFullName == UserFullName)
+        {
+            return;
+        }
+
+        userSettings.UserFullName = userFullName;
+        await SaveSettings();
+    }
+
+    /// <summary>
+    ///     Set the user email to memory and file.
+    /// </summary>
+    /// <param name="userEmail">The new value of the user email.</param>
+    public async Task SetUserEmail(string? userEmail)
+    {
+        if (userEmail == UserEmail)
+        {
+            return;
+        }
+
+        userSettings.UserEmail = userEmail;
         await SaveSettings();
     }
     #endregion

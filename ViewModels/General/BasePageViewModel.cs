@@ -64,7 +64,6 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
         this.userSettingsService = userSettingsService;
         GenericDialogService = genericDialogService;
 
-        searchDebounceTimer.Interval = userSettingsService.SearchDebounceSecondsTimeSpan;
         searchDebounceTimer.Tick += SearchDebounce;
 
         ItemsCollectionView = new DataGridCollectionView(Items)
@@ -100,6 +99,7 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
     partial void OnSearchTextChanged(string value)
     {
         searchDebounceTimer.Stop();
+        searchDebounceTimer.Interval = userSettingsService.SearchDebounceSecondsTimeSpan; // Getting the latest value
         searchDebounceTimer.Start();
     }
 

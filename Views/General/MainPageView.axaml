@@ -29,10 +29,12 @@
                         <Setter Property="Background"
                                 Value="{StaticResource BackgroundGrey50}" />
                         <Setter Property="Padding"
-                                Value="8, 20" />
+                                Value="8,8,8,0" />
                     </Style>
 
                     <Style Selector="ListBoxItem">
+                        <Setter Property="DockPanel.Dock"
+                                Value="Top" />
                         <Setter Property="Background"
                                 Value="{StaticResource BackgroundGrey100}" />
                         <Setter Property="Cursor"
@@ -48,6 +50,11 @@
                         <Style Selector="^ Path">
                             <Setter Property="Stroke"
                                     Value="Black" />
+                        </Style>
+
+                        <Style Selector="^:nth-last-child(1)">
+                            <Setter Property="DockPanel.Dock"
+                                    Value="Bottom" />
                         </Style>
 
                         <Style
@@ -67,6 +74,11 @@
                         </Style>
                     </Style>
                 </ListBox.Styles>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <DockPanel LastChildFill="False" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="u:NavigationPageInfo">
                         <StackPanel Orientation="Horizontal"
