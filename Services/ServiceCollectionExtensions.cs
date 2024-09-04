@@ -2,6 +2,7 @@
 using CourseEquivalencyDesktop.ViewModels.Courses;
 using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.ViewModels.Equivalencies;
+using CourseEquivalencyDesktop.ViewModels.Settings;
 using CourseEquivalencyDesktop.ViewModels.Students;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +36,7 @@ public static class ServiceCollectionExtensions
         collection.AddTransient<UniversitiesPageViewModel>();
         collection.AddTransient<StudentsPageViewModel>();
         collection.AddTransient<EquivalenciesPageViewModel>();
+        collection.AddTransient<SettingsPageViewModel>();
         collection.AddTransient<CoursesPageViewModelFactory>(provider => equivalentCourse =>
         {
             var databaseService = provider.GetRequiredService<DatabaseService>();

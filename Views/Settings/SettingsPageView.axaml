@@ -1,0 +1,66 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Settings"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="CourseEquivalencyDesktop.Views.Settings.SettingsPageView"
+             x:DataType="vm:SettingsPageViewModel">
+
+    <Design.DataContext>
+        <vm:SettingsPageViewModel />
+    </Design.DataContext>
+
+    <StackPanel x:Name="PageRoot"
+                Spacing="30">
+        <TextBlock x:Name="PageHeader"
+                   Text="Settings"
+                   Classes="PageHeader" />
+        <StackPanel Spacing="20">
+            <Border Background="{StaticResource BackgroundGrey50}"
+                    CornerRadius="6"
+                    Padding="24">
+                <StackPanel Spacing="10">
+                    <StackPanel Spacing="5">
+                        <Label FontWeight="Bold"
+                               Content="Full Name"
+                               Target="FullNameTextBox"
+                               ToolTip.Tip="The full name of the person who will be preparing the study plans." />
+                        <TextBox x:Name="FullNameTextBox"
+                                 Classes="StyledTextBox"
+                                 Text="{Binding UserFullName}" />
+                    </StackPanel>
+                    <StackPanel Spacing="5">
+                        <Label FontWeight="Bold"
+                               Content="Email"
+                               Target="EmailTextBox"
+                               ToolTip.Tip="The email of the person who will be preparing the study plans." />
+                        <TextBox x:Name="EmailTextBox"
+                                 Classes="StyledTextBox"
+                                 Text="{Binding UserEmail}" />
+                    </StackPanel>
+                    <StackPanel Spacing="5">
+                        <Label FontWeight="Bold"
+                               Content="Search Delay"
+                               Target="SearchDelayNumericUpDown"
+                               ToolTip.Tip="The number of seconds to wait before searching after the user has stopped typing." />
+                        <NumericUpDown x:Name="SearchDelayNumericUpDown"
+                                       Classes="StyledTextBox"
+                                       Value="{Binding SearchDelay}"
+                                       Increment="0.1"
+                                       Minimum="0"
+                                       Maximum="10"
+                                       FormatString="0.0" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Button Theme="{StaticResource BlueButton}"
+                    Command="{Binding SaveCommand}"
+                    Content="Save"
+                    HorizontalAlignment="Right"
+                    ToolTip.Tip="Save" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>
