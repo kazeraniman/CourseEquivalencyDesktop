@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
@@ -18,9 +22,23 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
     private const string STUDY_PLAN_EDITING_NOT_EXIST_BODY = "The study plan you are trying to edit does not exist.";
     #endregion
 
+    #region Fields
+    public readonly Interaction<bool?, bool?> RequestedCourseEquivalencyInteraction = new();
+    public readonly Interaction<bool?, bool?> AddedHomeCourseInteraction = new();
+    public readonly Interaction<bool?, bool?> AddedDestinationCourseInteraction = new();
+
+    private readonly ObservableCollection<Course> homeUniversityCourseOptions = [];
+    private readonly ObservableCollection<Course> destinationUniversityCourseOptions = [];
+
+    private Course? equivalentCourse;
+    #endregion
+
     #region Properties
     protected override string FailedSaveTitle => "Study Plan Changes Failed";
     protected override string FailedSaveBody => "An error occurred and the study plan changes could not be made.";
+
+    public DataGridCollectionView HomeUniversityCourseOptionsView { get; init; }
+    public DataGridCollectionView DestinationUniversityCourseOptionsView { get; init; }
 
     #region Observable Properties
     [ObservableProperty]
@@ -46,16 +64,28 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
 
     [ObservableProperty]
     private DateTime? dueDate;
-    #endregion
 
     [ObservableProperty]
     private string? notes;
+
+    [ObservableProperty]
+    private ObservableCollection<Course> homeUniversityCourses = [];
+
+    [ObservableProperty]
+    private ObservableCollection<Course> destinationUniversityCourses = [];
 
     [ObservableProperty]
     private StudyPlan.AcademicTerm[] academicTerms = Enum.GetValues<StudyPlan.AcademicTerm>();
 
     [ObservableProperty]
     private StudyPlan.SeasonalTerm[] seasonalTerms = Enum.GetValues<StudyPlan.SeasonalTerm>();
+
+    [ObservableProperty]
+    private Course? selectedHomeUniversityCourse;
+
+    [ObservableProperty]
+    private Course? selectedDestinationUniversityCourse;
+    #endregion
     #endregion
 
     #region Constructors
@@ -73,6 +103,8 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
             StudentId = "12345678",
             University = DestinationUniversity
         };
+        HomeUniversityCourseOptionsView = new DataGridCollectionView(homeUniversityCourseOptions);
+        DestinationUniversityCourseOptionsView = new DataGridCollectionView(destinationUniversityCourseOptions);
     }
 
     public EditStudyPlanViewModel(StudyPlan? studyPlan, DatabaseService databaseService,
@@ -94,8 +126,37 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
         DueDate = studyPlan.DueDate;
         Notes = studyPlan.Notes;
 
+        HomeUniversityCourses.AddRange(studyPlan.HomeUniversityCourses);
+        DestinationUniversityCourses.AddRange(studyPlan.DestinationUniversityCourses);
+
+        homeUniversityCourseOptions.AddRange(Student.University.Courses
+            .OrderBy(course => course.Name)
+            .ThenBy(course => course.CourseId));
+        destinationUniversityCourseOptions.AddRange(DestinationUniversity.Courses
+            .OrderBy(course => course.Name)
+            .ThenBy(course => course.CourseId));
+
+        HomeUniversityCourseOptionsView = new DataGridCollectionView(homeUniversityCourseOptions);
+        DestinationUniversityCourseOptionsView = new DataGridCollectionView(destinationUniversityCourseOptions)
+        {
+            Filter = DestinationUniversityCourseOptionFilter
+        };
+
         // Ensure the button is disabled if invalid but don't trigger errors as they haven't performed any actions yet
         CreateOrEditCommand.NotifyCanExecuteChanged();
+    }
+    #endregion
+
+    #region Filters
+    private bool DestinationUniversityCourseOptionFilter(object arg)
+    {
+        if (arg is not Course course)
+        {
+            return false;
+        }
+
+        return equivalentCourse is not null &&
+               course.Equivalencies.Contains(equivalentCourse);
     }
     #endregion
 
@@ -119,7 +180,64 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
         editingStudyPlan.Notes = Notes;
         editingStudyPlan.UpdatedAt = DateTime.Now;
 
+        editingStudyPlan.HomeUniversityCourses.Clear();
+        foreach (var homeUniversityCourse in HomeUniversityCourses)
+        {
+            editingStudyPlan.HomeUniversityCourses.Add(homeUniversityCourse);
+        }
+
+        editingStudyPlan.DestinationUniversityCourses.Clear();
+        foreach (var destinationUniversityCourse in DestinationUniversityCourses)
+        {
+            editingStudyPlan.DestinationUniversityCourses.Add(destinationUniversityCourse);
+        }
+
         await SaveChanges(editingStudyPlan);
+    }
+
+    [RelayCommand]
+    private void AddHomeCourse()
+    {
+        if (SelectedHomeUniversityCourse is null || HomeUniversityCourses.Contains(SelectedHomeUniversityCourse))
+        {
+            return;
+        }
+
+        HomeUniversityCourses.Add(SelectedHomeUniversityCourse);
+        AddedHomeCourseInteraction.HandleAsync(null);
+    }
+
+    [RelayCommand]
+    private void AddDestinationCourse()
+    {
+        if (SelectedDestinationUniversityCourse is null ||
+            DestinationUniversityCourses.Contains(SelectedDestinationUniversityCourse))
+        {
+            return;
+        }
+
+        DestinationUniversityCourses.Add(SelectedDestinationUniversityCourse);
+        AddedDestinationCourseInteraction.HandleAsync(null);
+    }
+
+    [RelayCommand]
+    private void RemoveHomeCourse(Course course)
+    {
+        HomeUniversityCourses.Remove(course);
+    }
+
+    [RelayCommand]
+    private void RemoveDestinationCourse(Course course)
+    {
+        DestinationUniversityCourses.Remove(course);
+    }
+
+    [RelayCommand]
+    private void FindEquivalentCourse(Course course)
+    {
+        equivalentCourse = course;
+        DestinationUniversityCourseOptionsView.Refresh();
+        RequestedCourseEquivalencyInteraction.HandleAsync(null);
     }
     #endregion
 }

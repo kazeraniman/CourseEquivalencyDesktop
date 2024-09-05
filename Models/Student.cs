@@ -87,12 +87,10 @@ public class Student : BaseModel
     }
 
     // Handled by EF Core
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     // ReSharper disable UnassignedGetOnlyAutoProperty
     // ReSharper disable CollectionNeverUpdated.Global
-    public ICollection<StudyPlan> StudyPlans { get; }
+    public ICollection<StudyPlan> StudyPlans { get; } = [];
     // ReSharper restore CollectionNeverUpdated.Global
     // ReSharper restore UnassignedGetOnlyAutoProperty
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     #endregion
 }

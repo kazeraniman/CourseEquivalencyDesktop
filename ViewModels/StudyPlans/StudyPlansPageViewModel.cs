@@ -36,11 +36,18 @@ public class StudyPlansPageViewModel : BasePageViewModel<StudyPlan>
     {
         Items.Clear();
 
-        // Using the Include to eagerly load equivalencies and their universities so they are ready on first page view
+        // TODO: Get teh item in the edit window instead to not pull everything for everything at once
+        // Using the Include to eagerly load study plans and related information so they are ready on first page view
         Items.AddRange(DatabaseService.StudyPlans
             .Include(studyPlan => studyPlan.Student)
-            .Include(studyPlan => studyPlan.DestinationUniversity));
-        // TODO: Possibly need to include courses, and then the universities and equivalencies on them too for the edit window, but maybe i just do that in there since it can come from create too
+            .ThenInclude(student => student.University)
+            .ThenInclude(university => university.Courses)
+            .ThenInclude(courses => courses.Equivalencies)
+            .Include(studyPlan => studyPlan.DestinationUniversity)
+            .ThenInclude(university => university.Courses)
+            .ThenInclude(courses => courses.Equivalencies)
+            .Include(studyPlan => studyPlan.HomeUniversityCourses)
+            .Include(studyPlan => studyPlan.DestinationUniversityCourses));
     }
 
     protected override Task<HashSet<StudyPlan>> Remove(StudyPlan item)
