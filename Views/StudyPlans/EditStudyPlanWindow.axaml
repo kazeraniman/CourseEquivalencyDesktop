@@ -23,7 +23,8 @@
         <vm:EditStudyPlanViewModel />
     </Design.DataContext>
 
-    <general:BaseCreateOrEditWindow WindowAndButtonText="{Binding WindowAndButtonText}"
+    <general:BaseCreateOrEditWindow x:Name="WindowRoot"
+                                    WindowAndButtonText="{Binding WindowAndButtonText}"
                                     CancelCommand="{Binding CancelCommand}"
                                     CreateOrEditCommand="{Binding CreateOrEditCommand}">
         <general:BaseCreateOrEditWindow.Resources>
@@ -153,6 +154,171 @@
                 AcceptsReturn="True"
                 TextHorizontalContentAlignment="Left"
                 TextVerticalContentAlignment="Top" />
+            <Grid ColumnDefinitions="*,Auto,40,*,Auto"
+                  RowDefinitions="Auto,5,Auto,5,Auto">
+                <Grid.Styles>
+                    <Style Selector="TextBlock.CourseListHeader">
+                        <Setter Property="FontWeight"
+                                Value="Bold" />
+                        <Setter Property="FontSize"
+                                Value="18" />
+                        <Setter Property="Grid.ColumnSpan"
+                                Value="2" />
+                    </Style>
+                    <Style Selector="Border.CourseListContainer">
+                        <Setter Property="Background"
+                                Value="{StaticResource BackgroundGrey200}" />
+                        <Setter Property="CornerRadius"
+                                Value="6" />
+                        <Setter Property="Padding"
+                                Value="8,3,3,3" />
+                        <Setter Property="Grid.ColumnSpan"
+                                Value="2" />
+                    </Style>
+                    <Style Selector="SelectableTextBlock.CourseListItem">
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                        <Setter Property="FontWeight"
+                                Value="SemiBold" />
+                        <Setter Property="FontSize"
+                                Value="14" />
+                    </Style>
+                </Grid.Styles>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Classes="CourseListHeader"
+                           Text="Home University Courses" />
+                <AutoCompleteBox x:Name="HomeUniversityCourseAutoCompleteBox"
+                                 Grid.Row="2"
+                                 Grid.Column="0"
+                                 Classes="StyledTextBox"
+                                 MinimumPrefixLength="0"
+                                 Watermark="Search courses..."
+                                 ItemsSource="{Binding HomeUniversityCourseOptionsView, Mode=TwoWay}"
+                                 FilterMode="Contains"
+                                 SelectedItem="{Binding SelectedHomeUniversityCourse}" />
+                <Button Grid.Row="2"
+                        Grid.Column="1"
+                        Theme="{StaticResource BlueButton}"
+                        Command="{Binding AddHomeCourseCommand}"
+                        ToolTip.Tip="Add Home Course"
+                        Margin="10,0,0,0">
+                    <Path Classes="MyPath"
+                          Stroke="White"
+                          Height="25"
+                          Width="25"
+                          Data="{StaticResource CreateIconData}" />
+                </Button>
+                <Border Grid.Row="4"
+                        Grid.Column="0"
+                        Classes="CourseListContainer"
+                        IsVisible="{Binding !!HomeUniversityCourses.Count}">
+                    <ItemsRepeater ItemsSource="{Binding HomeUniversityCourses, Mode=TwoWay}">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate DataType="m:Course">
+                                <Border>
+                                    <Grid ColumnDefinitions="Auto,20,*,20,Auto,Auto"
+                                          RowDefinitions="Auto">
+                                        <SelectableTextBlock Grid.Row="0"
+                                                             Grid.Column="0"
+                                                             Classes="CourseListItem"
+                                                             Text="{Binding CourseId}"
+                                                             ToolTip.Tip="{Binding CourseId}" />
+                                        <SelectableTextBlock Grid.Row="0"
+                                                             Grid.Column="2"
+                                                             Classes="CourseListItem"
+                                                             Text="{Binding Name}"
+                                                             TextWrapping="NoWrap"
+                                                             ToolTip.Tip="{Binding Name}" />
+                                        <Button Grid.Row="0"
+                                                Grid.Column="4"
+                                                Theme="{StaticResource GreyButton}"
+                                                Command="{Binding #WindowRoot.((vm:EditStudyPlanViewModel)DataContext).RemoveHomeCourseCommand}"
+                                                CommandParameter="{Binding}"
+                                                Margin="5"
+                                                ToolTip.Tip="Delete">
+                                            <Path Classes="MyPath"
+                                                  Data="{StaticResource DeleteIconData}" />
+                                        </Button>
+                                        <Button Grid.Row="0"
+                                                Grid.Column="5"
+                                                Theme="{StaticResource GreyButton}"
+                                                Command="{Binding #WindowRoot.((vm:EditStudyPlanViewModel)DataContext).FindEquivalentCourseCommand}"
+                                                CommandParameter="{Binding}"
+                                                Margin="5"
+                                                ToolTip.Tip="Find Equivalent">
+                                            <Path Classes="MyPath"
+                                                  Data="{StaticResource EquivalencyIconData}" />
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </Border>
+                <TextBlock Grid.Row="0"
+                           Grid.Column="3"
+                           Classes="CourseListHeader"
+                           Text="Destination University Courses" />
+                <AutoCompleteBox x:Name="DestinationUniversityCourseAutoCompleteBox"
+                                 Grid.Row="2"
+                                 Grid.Column="3"
+                                 Classes="StyledTextBox"
+                                 Watermark="Search courses..."
+                                 MinimumPrefixLength="0"
+                                 ItemsSource="{Binding DestinationUniversityCourseOptionsView, Mode=TwoWay}"
+                                 FilterMode="Contains"
+                                 SelectedItem="{Binding SelectedDestinationUniversityCourse}" />
+                <Button Grid.Row="2"
+                        Grid.Column="4"
+                        Theme="{StaticResource BlueButton}"
+                        Command="{Binding AddDestinationCourseCommand}"
+                        ToolTip.Tip="Add Destination Course"
+                        Margin="10,0,0,0">
+                    <Path Classes="MyPath"
+                          Stroke="White"
+                          Height="25"
+                          Width="25"
+                          Data="{StaticResource CreateIconData}" />
+                </Button>
+                <Border Grid.Row="4"
+                        Grid.Column="3"
+                        Classes="CourseListContainer"
+                        IsVisible="{Binding !!DestinationUniversityCourses.Count}">
+                    <ItemsRepeater ItemsSource="{Binding DestinationUniversityCourses, Mode=TwoWay}">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate DataType="m:Course">
+                                <Border>
+                                    <Grid ColumnDefinitions="Auto,20,*,20,Auto"
+                                          RowDefinitions="Auto">
+                                        <SelectableTextBlock Grid.Row="0"
+                                                             Grid.Column="0"
+                                                             Classes="CourseListItem"
+                                                             Text="{Binding CourseId}"
+                                                             ToolTip.Tip="{Binding CourseId}" />
+                                        <SelectableTextBlock Grid.Row="0"
+                                                             Grid.Column="2"
+                                                             Classes="CourseListItem"
+                                                             Text="{Binding Name}"
+                                                             TextWrapping="NoWrap"
+                                                             ToolTip.Tip="{Binding Name}" />
+                                        <Button Grid.Row="0"
+                                                Grid.Column="4"
+                                                Theme="{StaticResource GreyButton}"
+                                                Command="{Binding #WindowRoot.((vm:EditStudyPlanViewModel)DataContext).RemoveDestinationCourseCommand}"
+                                                CommandParameter="{Binding}"
+                                                Margin="5"
+                                                ToolTip.Tip="Delete">
+                                            <Path Classes="MyPath"
+                                                  Data="{StaticResource DeleteIconData}" />
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </Border>
+            </Grid>
         </general:BaseCreateOrEditWindow.FormContents>
     </general:BaseCreateOrEditWindow>
 </Window>

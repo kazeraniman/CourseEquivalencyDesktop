@@ -61,15 +61,23 @@ public class Course : BaseModel
     }
 
     // Handled by EF Core
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     // ReSharper disable UnassignedGetOnlyAutoProperty
     // ReSharper disable CollectionNeverUpdated.Global
-    public ICollection<Course> Equivalencies { get; }
-    public ICollection<Course> EquivalenciesOf { get; }
-    public ICollection<StudyPlan> HomeUniversityCoursesStudyPlans { get; }
-    public ICollection<StudyPlan> DestinationUniversityCoursesStudyPlans { get; }
+    public ICollection<Course> Equivalencies { get; } = [];
+
+    public ICollection<Course> EquivalenciesOf { get; } = [];
+
+    public ICollection<StudyPlan> HomeUniversityCoursesStudyPlans { get; } = [];
+
+    public ICollection<StudyPlan> DestinationUniversityCoursesStudyPlans { get; } = [];
     // ReSharper restore CollectionNeverUpdated.Global
     // ReSharper restore UnassignedGetOnlyAutoProperty
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    #endregion
+
+    #region Object
+    public override string ToString()
+    {
+        return $"{CourseId} - {Name}";
+    }
     #endregion
 }

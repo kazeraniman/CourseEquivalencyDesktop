@@ -171,7 +171,7 @@
 
         <!-- Shape textboxes and dropdowns used for form inputs so that the contents don't look tight. -->
         <Style
-            Selector="TextBox.StyledTextBox, controls|FormInputComboBox.StyledTextBox, NumericUpDown.StyledTextBox, controls|CustomCalendarDatePicker.StyledTextBox">
+            Selector="TextBox.StyledTextBox, controls|FormInputComboBox.StyledTextBox, NumericUpDown.StyledTextBox, controls|CustomCalendarDatePicker.StyledTextBox, AutoCompleteBox.StyledTextBox">
             <Setter Property="Padding"
                     Value="10,10,0,10" />
             <Setter Property="FontWeight"
