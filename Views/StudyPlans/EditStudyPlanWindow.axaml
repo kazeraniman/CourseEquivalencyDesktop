@@ -1,0 +1,158 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.StudyPlans"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
+        xmlns:general="using:CourseEquivalencyDesktop.Views.General"
+        xmlns:u="using:CourseEquivalencyDesktop.Utility"
+        xmlns:m="using:CourseEquivalencyDesktop.Models"
+        xmlns:v="using:CourseEquivalencyDesktop.Views.StudyPlans"
+        mc:Ignorable="d"
+        d:DesignWidth="1280"
+        d:DesignHeight="720"
+        x:Class="CourseEquivalencyDesktop.Views.StudyPlans.EditStudyPlanWindow"
+        x:DataType="vm:EditStudyPlanViewModel"
+        Title="{Binding WindowAndButtonText}"
+        CanResize="False"
+        Width="1280"
+        Height="720"
+        WindowStartupLocation="CenterOwner">
+
+    <Design.DataContext>
+        <vm:EditStudyPlanViewModel />
+    </Design.DataContext>
+
+    <general:BaseCreateOrEditWindow WindowAndButtonText="{Binding WindowAndButtonText}"
+                                    CancelCommand="{Binding CancelCommand}"
+                                    CreateOrEditCommand="{Binding CreateOrEditCommand}">
+        <general:BaseCreateOrEditWindow.Resources>
+            <u:StringReverseConverter x:Key="StringReverseConverter" />
+            <u:ComparisonConverter x:Key="ComparisonConverter" />
+        </general:BaseCreateOrEditWindow.Resources>
+        <general:BaseCreateOrEditWindow.FormContents>
+            <controls:FormInputTextBox LabelText="Student"
+                                       IsEnabled="False"
+                                       Icon="{StaticResource StudentIconData}">
+                <controls:FormInputTextBox.Text>
+                    <MultiBinding StringFormat="{}{0} - {1}">
+                        <Binding Path="Student.StudentId" />
+                        <Binding Path="Student.Name" />
+                    </MultiBinding>
+                </controls:FormInputTextBox.Text>
+            </controls:FormInputTextBox>
+            <controls:FormInputTextBox LabelText="Destination University"
+                                       IsEnabled="False"
+                                       Text="{Binding DestinationUniversity.Name}"
+                                       Icon="{StaticResource UniversityIconData}" />
+
+            <StackPanel Spacing="5">
+                <Label FontWeight="Bold"
+                       Content="Set the study plan status" />
+                <Border Padding="10"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource BorderGreyAvaloniaControl}"
+                        CornerRadius="6"
+                        Background="{StaticResource BackgroundWhiteAvaloniaControl}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="20">
+                        <RadioButton GroupName="StudyPlanStatusRadioButtonGroup"
+                                     IsChecked="{Binding Path=((vm:EditStudyPlanViewModel)DataContext).StudyPlanStatus, RelativeSource={RelativeSource FindAncestor, AncestorType=v:EditStudyPlanWindow}, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static m:StudyPlanStatus.Pending}}">
+                            <v:StudyPlanStatusBadgeView StudyPlanStatus="Pending" />
+                        </RadioButton>
+                        <RadioButton GroupName="StudyPlanStatusRadioButtonGroup"
+                                     IsChecked="{Binding Path=((vm:EditStudyPlanViewModel)DataContext).StudyPlanStatus, RelativeSource={RelativeSource FindAncestor, AncestorType=v:EditStudyPlanWindow}, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static m:StudyPlanStatus.Cancelled}}">
+                            <v:StudyPlanStatusBadgeView StudyPlanStatus="Cancelled" />
+                        </RadioButton>
+                        <RadioButton GroupName="StudyPlanStatusRadioButtonGroup"
+                                     IsChecked="{Binding Path=((vm:EditStudyPlanViewModel)DataContext).StudyPlanStatus, RelativeSource={RelativeSource FindAncestor, AncestorType=v:EditStudyPlanWindow}, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static m:StudyPlanStatus.Complete}}">
+                            <v:StudyPlanStatusBadgeView StudyPlanStatus="Complete" />
+                        </RadioButton>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Spacing="5">
+                <Label FontWeight="Bold"
+                       Content="Set the study plan term" />
+                <Border Padding="10"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource BorderGreyAvaloniaControl}"
+                        CornerRadius="6"
+                        Background="{StaticResource BackgroundWhiteAvaloniaControl}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="20">
+                        <controls:FormInputComboBox LabelText="Academic Term"
+                                                    ItemsSource="{Binding AcademicTerms}"
+                                                    PlaceholderText="Academic Term"
+                                                    SelectedItem="{Binding AcademicTerm}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Icon="{StaticResource CalendarIconData}"
+                                                    MinWidth="200">
+                            <controls:FormInputComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ., Converter={StaticResource StringReverseConverter}}" />
+                                </DataTemplate>
+                            </controls:FormInputComboBox.ItemTemplate>
+                        </controls:FormInputComboBox>
+                        <controls:FormInputComboBox LabelText="Seasonal Term"
+                                                    ItemsSource="{Binding SeasonalTerms}"
+                                                    PlaceholderText="Seasonal Term"
+                                                    SelectedItem="{Binding SeasonalTerm}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Icon="{StaticResource CalendarIconData}"
+                                                    MinWidth="200">
+                            <controls:FormInputComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" />
+                                </DataTemplate>
+                            </controls:FormInputComboBox.ItemTemplate>
+                        </controls:FormInputComboBox>
+                        <StackPanel Spacing="5">
+                            <Label FontWeight="Bold"
+                                   Content="Year"
+                                   Target="YearDatePicker" />
+                            <NumericUpDown x:Name="YearDatePicker"
+                                           Classes="StyledTextBox"
+                                           Value="{Binding Year}"
+                                           Increment="1"
+                                           FormatString="0"
+                                           Minimum="1"
+                                           Maximum="9999"
+                                           MinWidth="200" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Spacing="5">
+                <Label FontWeight="Bold"
+                       Content="Enter a due date (optional)"
+                       Target="DueDateCalendarDatePicker" />
+                <controls:CustomCalendarDatePicker x:Name="DueDateCalendarDatePicker"
+                                                   Classes="StyledTextBox"
+                                                   SelectedDate="{Binding DueDate}"
+                                                   Width="200">
+                    <controls:CustomCalendarDatePicker.Styles>
+                        <Style Selector="controls|CustomCalendarDatePicker.StyledTextBox Path">
+                            <Setter Property="Margin"
+                                    Value="0" />
+                        </Style>
+                    </controls:CustomCalendarDatePicker.Styles>
+                </controls:CustomCalendarDatePicker>
+            </StackPanel>
+
+            <controls:FormInputTextBox
+                LabelText="Enter notes (optional) (the notes will not appear on the exported study plan)"
+                Watermark="Anything you want to note about the study plan."
+                Text="{Binding Notes}"
+                Icon="{StaticResource DescriptionIconData}"
+                MinLines="10"
+                MaxLines="10"
+                TextWrapping="Wrap"
+                AcceptsReturn="True"
+                TextHorizontalContentAlignment="Left"
+                TextVerticalContentAlignment="Top" />
+        </general:BaseCreateOrEditWindow.FormContents>
+    </general:BaseCreateOrEditWindow>
+</Window>

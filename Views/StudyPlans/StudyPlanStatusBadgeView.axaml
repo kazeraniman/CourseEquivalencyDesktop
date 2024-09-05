@@ -1,0 +1,34 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.StudyPlans">
+    <Design.PreviewWith>
+        <controls:StudyPlanStatusBadgeView StudyPlanStatus="Cancelled" />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|StudyPlanStatusBadgeView">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border x:Name="Border"
+                        Padding="12 6"
+                        CornerRadius="20"
+                        Height="32"
+                        HorizontalAlignment="Center"
+                        ToolTip.Tip="{TemplateBinding StudyPlanStatus}">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="6"
+                                Height="20"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center">
+                        <TextBlock x:Name="TextBlock"
+                                   VerticalAlignment="Center" />
+                        <Path x:Name="Path"
+                              Classes="MyPath"
+                              VerticalAlignment="Center"
+                              Height="25"
+                              Width="25" />
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

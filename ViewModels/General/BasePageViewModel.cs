@@ -131,18 +131,25 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
     #endregion
 
     #region Commands
-    [RelayCommand]
-    private async Task Create()
+    protected virtual async Task<T?> CreateInternal()
     {
         var itemToCreate = await CreateOrEditInteraction.HandleAsync(null);
         if (itemToCreate is not null)
         {
             Items.Add(itemToCreate);
         }
+
+        return itemToCreate;
     }
 
     [RelayCommand]
-    private async Task Edit(T item)
+    private async Task<T?> Create()
+    {
+        return await CreateInternal();
+    }
+
+    [RelayCommand]
+    protected async Task<T?> Edit(T item)
     {
         var modifiedItem = await CreateOrEditInteraction.HandleAsync(item);
         if (modifiedItem is not null)
@@ -150,6 +157,8 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
             // This is needed to reload the sort in case the order changed (the values should be correctly propagated without this)
             ItemsCollectionView.Refresh();
         }
+
+        return modifiedItem;
     }
 
     [RelayCommand]

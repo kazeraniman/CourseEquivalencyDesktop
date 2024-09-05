@@ -4,6 +4,7 @@ using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.ViewModels.Equivalencies;
 using CourseEquivalencyDesktop.ViewModels.Settings;
 using CourseEquivalencyDesktop.ViewModels.Students;
+using CourseEquivalencyDesktop.ViewModels.StudyPlans;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,6 +24,10 @@ public static class ServiceCollectionExtensions
     public delegate CreateOrEditCourseViewModel CreateOrEditCourseViewModelFactory(Course? course);
 
     public delegate CreateOrEditStudentViewModel CreateOrEditStudentViewModelFactory(Student? student);
+
+    public delegate CreateStudyPlanViewModel CreateStudyPlanViewModelFactory(StudyPlan? studyPlan);
+
+    public delegate EditStudyPlanViewModel EditStudyPlanViewModelFactory(StudyPlan? studyPlan);
     #endregion
 
     #region Services
@@ -36,6 +41,7 @@ public static class ServiceCollectionExtensions
         collection.AddTransient<UniversitiesPageViewModel>();
         collection.AddTransient<StudentsPageViewModel>();
         collection.AddTransient<EquivalenciesPageViewModel>();
+        collection.AddTransient<StudyPlansPageViewModel>();
         collection.AddTransient<SettingsPageViewModel>();
         collection.AddTransient<CoursesPageViewModelFactory>(provider => equivalentCourse =>
         {
@@ -62,6 +68,18 @@ public static class ServiceCollectionExtensions
             var databaseService = provider.GetRequiredService<DatabaseService>();
             var genericDialogService = provider.GetRequiredService<GenericDialogService>();
             return new CreateOrEditStudentViewModel(student, databaseService, genericDialogService);
+        });
+        collection.AddTransient<CreateStudyPlanViewModelFactory>(provider => studyPlan =>
+        {
+            var databaseService = provider.GetRequiredService<DatabaseService>();
+            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
+            return new CreateStudyPlanViewModel(studyPlan, databaseService, genericDialogService);
+        });
+        collection.AddTransient<EditStudyPlanViewModelFactory>(provider => studyPlan =>
+        {
+            var databaseService = provider.GetRequiredService<DatabaseService>();
+            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
+            return new EditStudyPlanViewModel(studyPlan, databaseService, genericDialogService);
         });
     }
     #endregion

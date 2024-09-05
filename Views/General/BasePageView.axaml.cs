@@ -28,6 +28,9 @@ public class BasePageView : TemplatedControl
     public static readonly StyledProperty<int> DefaultSortColumnIndexProperty =
         AvaloniaProperty.Register<BasePageView, int>(nameof(DefaultSortColumnIndexProperty));
 
+    public static readonly StyledProperty<ListSortDirection> DefaultSortDirectionProperty =
+        AvaloniaProperty.Register<BasePageView, ListSortDirection>(nameof(DefaultSortDirectionProperty));
+
     public static readonly StyledProperty<string?> SearchTextProperty =
         AvaloniaProperty.Register<BasePageView, string?>(nameof(SearchTextProperty),
             defaultBindingMode: BindingMode.TwoWay);
@@ -72,6 +75,12 @@ public class BasePageView : TemplatedControl
     {
         get => GetValue(DefaultSortColumnIndexProperty);
         set => SetValue(DefaultSortColumnIndexProperty, value);
+    }
+
+    public ListSortDirection DefaultSortDirection
+    {
+        get => GetValue(DefaultSortDirectionProperty);
+        set => SetValue(DefaultSortDirectionProperty, value);
     }
 
     public string? SearchText
@@ -169,7 +178,7 @@ public class BasePageView : TemplatedControl
     #region Public Functionality
     public void ApplyInitialSort()
     {
-        dataGrid?.Columns[DefaultSortColumnIndex].Sort(ListSortDirection.Ascending);
+        dataGrid?.Columns[DefaultSortColumnIndex].Sort(DefaultSortDirection);
     }
     #endregion
 }
