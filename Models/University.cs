@@ -38,6 +38,7 @@ public class University : BaseModel
     // ReSharper disable CollectionNeverUpdated.Global
     public ICollection<Course> Courses { get; }
     public ICollection<Student> Students { get; }
+    public ICollection<StudyPlan> StudyPlans { get; }
     // ReSharper restore CollectionNeverUpdated.Global
     // ReSharper restore UnassignedGetOnlyAutoProperty
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

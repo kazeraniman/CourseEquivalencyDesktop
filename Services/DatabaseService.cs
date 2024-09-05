@@ -24,6 +24,7 @@ public class DatabaseService : DbContext
     public DbSet<Course> Courses { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<CourseEquivalency> Equivalencies { get; set; }
+    public DbSet<StudyPlan> StudyPlans { get; set; }
     #endregion
 
     #region Events
@@ -97,6 +98,40 @@ public class DatabaseService : DbContext
             .UsingEntity<CourseEquivalency>(
                 r => r.HasOne(j => j.Course).WithMany(),
                 l => l.HasOne(j => j.EquivalentCourse).WithMany());
+
+        modelBuilder.Entity<StudyPlan>()
+            .Property(e => e.Status)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<StudyPlan>()
+            .Property(e => e.Seasonal)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<StudyPlan>()
+            .Property(e => e.Academic)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<Student>()
+            .HasMany(e => e.StudyPlans)
+            .WithOne(e => e.Student)
+            .HasForeignKey(e => e.StudentId)
+            .HasPrincipalKey(e => e.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<University>()
+            .HasMany(e => e.StudyPlans)
+            .WithOne(e => e.DestinationUniversity)
+            .HasForeignKey(e => e.DestinationUniversityId)
+            .HasPrincipalKey(e => e.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<StudyPlan>()
+            .HasMany(e => e.HomeUniversityCourses)
+            .WithMany(e => e.HomeUniversityCoursesStudyPlans);
+
+        modelBuilder.Entity<StudyPlan>()
+            .HasMany(e => e.DestinationUniversityCourses)
+            .WithMany(e => e.DestinationUniversityCoursesStudyPlans);
     }
     #endregion
 

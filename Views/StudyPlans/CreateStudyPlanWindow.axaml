@@ -1,0 +1,63 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.StudyPlans"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
+        xmlns:general="using:CourseEquivalencyDesktop.Views.General"
+        xmlns:m="using:CourseEquivalencyDesktop.Models"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="300"
+        x:Class="CourseEquivalencyDesktop.Views.StudyPlans.CreateStudyPlanWindow"
+        x:DataType="vm:CreateStudyPlanViewModel"
+        Title="{Binding WindowAndButtonText}"
+        CanResize="False"
+        Width="800"
+        Height="300"
+        WindowStartupLocation="CenterOwner">
+
+    <Design.DataContext>
+        <vm:CreateStudyPlanViewModel />
+    </Design.DataContext>
+
+    <general:BaseCreateOrEditWindow WindowAndButtonText="{Binding WindowAndButtonText}"
+                                    CancelCommand="{Binding CancelCommand}"
+                                    CreateOrEditCommand="{Binding CreateOrEditCommand}">
+        <general:BaseCreateOrEditWindow.FormContents>
+            <controls:FormInputComboBox x:Name="StudentComboBox"
+                                        LabelText="Select a student"
+                                        ItemsSource="{Binding Students}"
+                                        PlaceholderText="Select a student"
+                                        SelectedItem="{Binding Student}"
+                                        HorizontalAlignment="Stretch"
+                                        Icon="{StaticResource StudentIconData}">
+                <controls:FormInputComboBox.ItemTemplate>
+                    <DataTemplate DataType="m:Student">
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} - {1}">
+                                    <Binding Path="StudentId" />
+                                    <Binding Path="Name" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </controls:FormInputComboBox.ItemTemplate>
+            </controls:FormInputComboBox>
+            <controls:FormInputComboBox x:Name="DestinationUniversityComboBox"
+                                        LabelText="Select a destination university"
+                                        ItemsSource="{Binding Universities}"
+                                        PlaceholderText="Select a destination university"
+                                        SelectedItem="{Binding DestinationUniversity}"
+                                        HorizontalAlignment="Stretch"
+                                        Icon="{StaticResource UniversityIconData}">
+                <controls:FormInputComboBox.ItemTemplate>
+                    <DataTemplate DataType="m:University">
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </controls:FormInputComboBox.ItemTemplate>
+            </controls:FormInputComboBox>
+        </general:BaseCreateOrEditWindow.FormContents>
+    </general:BaseCreateOrEditWindow>
+</Window>

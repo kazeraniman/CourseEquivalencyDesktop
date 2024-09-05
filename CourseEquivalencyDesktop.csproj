@@ -74,6 +74,18 @@
             <DependentUpon>CoursesPageView.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Views\StudyPlans\StudyPlansPageView.axaml.cs">
+            <DependentUpon>StudentsPageView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\StudyPlans\CreateStudyPlanWindow.axaml.cs">
+            <DependentUpon>CreateOrEditUniversityWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Views\StudyPlans\EditStudyPlanWindow.axaml.cs">
+            <DependentUpon>EditStudyPlanWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

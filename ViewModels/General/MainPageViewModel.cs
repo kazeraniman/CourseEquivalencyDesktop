@@ -8,6 +8,7 @@ using CourseEquivalencyDesktop.ViewModels.Equivalencies;
 using CourseEquivalencyDesktop.ViewModels.Home;
 using CourseEquivalencyDesktop.ViewModels.Settings;
 using CourseEquivalencyDesktop.ViewModels.Students;
+using CourseEquivalencyDesktop.ViewModels.StudyPlans;
 using CourseEquivalencyDesktop.ViewModels.Universities;
 
 namespace CourseEquivalencyDesktop.ViewModels.General;
@@ -35,6 +36,7 @@ public partial class MainPageViewModel : BaseViewModel
                 new NavigationPageInfo("Courses", "CourseIconData", new CoursesPageViewModel()),
                 new NavigationPageInfo("Equivalencies", "EquivalencyIconData", new EquivalenciesPageViewModel()),
                 new NavigationPageInfo("Students", "StudentIconData", new StudentsPageViewModel()),
+                new NavigationPageInfo("StudyPlans", "StudyPlansIconData", new StudyPlansPageViewModel()),
                 new NavigationPageInfo("Settings", "SettingsIconData", new SettingsPageViewModel())
             ];
         }
@@ -51,6 +53,8 @@ public partial class MainPageViewModel : BaseViewModel
                     Ioc.Default.GetRequiredService<EquivalenciesPageViewModel>()),
                 new NavigationPageInfo("Students", "StudentIconData",
                     Ioc.Default.GetRequiredService<StudentsPageViewModel>()),
+                new NavigationPageInfo("StudyPlans", "StudyPlansIconData",
+                    Ioc.Default.GetRequiredService<StudyPlansPageViewModel>()),
                 new NavigationPageInfo("Settings", "SettingsIconData",
                     Ioc.Default.GetRequiredService<SettingsPageViewModel>())
             ];

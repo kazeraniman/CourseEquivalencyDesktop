@@ -116,7 +116,7 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
         async Task Update()
         {
             var editingUniversity =
-                await DatabaseService.Universities.FirstOrDefaultAsync(uni => uni.Id == Item!.Id);
+                await DatabaseService.Universities.FindAsync(Item!.Id);
             if (editingUniversity is null)
             {
                 await GenericDialogService.OpenGenericDialog(UNIVERSITY_EDITING_NOT_EXIST_TITLE,

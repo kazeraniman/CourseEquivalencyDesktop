@@ -152,7 +152,7 @@ public partial class CreateOrEditCourseViewModel : BaseCreateOrEditViewModel<Cou
         async Task Update()
         {
             var editingCourse =
-                await DatabaseService.Courses.FirstOrDefaultAsync(cou => cou.Id == Item!.Id);
+                await DatabaseService.Courses.FindAsync(Item!.Id);
             if (editingCourse is null)
             {
                 await GenericDialogService.OpenGenericDialog(COURSE_EDITING_NOT_EXIST_TITLE,

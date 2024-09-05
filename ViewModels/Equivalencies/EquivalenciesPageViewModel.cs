@@ -11,7 +11,7 @@ namespace CourseEquivalencyDesktop.ViewModels.Equivalencies;
 public class EquivalenciesPageViewModel : BasePageViewModel<CourseEquivalency>
 {
     #region Constants
-    private const string COURSE_DELETE_BODY =
+    private const string EQUIVALENCY_DELETE_BODY =
         "Are you sure you wish to delete the equivalency between \"{0}\" and \"{1}\"?\nThis action cannot be undone and will delete all associated entries.";
     #endregion
 
@@ -62,7 +62,7 @@ public class EquivalenciesPageViewModel : BasePageViewModel<CourseEquivalency>
 
     protected override string GetDeleteBody(CourseEquivalency item)
     {
-        return string.Format(COURSE_DELETE_BODY, item.Course.Name, item.EquivalentCourse.Name);
+        return string.Format(EQUIVALENCY_DELETE_BODY, item.Course.Name, item.EquivalentCourse.Name);
     }
 
     protected override bool Filter(object arg)

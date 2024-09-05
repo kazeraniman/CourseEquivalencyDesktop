@@ -7,6 +7,9 @@ using CourseEquivalencyDesktop.ViewModels.Courses;
 
 namespace CourseEquivalencyDesktop.Utility;
 
+/// <summary>
+///     Custom converter which returns true if the provided course does not have an equivalency with the target course.
+/// </summary>
 public class ShowCreateEquivalencyConverter : IMultiValueConverter
 {
     public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)

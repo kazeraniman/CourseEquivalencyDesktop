@@ -173,7 +173,7 @@ public partial class CreateOrEditStudentViewModel : BaseCreateOrEditViewModel<St
         async Task Update()
         {
             var editingStudent =
-                await DatabaseService.Students.FirstOrDefaultAsync(stu => stu.Id == Item!.Id);
+                await DatabaseService.Students.FindAsync(Item!.Id);
             if (editingStudent is null)
             {
                 await GenericDialogService.OpenGenericDialog(STUDENT_EDITING_NOT_EXIST_TITLE,
