@@ -1,0 +1,47 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:CourseEquivalencyDesktop.Views.Home">
+    <Design.PreviewWith>
+        <controls:HomePageItemCountView Label="Label"
+                                        Icon="{StaticResource HomeIconData}"
+                                        Count="502"
+                                        Width="300" />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|HomePageItemCountView">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Padding="8"
+                        CornerRadius="12"
+                        Background="{StaticResource BackgroundGrey50}">
+                    <StackPanel>
+                        <Border Padding="16">
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Spacing="8">
+                                <Path Classes="MyPath"
+                                      Height="25"
+                                      Width="25"
+                                      x:Name="TextBoxPath"
+                                      Data="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <TextBlock Text="{TemplateBinding Label}"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold" />
+                            </StackPanel>
+                        </Border>
+                        <Border Padding="16 32"
+                                CornerRadius="12"
+                                Background="White">
+                            <TextBlock HorizontalAlignment="Center"
+                                       FontWeight="Bold"
+                                       FontSize="24"
+                                       LineHeight="32"
+                                       Text="{TemplateBinding Count}" />
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

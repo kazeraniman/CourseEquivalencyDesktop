@@ -2,6 +2,7 @@
 using CourseEquivalencyDesktop.ViewModels.Courses;
 using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.ViewModels.Equivalencies;
+using CourseEquivalencyDesktop.ViewModels.Home;
 using CourseEquivalencyDesktop.ViewModels.Settings;
 using CourseEquivalencyDesktop.ViewModels.Students;
 using CourseEquivalencyDesktop.ViewModels.StudyPlans;
@@ -38,6 +39,7 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<DatabaseService>();
         collection.AddSingleton<GenericDialogService>();
         collection.AddTransient<DatabaseSelectionWizardViewModel>();
+        collection.AddTransient<HomePageViewModel>();
         collection.AddTransient<UniversitiesPageViewModel>();
         collection.AddTransient<StudentsPageViewModel>();
         collection.AddTransient<EquivalenciesPageViewModel>();

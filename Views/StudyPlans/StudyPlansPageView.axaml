@@ -35,19 +35,19 @@
         </general:BasePageView.Resources>
         <general:BasePageView.DataGridColumns>
             <dataGridBoundColumns:DataGridStudyPlanStatusColumn Header="Status"
-                                                                Width="0.10*"
+                                                                Width="0.15*"
                                                                 Binding="{Binding Status, DataType=m:StudyPlan}" />
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="ID"
-                                                               Width="0.10*"
+                                                               Width="0.1*"
                                                                Binding="{Binding Student.StudentId, DataType=m:StudyPlan}" />
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="Student"
-                                                               Width="0.20*"
+                                                               Width="0.2*"
                                                                Binding="{Binding Student.Name, DataType=m:StudyPlan}" />
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="Destination University"
-                                                               Width="0.20*"
+                                                               Width="0.2*"
                                                                Binding="{Binding DestinationUniversity.Name, DataType=m:StudyPlan}" />
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="Due Date"
-                                                               Width="0.20*"
+                                                               Width="0.15*"
                                                                CustomSortComparer="{StaticResource DueDateComparer}"
                                                                Binding="{Binding DueDate, DataType=m:StudyPlan, Converter={StaticResource DateTimeFormatConverterShort}}" />
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="Last Updated"

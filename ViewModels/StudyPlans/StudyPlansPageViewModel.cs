@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
@@ -77,6 +78,11 @@ public class StudyPlansPageViewModel : BasePageViewModel<StudyPlan>
 
     protected override bool CanCreate()
     {
+        if (Design.IsDesignMode)
+        {
+            return base.CanCreate();
+        }
+
         return base.CanCreate() && DatabaseService.Universities.Count() >= 2 && DatabaseService.Students.Any();
     }
 

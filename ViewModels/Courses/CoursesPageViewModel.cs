@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
@@ -90,6 +91,11 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
 
     protected override bool CanCreate()
     {
+        if (Design.IsDesignMode)
+        {
+            return base.CanCreate();
+        }
+
         return base.CanCreate() && DatabaseService.Universities.Any();
     }
     #endregion
