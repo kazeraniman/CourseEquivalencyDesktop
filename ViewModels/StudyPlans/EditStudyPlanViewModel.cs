@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -20,6 +21,10 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
     private const string EDIT_TEXT = "Edit Study Plan";
     private const string STUDY_PLAN_EDITING_NOT_EXIST_TITLE = "Study Plan Doesn't Exist";
     private const string STUDY_PLAN_EDITING_NOT_EXIST_BODY = "The study plan you are trying to edit does not exist.";
+    private const string STUDY_PLAN_COMPLETE_MISSING_EQUIVALENCIES_TITLE = "Study Plan Can't Be Complete";
+
+    private const string STUDY_PLAN_COMPLETE_MISSING_EQUIVALENCIES_BODY =
+        "They study plan can't be marked as complete as there are still home university courses without and equivalent in the destination university.";
     #endregion
 
     #region Fields
@@ -170,6 +175,21 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
             await GenericDialogService.OpenGenericDialog(STUDY_PLAN_EDITING_NOT_EXIST_TITLE,
                 STUDY_PLAN_EDITING_NOT_EXIST_BODY, Constants.GenericStrings.OKAY);
             return;
+        }
+
+        if (StudyPlanStatus == StudyPlanStatus.Complete)
+        {
+            var destinationUniversityEquivalencies = new HashSet<int>(DestinationUniversityCourses
+                .SelectMany(destinationCourse => destinationCourse.Equivalencies
+                    .Select(destinationCourseEquivalency => destinationCourseEquivalency.Id)));
+
+            if (HomeUniversityCourses.Any(homeUniversityCourse =>
+                    !destinationUniversityEquivalencies.Contains(homeUniversityCourse.Id)))
+            {
+                await GenericDialogService.OpenGenericDialog(STUDY_PLAN_COMPLETE_MISSING_EQUIVALENCIES_TITLE,
+                    STUDY_PLAN_COMPLETE_MISSING_EQUIVALENCIES_BODY, Constants.GenericStrings.OKAY);
+                return;
+            }
         }
 
         editingStudyPlan.Status = StudyPlanStatus;
