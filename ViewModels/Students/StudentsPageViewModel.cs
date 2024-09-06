@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
@@ -60,6 +61,11 @@ public class StudentsPageViewModel : BasePageViewModel<Student>
         return string.IsNullOrWhiteSpace(SearchText) || student.Name.CaseInsensitiveContains(SearchText) ||
                student.University.Name.CaseInsensitiveContains(SearchText) ||
                student.StudentId.CaseInsensitiveContains(SearchText);
+    }
+
+    protected override bool CanCreate()
+    {
+        return base.CanCreate() && DatabaseService.Universities.Any();
     }
     #endregion
 }

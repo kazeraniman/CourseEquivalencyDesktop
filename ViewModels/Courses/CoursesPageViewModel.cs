@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -85,6 +86,11 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
                 course.Name.CaseInsensitiveContains(SearchText) ||
                 course.University.Name.CaseInsensitiveContains(SearchText) ||
                 course.CourseId.CaseInsensitiveContains(SearchText));
+    }
+
+    protected override bool CanCreate()
+    {
+        return base.CanCreate() && DatabaseService.Universities.Any();
     }
     #endregion
 
