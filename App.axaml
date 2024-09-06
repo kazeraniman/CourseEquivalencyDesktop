@@ -71,10 +71,13 @@
         <Color x:Key="BackgroundBlue400">#60a5fa</Color>
         <Color x:Key="BackgroundBlue500">#3b82f6</Color>
         <Color x:Key="BackgroundSky100">#e0f2fe</Color>
+        <Color x:Key="BackgroundRed100">#fee2e2</Color>
         <Color x:Key="BackgroundRed300">#fca5a5</Color>
         <Color x:Key="BackgroundRed400">#f87171</Color>
         <Color x:Key="BackgroundRed500">#ef4444</Color>
+        <Color x:Key="BackgroundGreen100">#dcfce7</Color>
         <Color x:Key="BackgroundGreen300">#86efac</Color>
+        <Color x:Key="BackgroundOrange100">#ffedd5</Color>
         <Color x:Key="TextGrey500">#6b7280</Color>
         <Color x:Key="TextGrey600">#4b5563</Color>
         <Color x:Key="TextBlue600">#2563eb</Color>

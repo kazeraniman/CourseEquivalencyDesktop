@@ -155,7 +155,7 @@
                 TextHorizontalContentAlignment="Left"
                 TextVerticalContentAlignment="Top" />
             <Grid ColumnDefinitions="*,Auto,40,*,Auto"
-                  RowDefinitions="Auto,5,Auto,5,Auto">
+                  RowDefinitions="Auto,10,Auto,10,Auto">
                 <Grid.Styles>
                     <Style Selector="TextBlock.CourseListHeader">
                         <Setter Property="FontWeight"
@@ -171,7 +171,7 @@
                         <Setter Property="CornerRadius"
                                 Value="6" />
                         <Setter Property="Padding"
-                                Value="8,3,3,3" />
+                                Value="8" />
                         <Setter Property="Grid.ColumnSpan"
                                 Value="2" />
                     </Style>
@@ -182,6 +182,24 @@
                                 Value="SemiBold" />
                         <Setter Property="FontSize"
                                 Value="14" />
+                    </Style>
+                    <Style Selector="Border.CourseListItem">
+                        <Setter Property="Padding"
+                                Value="10,5,5,5" />
+                        <Setter Property="CornerRadius"
+                                Value="6" />
+                    </Style>
+                    <Style Selector="Border.HasEquivalency">
+                        <Setter Property="Background"
+                                Value="{StaticResource BackgroundGreen100}" />
+                    </Style>
+                    <Style Selector="Border.NoEquivalency">
+                        <Setter Property="Background"
+                                Value="{StaticResource BackgroundRed100}" />
+                    </Style>
+                    <Style Selector="Border.HoveredEquivalency">
+                        <Setter Property="Background"
+                                Value="{StaticResource BackgroundOrange100}" />
                     </Style>
                 </Grid.Styles>
                 <TextBlock Grid.Row="0"
@@ -213,11 +231,18 @@
                         Grid.Column="0"
                         Classes="CourseListContainer"
                         IsVisible="{Binding !!HomeUniversityCourses.Count}">
-                    <ItemsRepeater ItemsSource="{Binding HomeUniversityCourses, Mode=TwoWay}">
+                    <ItemsRepeater x:Name="HomeUniversityCoursesItemsRepeater"
+                                   ItemsSource="{Binding HomeUniversityCourses, Mode=TwoWay}">
+                        <ItemsRepeater.Layout>
+                            <StackLayout Spacing="5" />
+                        </ItemsRepeater.Layout>
                         <ItemsRepeater.ItemTemplate>
                             <DataTemplate DataType="m:Course">
-                                <Border>
-                                    <Grid ColumnDefinitions="Auto,20,*,20,Auto,Auto"
+                                <Border Classes="CourseListItem"
+                                        Tag="{Binding}"
+                                        PointerEntered="CourseListItemPointerEnteredHandler"
+                                        PointerExited="CourseListItemPointerExitedHandler">
+                                    <Grid ColumnDefinitions="0.2*,20,0.8*,20,Auto,Auto"
                                           RowDefinitions="Auto">
                                         <SelectableTextBlock Grid.Row="0"
                                                              Grid.Column="0"
@@ -285,11 +310,18 @@
                         Grid.Column="3"
                         Classes="CourseListContainer"
                         IsVisible="{Binding !!DestinationUniversityCourses.Count}">
-                    <ItemsRepeater ItemsSource="{Binding DestinationUniversityCourses, Mode=TwoWay}">
+                    <ItemsRepeater x:Name="DestinationUniversityCoursesItemsRepeater"
+                                   ItemsSource="{Binding DestinationUniversityCourses, Mode=TwoWay}">
+                        <ItemsRepeater.Layout>
+                            <StackLayout Spacing="5" />
+                        </ItemsRepeater.Layout>
                         <ItemsRepeater.ItemTemplate>
                             <DataTemplate DataType="m:Course">
-                                <Border>
-                                    <Grid ColumnDefinitions="Auto,20,*,20,Auto"
+                                <Border Classes="CourseListItem"
+                                        Tag="{Binding}"
+                                        PointerEntered="CourseListItemPointerEnteredHandler"
+                                        PointerExited="CourseListItemPointerExitedHandler">
+                                    <Grid ColumnDefinitions="0.2*,20,0.8*,20,Auto"
                                           RowDefinitions="Auto">
                                         <SelectableTextBlock Grid.Row="0"
                                                              Grid.Column="0"

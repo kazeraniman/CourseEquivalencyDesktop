@@ -198,25 +198,23 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
     [RelayCommand]
     private void AddHomeCourse()
     {
-        if (SelectedHomeUniversityCourse is null || HomeUniversityCourses.Contains(SelectedHomeUniversityCourse))
+        if (SelectedHomeUniversityCourse is not null && !HomeUniversityCourses.Contains(SelectedHomeUniversityCourse))
         {
-            return;
+            HomeUniversityCourses.Add(SelectedHomeUniversityCourse);
         }
 
-        HomeUniversityCourses.Add(SelectedHomeUniversityCourse);
         AddedHomeCourseInteraction.HandleAsync(null);
     }
 
     [RelayCommand]
     private void AddDestinationCourse()
     {
-        if (SelectedDestinationUniversityCourse is null ||
-            DestinationUniversityCourses.Contains(SelectedDestinationUniversityCourse))
+        if (SelectedDestinationUniversityCourse is not null &&
+            !DestinationUniversityCourses.Contains(SelectedDestinationUniversityCourse))
         {
-            return;
+            DestinationUniversityCourses.Add(SelectedDestinationUniversityCourse);
         }
 
-        DestinationUniversityCourses.Add(SelectedDestinationUniversityCourse);
         AddedDestinationCourseInteraction.HandleAsync(null);
     }
 
