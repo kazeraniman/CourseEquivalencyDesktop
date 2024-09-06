@@ -64,6 +64,7 @@ public partial class SettingsPageViewModel : BaseViewModel
         this.genericDialogService = genericDialogService;
 
         UserFullName = userSettingsService.UserFullName;
+        UserDepartment = userSettingsService.UserDepartment;
         UserEmail = userSettingsService.UserEmail;
         SearchDelay = userSettingsService.SearchDebounceSeconds;
         DataGridPageSize = userSettingsService.DataGridPageSize;
