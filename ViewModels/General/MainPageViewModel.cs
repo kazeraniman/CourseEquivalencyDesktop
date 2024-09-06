@@ -44,7 +44,7 @@ public partial class MainPageViewModel : BaseViewModel
         {
             Pages =
             [
-                new NavigationPageInfo("Home", "HomeIconData", new HomePageViewModel()),
+                new NavigationPageInfo("Home", "HomeIconData", Ioc.Default.GetRequiredService<HomePageViewModel>()),
                 new NavigationPageInfo("Universities", "UniversityIconData",
                     Ioc.Default.GetRequiredService<UniversitiesPageViewModel>()),
                 new NavigationPageInfo("Courses", "CourseIconData",

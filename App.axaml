@@ -234,5 +234,6 @@
         <StyleInclude Source="Views/General/BasePageView.axaml" />
         <StyleInclude Source="Views/General/BaseCreateOrEditWindow.axaml" />
         <StyleInclude Source="Views/StudyPlans/StudyPlanStatusBadgeView.axaml" />
+        <StyleInclude Source="Views/Home/HomePageItemCountView.axaml" />
     </Application.Styles>
 </Application>
