@@ -3,7 +3,6 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CourseEquivalencyDesktop.Models;
-using CourseEquivalencyDesktop.Utility;
 
 namespace CourseEquivalencyDesktop.Services;
 
@@ -40,6 +39,7 @@ public class UserSettingsService
     public double SearchDebounceSeconds => userSettings.SearchDebounceSeconds;
     public TimeSpan SearchDebounceSecondsTimeSpan => TimeSpan.FromSeconds(userSettings.SearchDebounceSeconds);
     public string? UserFullName => userSettings.UserFullName;
+    public string? UserDepartment => userSettings.UserDepartment;
     public string? UserEmail => userSettings.UserEmail;
     #endregion
 
@@ -97,66 +97,6 @@ public class UserSettingsService
         }
 
         userSettings.DatabaseFilePath = databaseFilePath;
-        await SaveSettings();
-    }
-
-    /// <summary>
-    ///     Set the data grid page size in memory and file.
-    /// </summary>
-    /// <param name="dataGridPageSize">The new value of the data grid page size.</param>
-    public async Task SetDataGridPageSize(int dataGridPageSize)
-    {
-        if (dataGridPageSize == DataGridPageSize)
-        {
-            return;
-        }
-
-        userSettings.DataGridPageSize = dataGridPageSize;
-        await SaveSettings();
-    }
-
-    /// <summary>
-    ///     Set the search debounce seconds in memory and file.
-    /// </summary>
-    /// <param name="searchDebounceSeconds">The new value of the search debounce seconds.</param>
-    public async Task SetSearchDebounceSeconds(double searchDebounceSeconds)
-    {
-        if (searchDebounceSeconds.IsApproximatelyEqual(SearchDebounceSeconds))
-        {
-            return;
-        }
-
-        userSettings.SearchDebounceSeconds = searchDebounceSeconds;
-        await SaveSettings();
-    }
-
-    /// <summary>
-    ///     Set the user full name to memory and file.
-    /// </summary>
-    /// <param name="userFullName">The new value of the user full name.</param>
-    public async Task SetUserFullName(string? userFullName)
-    {
-        if (userFullName == UserFullName)
-        {
-            return;
-        }
-
-        userSettings.UserFullName = userFullName;
-        await SaveSettings();
-    }
-
-    /// <summary>
-    ///     Set the user email to memory and file.
-    /// </summary>
-    /// <param name="userEmail">The new value of the user email.</param>
-    public async Task SetUserEmail(string? userEmail)
-    {
-        if (userEmail == UserEmail)
-        {
-            return;
-        }
-
-        userSettings.UserEmail = userEmail;
         await SaveSettings();
     }
     #endregion

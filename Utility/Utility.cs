@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Avalonia.Controls;
+using CourseEquivalencyDesktop.Models;
 
 namespace CourseEquivalencyDesktop.Utility;
 
@@ -15,7 +16,7 @@ public static class Utility
     private const double DEFAULT_APPROXIMATELY_EQUAL_TOLERANCE = 1E-15;
     #endregion
 
-    #region Methods
+    #region Design
     /// <summary>
     ///     Ensures that we are currently using Design Mode.
     /// </summary>
@@ -33,7 +34,9 @@ public static class Utility
 
         throw new InvalidOperationException("This method must only be used in Design Mode!");
     }
+    #endregion
 
+    #region Collections
     /// <summary>
     ///     Adds all the provided items to the provided collection.
     /// </summary>
@@ -47,6 +50,27 @@ public static class Utility
         }
     }
 
+    /// <summary>
+    ///     Finds the index of the first item to match the predicate and -1 if none exist.
+    /// </summary>
+    /// <param name="list">The list to search.</param>
+    /// <param name="predicate">The predicate to match.</param>
+    /// <returns>Index of the first item to match the predicate, -1 otherwise.</returns>
+    public static int FindIndex<T>(this IList<T> list, Predicate<T> predicate)
+    {
+        for (var i = 0; i < list.Count; i++)
+        {
+            if (predicate(list[i]))
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+    #endregion
+
+    #region Comparisons
     /// <summary>
     ///     Checks if the provided string appears in the original string in a case-insensitive manner.
     /// </summary>
@@ -69,6 +93,67 @@ public static class Utility
         double tolerance = DEFAULT_APPROXIMATELY_EQUAL_TOLERANCE)
     {
         return Math.Abs(self - comparisonValue) <= tolerance;
+    }
+    #endregion
+
+    #region String
+    /// <summary>
+    ///     Reverses the provided string.
+    /// </summary>
+    /// <param name="stringValue">The string to reverse.</param>
+    /// <returns>The reversed string.</returns>
+    public static string? ReverseString(string? stringValue)
+    {
+        if (stringValue is null)
+        {
+            return null;
+        }
+
+        var charArray = stringValue.ToCharArray();
+        Array.Reverse(charArray);
+        return new string(charArray);
+    }
+    #endregion
+
+    #region Enums
+    /// <summary>
+    ///     Gets the human-readable representation of the <see cref="StudyPlan.AcademicTerm" />.
+    /// </summary>
+    /// <param name="term">The <see cref="StudyPlan.AcademicTerm" /> to stringify.</param>
+    /// <returns>A human-readable representation of the <see cref="StudyPlan.AcademicTerm" />.</returns>
+    public static string GetAcademicTermString(this StudyPlan.AcademicTerm term)
+    {
+        return ReverseString(term.ToString()) ?? string.Empty;
+    }
+
+    /// <summary>
+    ///     Gets the human-readable representation of the <see cref="Student.ProgramType" />.
+    /// </summary>
+    /// <param name="programType">The <see cref="Student.ProgramType" /> to stringify.</param>
+    /// <returns>A human-readable representation of the <see cref="Student.ProgramType" />.</returns>
+    public static string GetProgramTypeString(this Student.ProgramType programType)
+    {
+        return programType switch
+        {
+            Student.ProgramType.Computer => "Computer Engineering",
+            Student.ProgramType.Electrical => "Electrical Engineering",
+            _ => throw new ArgumentOutOfRangeException(nameof(programType), programType, null)
+        };
+    }
+
+    /// <summary>
+    ///     Gets the human-readable representation of the <see cref="Student.StreamType" />.
+    /// </summary>
+    /// <param name="streamType">The <see cref="Student.StreamType" /> to stringify.</param>
+    /// <returns>A human-readable representation of the <see cref="Student.StreamType" />.</returns>
+    public static string GetStreamTypeString(this Student.StreamType streamType)
+    {
+        return streamType switch
+        {
+            Student.StreamType.Four => "4",
+            Student.StreamType.Eight => "8",
+            _ => throw new ArgumentOutOfRangeException(nameof(streamType), streamType, null)
+        };
     }
     #endregion
 }

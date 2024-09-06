@@ -14,6 +14,7 @@ public class FileDialogService
 {
     #region Constants
     public const string SQLITE_DATABASE_DEFAULT_EXTENSION = "sqlite";
+    public const string WORD_DOCUMENT_DEFAULT_EXTENSION = "docx";
     #endregion
 
     #region Types
@@ -25,6 +26,16 @@ public class FileDialogService
         Patterns = ["*.sqlite"],
         AppleUniformTypeIdentifiers = ["public.sqlite3"],
         MimeTypes = ["application/x-sqlite3"]
+    };
+
+    /// <summary>
+    ///     File picker type for Microsoft Word documents.
+    /// </summary>
+    public static FilePickerFileType WordDocumentFilePickerFileType { get; } = new("Microsoft Word (Open XML)")
+    {
+        Patterns = ["*.docx"],
+        AppleUniformTypeIdentifiers = ["com.microsoft.word.docx"],
+        MimeTypes = ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
     };
     #endregion
 

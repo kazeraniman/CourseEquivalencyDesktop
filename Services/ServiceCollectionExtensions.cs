@@ -77,9 +77,12 @@ public static class ServiceCollectionExtensions
         });
         collection.AddTransient<EditStudyPlanViewModelFactory>(provider => studyPlan =>
         {
+            var fileDialogService = provider.GetRequiredService<FileDialogService>();
+            var userSettingsService = provider.GetRequiredService<UserSettingsService>();
             var databaseService = provider.GetRequiredService<DatabaseService>();
             var genericDialogService = provider.GetRequiredService<GenericDialogService>();
-            return new EditStudyPlanViewModel(studyPlan, databaseService, genericDialogService);
+            return new EditStudyPlanViewModel(studyPlan, fileDialogService, userSettingsService, databaseService,
+                genericDialogService);
         });
     }
     #endregion

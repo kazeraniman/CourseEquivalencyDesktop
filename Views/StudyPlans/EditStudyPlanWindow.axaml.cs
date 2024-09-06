@@ -98,60 +98,6 @@ public partial class EditStudyPlanWindow : BaseCreateOrEditWindowCodeBehind
         DestinationUniversityCourseAutoCompleteBox.SelectedItem = null;
         return Task.FromResult<bool?>(null);
     }
-    #endregion
-
-    #region Helpers
-    private void ClearDisposables()
-    {
-        requestedCourseEquivalencyInteractionDisposable?.Dispose();
-        addedHomeCourseInteractionDisposable?.Dispose();
-        addedDestinationCourseInteractionDisposable?.Dispose();
-    }
-
-    private void ApplyCourseEquivalencyClasses()
-    {
-        if (DataContext is not EditStudyPlanViewModel vm)
-        {
-            return;
-        }
-
-        var homeUniversityIdSet =
-            new HashSet<int>(vm.HomeUniversityCourses.SelectMany(huc => huc.Equivalencies.Select(ec => ec.Id)));
-        var destinationUniversityIdSet =
-            new HashSet<int>(vm.DestinationUniversityCourses.SelectMany(duc => duc.Equivalencies.Select(ec => ec.Id)));
-
-        ApplyClassesToChildren(HomeUniversityCoursesItemsRepeater.Children, destinationUniversityIdSet);
-        ApplyClassesToChildren(DestinationUniversityCoursesItemsRepeater.Children, homeUniversityIdSet);
-
-        return;
-
-        void ApplyClassesToChildren(Controls controls, HashSet<int> checkedIds)
-        {
-            foreach (var child in controls)
-            {
-                if (child is not Border courseItem)
-                {
-                    continue;
-                }
-
-                if (courseItem.Tag is not Course course)
-                {
-                    continue;
-                }
-
-                courseItem.Classes.Clear();
-                courseItem.Classes.Add(DEFAULT_CLASS_NAME);
-                courseItem.Classes.Add(checkedIds.Contains(course.Id)
-                    ? HAS_EQUIVALENCY_CLASS_NAME
-                    : NO_EQUIVALENCY_CLASS_NAME);
-                if (course == hoveredCourse || hoveredCourseEquivalencyIds.Contains(course.Id))
-                {
-                    courseItem.Classes.Add(HOVERED_EQUIVALENCY_CLASS_NAME);
-                }
-            }
-        }
-    }
-    #endregion
 
     private void CourseListItemPointerEnteredHandler(object? sender, PointerEventArgs e)
     {
@@ -173,8 +119,82 @@ public partial class EditStudyPlanWindow : BaseCreateOrEditWindowCodeBehind
             return;
         }
 
-        hoveredCourse = null;
-        hoveredCourseEquivalencyIds.Clear();
+        ClearHoveredCourse();
         ApplyCourseEquivalencyClasses();
     }
+    #endregion
+
+    #region Helpers
+    private void ClearDisposables()
+    {
+        requestedCourseEquivalencyInteractionDisposable?.Dispose();
+        addedHomeCourseInteractionDisposable?.Dispose();
+        addedDestinationCourseInteractionDisposable?.Dispose();
+    }
+
+    private void ApplyCourseEquivalencyClasses()
+    {
+        if (DataContext is not EditStudyPlanViewModel vm)
+        {
+            return;
+        }
+
+        var homeUniversityIdSet = new HashSet<int>(vm.HomeUniversityCourses.Select(huc => huc.Id));
+        var destinationUniversityIdSet = new HashSet<int>(vm.DestinationUniversityCourses.Select(duc => duc.Id));
+        if (hoveredCourse is not null && !homeUniversityIdSet.Contains(hoveredCourse.Id) &&
+            !destinationUniversityIdSet.Contains(hoveredCourse.Id))
+        {
+            // The hovered course was removed so we want to make sure we clear it out as well since the pointer exit might not fire
+            ClearHoveredCourse();
+        }
+
+        var homeUniversityEquivalencyIdSet =
+            new HashSet<int>(vm.HomeUniversityCourses.SelectMany(huc => huc.Equivalencies.Select(ec => ec.Id)));
+        var destinationUniversityEquivalencyIdSet =
+            new HashSet<int>(vm.DestinationUniversityCourses.SelectMany(duc => duc.Equivalencies.Select(ec => ec.Id)));
+        var isHoveringHomeCourse = hoveredCourse is not null && homeUniversityIdSet.Contains(hoveredCourse.Id);
+        var isHoveringDestinationCourse =
+            hoveredCourse is not null && destinationUniversityIdSet.Contains(hoveredCourse.Id);
+
+        ApplyClassesToChildren(HomeUniversityCoursesItemsRepeater.Children, destinationUniversityEquivalencyIdSet,
+            isHoveringDestinationCourse);
+        ApplyClassesToChildren(DestinationUniversityCoursesItemsRepeater.Children, homeUniversityEquivalencyIdSet,
+            isHoveringHomeCourse);
+
+        return;
+
+        void ApplyClassesToChildren(Controls controls, HashSet<int> checkedIds, bool doesHoverEquivalencyApply)
+        {
+            foreach (var child in controls)
+            {
+                if (child is not Border courseItem)
+                {
+                    continue;
+                }
+
+                if (courseItem.Tag is not Course course)
+                {
+                    continue;
+                }
+
+                courseItem.Classes.Clear();
+                courseItem.Classes.Add(DEFAULT_CLASS_NAME);
+                courseItem.Classes.Add(checkedIds.Contains(course.Id)
+                    ? HAS_EQUIVALENCY_CLASS_NAME
+                    : NO_EQUIVALENCY_CLASS_NAME);
+                if (course == hoveredCourse ||
+                    (doesHoverEquivalencyApply && hoveredCourseEquivalencyIds.Contains(course.Id)))
+                {
+                    courseItem.Classes.Add(HOVERED_EQUIVALENCY_CLASS_NAME);
+                }
+            }
+        }
+    }
+
+    private void ClearHoveredCourse()
+    {
+        hoveredCourse = null;
+        hoveredCourseEquivalencyIds.Clear();
+    }
+    #endregion
 }

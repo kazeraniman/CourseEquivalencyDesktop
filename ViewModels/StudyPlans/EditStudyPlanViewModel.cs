@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Collections;
@@ -12,12 +13,15 @@ using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
+using MiniSoftware;
 
 namespace CourseEquivalencyDesktop.ViewModels.StudyPlans;
 
 public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPlan>
 {
     #region Constants
+    private const string CREDIT_TRANSFER_MEMO_TEMPLATE_PATH = "DocumentTemplates/CreditTransferMemoTemplate.docx";
+
     private const string EDIT_TEXT = "Edit Study Plan";
     private const string STUDY_PLAN_EDITING_NOT_EXIST_TITLE = "Study Plan Doesn't Exist";
     private const string STUDY_PLAN_EDITING_NOT_EXIST_BODY = "The study plan you are trying to edit does not exist.";
@@ -25,6 +29,26 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
 
     private const string STUDY_PLAN_COMPLETE_MISSING_EQUIVALENCIES_BODY =
         "They study plan can't be marked as complete as there are still home university courses without and equivalent in the destination university.";
+
+    #region Credit Transfer Memo
+    private const string CREDIT_TRANSFER_MEMO_EXPORTED_TITLE = "Credit Transfer Memo Exported";
+
+    private const string CREDIT_TRANSFER_MEMO_EXPORTED_BODY =
+        "The credit transfer memo has been successfully exported.";
+
+    private const string CREDIT_TRANSFER_MEMO_EXPORT_TITLE = "Export Credit Transfer Memo";
+    private const string CREDIT_TRANSFER_MEMO_DATE_TEMPLATE_TAG = "Date";
+    private const string CREDIT_TRANSFER_MEMO_STUDENT_NAME_TEMPLATE_TAG = "Student_Name";
+    private const string CREDIT_TRANSFER_MEMO_STUDENT_ID_TEMPLATE_TAG = "Student_ID";
+    private const string CREDIT_TRANSFER_MEMO_PLAN_TEMPLATE_TAG = "Plan";
+    private const string CREDIT_TRANSFER_MEMO_HOME_UNIVERSITY_TEMPLATE_TAG = "Home_University";
+    private const string CREDIT_TRANSFER_MEMO_DESTINATION_UNIVERSITY_TEMPLATE_TAG = "Destination_University";
+    private const string CREDIT_TRANSFER_MEMO_TERM_TEMPLATE_TAG = "Term";
+    private const string CREDIT_TRANSFER_MEMO_ADVISOR_TEMPLATE_TAG = "Advisor";
+    private const string CREDIT_TRANSFER_MEMO_COURSES_TEMPLATE_TAG = "Courses";
+    private const string CREDIT_TRANSFER_MEMO_DEFAULT_ADVISOR_NAME = "SET NAME IN SETTINGS";
+    private const string CREDIT_TRANSFER_MEMO_DEFAULT_ADVISOR_DEPARTMENT = "SET DEPARTMENT IN SETTINGS";
+    #endregion
     #endregion
 
     #region Fields
@@ -36,6 +60,11 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
     private readonly ObservableCollection<Course> destinationUniversityCourseOptions = [];
 
     private Course? equivalentCourse;
+
+    private readonly EquivalentCourseComparer equivalentCourseComparer;
+
+    private readonly FileDialogService fileDialogService;
+    private readonly UserSettingsService userSettingsService;
     #endregion
 
     #region Properties
@@ -98,6 +127,11 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
     {
         WindowAndButtonText = EDIT_TEXT;
 
+        fileDialogService = new FileDialogService();
+        userSettingsService = new UserSettingsService();
+
+        equivalentCourseComparer = new EquivalentCourseComparer(new List<Course>());
+
         DestinationUniversity = new University
         {
             Name = "Test University"
@@ -112,13 +146,17 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
         DestinationUniversityCourseOptionsView = new DataGridCollectionView(destinationUniversityCourseOptions);
     }
 
-    public EditStudyPlanViewModel(StudyPlan? studyPlan, DatabaseService databaseService,
+    public EditStudyPlanViewModel(StudyPlan? studyPlan, FileDialogService fileDialogService,
+        UserSettingsService userSettingsService, DatabaseService databaseService,
         GenericDialogService genericDialogService) : base(studyPlan, databaseService, genericDialogService)
     {
         if (studyPlan is null)
         {
             throw new UnreachableException("Study plan which is null should not be editable.");
         }
+
+        this.userSettingsService = userSettingsService;
+        this.fileDialogService = fileDialogService;
 
         WindowAndButtonText = EDIT_TEXT;
 
@@ -133,6 +171,9 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
 
         HomeUniversityCourses.AddRange(studyPlan.HomeUniversityCourses);
         DestinationUniversityCourses.AddRange(studyPlan.DestinationUniversityCourses);
+
+        equivalentCourseComparer = new EquivalentCourseComparer(HomeUniversityCourses);
+        SortDestinationCoursesByEquivalency();
 
         homeUniversityCourseOptions.AddRange(Student.University.Courses
             .OrderBy(course => course.Name)
@@ -233,6 +274,7 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
             !DestinationUniversityCourses.Contains(SelectedDestinationUniversityCourse))
         {
             DestinationUniversityCourses.Add(SelectedDestinationUniversityCourse);
+            SortDestinationCoursesByEquivalency();
         }
 
         AddedDestinationCourseInteraction.HandleAsync(null);
@@ -248,6 +290,7 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
     private void RemoveDestinationCourse(Course course)
     {
         DestinationUniversityCourses.Remove(course);
+        SortDestinationCoursesByEquivalency();
     }
 
     [RelayCommand]
@@ -256,6 +299,75 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
         equivalentCourse = course;
         DestinationUniversityCourseOptionsView.Refresh();
         RequestedCourseEquivalencyInteraction.HandleAsync(null);
+    }
+
+    [RelayCommand]
+    private async Task ExportCreditTransferMemo()
+    {
+        var exportFile = await fileDialogService.SaveFileDialog(CREDIT_TRANSFER_MEMO_EXPORT_TITLE,
+            $"CreditTransferMemo-{Student.StudentId}-{Student.Name}-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}",
+            FileDialogService.WORD_DOCUMENT_DEFAULT_EXTENSION, FileDialogService.WordDocumentFilePickerFileType);
+
+        if (exportFile is null)
+        {
+            return;
+        }
+
+        var maxCourses = Math.Max(HomeUniversityCourses.Count, DestinationUniversityCourses.Count);
+        var coursesTemplate = new List<Dictionary<string, object>>();
+        for (var i = 0; i < maxCourses; i++)
+        {
+            coursesTemplate.Add(new Dictionary<string, object>
+            {
+                {
+                    CREDIT_TRANSFER_MEMO_DESTINATION_UNIVERSITY_TEMPLATE_TAG,
+                    i < DestinationUniversityCourses.Count
+                        ? $"{DestinationUniversityCourses[i].CourseId} {DestinationUniversityCourses[i].Name}"
+                        : string.Empty
+                },
+                {
+                    CREDIT_TRANSFER_MEMO_HOME_UNIVERSITY_TEMPLATE_TAG,
+                    i < HomeUniversityCourses.Count
+                        ? $"{HomeUniversityCourses[i].CourseId} {HomeUniversityCourses[i].Name}"
+                        : string.Empty
+                }
+            });
+        }
+
+        var templateValues = new Dictionary<string, object>
+        {
+            { CREDIT_TRANSFER_MEMO_DATE_TEMPLATE_TAG, DateTime.Today.ToString("MMMM d, yyyy") },
+            { CREDIT_TRANSFER_MEMO_STUDENT_NAME_TEMPLATE_TAG, Student.Name },
+            { CREDIT_TRANSFER_MEMO_STUDENT_ID_TEMPLATE_TAG, Student.StudentId },
+            {
+                CREDIT_TRANSFER_MEMO_PLAN_TEMPLATE_TAG,
+                $"{Student.Program.GetProgramTypeString()}/{Student.Stream.GetStreamTypeString()}"
+            },
+            { CREDIT_TRANSFER_MEMO_DESTINATION_UNIVERSITY_TEMPLATE_TAG, DestinationUniversity.Name },
+            { CREDIT_TRANSFER_MEMO_TERM_TEMPLATE_TAG, AcademicTerm.GetAcademicTermString() },
+            {
+                CREDIT_TRANSFER_MEMO_ADVISOR_TEMPLATE_TAG,
+                $"{userSettingsService.UserFullName ?? CREDIT_TRANSFER_MEMO_DEFAULT_ADVISOR_NAME} ({userSettingsService.UserDepartment ?? CREDIT_TRANSFER_MEMO_DEFAULT_ADVISOR_DEPARTMENT})"
+            },
+            { CREDIT_TRANSFER_MEMO_COURSES_TEMPLATE_TAG, coursesTemplate }
+        };
+
+        MiniWord.SaveAsByTemplate(exportFile.Path.LocalPath,
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CREDIT_TRANSFER_MEMO_TEMPLATE_PATH), templateValues);
+
+        await GenericDialogService.OpenGenericDialog(CREDIT_TRANSFER_MEMO_EXPORTED_TITLE,
+            CREDIT_TRANSFER_MEMO_EXPORTED_BODY, Constants.GenericStrings.OKAY);
+    }
+    #endregion
+
+    #region Helpers
+    private void SortDestinationCoursesByEquivalency()
+    {
+        var newDestinationUniversityCourses = DestinationUniversityCourses
+            .OrderBy(course => course, equivalentCourseComparer)
+            .ToList();
+        DestinationUniversityCourses.Clear();
+        DestinationUniversityCourses.AddRange(newDestinationUniversityCourses);
     }
     #endregion
 }

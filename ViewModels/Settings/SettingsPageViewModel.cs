@@ -29,6 +29,11 @@ public partial class SettingsPageViewModel : BaseViewModel
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     [Required(AllowEmptyStrings = false)]
+    private string? userDepartment;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    [Required(AllowEmptyStrings = false)]
     [EmailAddress]
     private string? userEmail;
 
@@ -74,6 +79,11 @@ public partial class SettingsPageViewModel : BaseViewModel
         ValidateProperty(value, nameof(UserFullName));
     }
 
+    partial void OnUserDepartmentChanged(string? value)
+    {
+        ValidateProperty(value, nameof(UserDepartment));
+    }
+
     partial void OnUserEmailChanged(string? value)
     {
         ValidateProperty(value, nameof(UserEmail));
@@ -94,7 +104,7 @@ public partial class SettingsPageViewModel : BaseViewModel
     private bool CanSave()
     {
         return !(IsSaving || HasErrors || string.IsNullOrWhiteSpace(UserFullName) ||
-                 string.IsNullOrWhiteSpace(UserEmail));
+                 string.IsNullOrWhiteSpace(UserDepartment) || string.IsNullOrWhiteSpace(UserEmail));
     }
     #endregion
 
@@ -106,6 +116,7 @@ public partial class SettingsPageViewModel : BaseViewModel
 
         var userSettings = userSettingsService.UserSettings;
         userSettings.UserFullName = UserFullName;
+        userSettings.UserDepartment = UserDepartment;
         userSettings.UserEmail = UserEmail;
         userSettings.SearchDebounceSeconds = SearchDelay;
         userSettings.DataGridPageSize = DataGridPageSize;
