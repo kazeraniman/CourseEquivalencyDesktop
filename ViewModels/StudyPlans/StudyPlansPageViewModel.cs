@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
@@ -72,6 +73,11 @@ public class StudyPlansPageViewModel : BasePageViewModel<StudyPlan>
                studyPlan.Student.StudentId.CaseInsensitiveContains(SearchText) ||
                studyPlan.Student.Name.CaseInsensitiveContains(SearchText) ||
                studyPlan.DestinationUniversity.Name.CaseInsensitiveContains(SearchText);
+    }
+
+    protected override bool CanCreate()
+    {
+        return base.CanCreate() && DatabaseService.Universities.Count() >= 2 && DatabaseService.Students.Any();
     }
 
     protected override async Task<StudyPlan?> CreateInternal()

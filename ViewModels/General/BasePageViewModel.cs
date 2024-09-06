@@ -119,6 +119,11 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
     #endregion
 
     #region Command Execution Checks
+    protected virtual bool CanCreate()
+    {
+        return true;
+    }
+
     private bool CanGoToNextPage()
     {
         return GetPageCount() > CurrentHumanReadablePageIndex;
@@ -142,7 +147,7 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
         return itemToCreate;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanCreate))]
     private async Task<T?> Create()
     {
         return await CreateInternal();
