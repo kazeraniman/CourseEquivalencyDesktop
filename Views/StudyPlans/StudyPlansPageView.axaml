@@ -30,7 +30,8 @@
         <general:BasePageView.Resources>
             <u:DateTimeFormatConverter x:Key="DateTimeFormatConverterFull" />
             <u:DateTimeFormatConverter x:Key="DateTimeFormatConverterShort"
-                                       DateTimeFormat="yyyy-M-d" />
+                                       DateTimeFormat="yyyy-MM-dd" />
+            <u:StudyPlanDueDateComparer x:Key="DueDateComparer" />
         </general:BasePageView.Resources>
         <general:BasePageView.DataGridColumns>
             <dataGridBoundColumns:DataGridStudyPlanStatusColumn Header="Status"
@@ -47,6 +48,7 @@
                                                                Binding="{Binding DestinationUniversity.Name, DataType=m:StudyPlan}" />
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="Due Date"
                                                                Width="0.20*"
+                                                               CustomSortComparer="{StaticResource DueDateComparer}"
                                                                Binding="{Binding DueDate, DataType=m:StudyPlan, Converter={StaticResource DateTimeFormatConverterShort}}" />
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="Last Updated"
                                                                Width="0.2*"
