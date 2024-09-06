@@ -34,6 +34,15 @@
                     </StackPanel>
                     <StackPanel Spacing="5">
                         <Label FontWeight="Bold"
+                               Content="Department Acronymn"
+                               Target="DepartmentTextBox"
+                               ToolTip.Tip="The department of the person who will be preparing the study plans." />
+                        <TextBox x:Name="DepartmentTextBox"
+                                 Classes="StyledTextBox"
+                                 Text="{Binding UserDepartment}" />
+                    </StackPanel>
+                    <StackPanel Spacing="5">
+                        <Label FontWeight="Bold"
                                Content="Email"
                                Target="EmailTextBox"
                                ToolTip.Tip="The email of the person who will be preparing the study plans." />

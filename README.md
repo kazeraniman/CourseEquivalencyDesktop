@@ -9,6 +9,9 @@ Avalonia UI.
 - .Net8.0
 - Visual Studio (for packaging; I develop on Rider)
 - [Windows App Development Prerequisites](https://learn.microsoft.com/en-us/windows/uwp/debug-test-perf/windows-app-certification-kit#prerequisites)
+- Create a template for the credit transfer memo export (not committed as it may be proprietary). Ensure that the
+  placeholder dictionary matches your template. The template should be stored as
+  `DocumentTemplates/CreditTransferMemoTemplate.docx`.
 
 ## Version Updates
 

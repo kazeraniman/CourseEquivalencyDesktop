@@ -12,14 +12,7 @@ public class StringReverseConverter : IValueConverter
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         var stringValue = value?.ToString();
-        if (stringValue is null)
-        {
-            return null;
-        }
-
-        var charArray = stringValue.ToCharArray();
-        Array.Reverse(charArray);
-        return new string(charArray);
+        return Utility.ReverseString(stringValue);
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

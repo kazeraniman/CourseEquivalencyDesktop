@@ -12,6 +12,9 @@
 
     <ItemGroup>
         <AvaloniaResource Include="Assets\**"/>
+        <Content Include="DocumentTemplates\CreditTransferMemoTemplate.docx">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -30,6 +33,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0"/>
+        <PackageReference Include="MiniWord" Version="0.8.0"/>
         <PackageReference Include="Serilog" Version="4.0.1"/>
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
     </ItemGroup>

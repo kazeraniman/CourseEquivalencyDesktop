@@ -154,6 +154,7 @@
                 AcceptsReturn="True"
                 TextHorizontalContentAlignment="Left"
                 TextVerticalContentAlignment="Top" />
+
             <Grid ColumnDefinitions="*,Auto,40,*,Auto"
                   RowDefinitions="Auto,10,Auto,10,Auto">
                 <Grid.Styles>
@@ -351,6 +352,25 @@
                     </ItemsRepeater>
                 </Border>
             </Grid>
+
+            <Button Theme="{StaticResource BlueButton}"
+                    Command="{Binding ExportCreditTransferMemoCommand}"
+                    HorizontalAlignment="Right"
+                    VerticalContentAlignment="Center"
+                    ToolTip.Tip="Export Credit Transfer Memo">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="5">
+                        <TextBlock Text="Export Credit Transfer Memo"
+                                   VerticalAlignment="Center" />
+                        <Path Classes="MyPath"
+                              Stroke="White"
+                              Height="25"
+                              Width="25"
+                              Data="{StaticResource ExportIconData}" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
         </general:BaseCreateOrEditWindow.FormContents>
     </general:BaseCreateOrEditWindow>
 </Window>
