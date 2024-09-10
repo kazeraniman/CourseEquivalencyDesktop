@@ -30,7 +30,7 @@ public class EquivalenciesPageViewModel : BasePageViewModel<CourseEquivalency>
     #endregion
 
     #region BasePageView
-    protected override string DeleteTitle => "Delete Equivalency?";
+    protected override string ObjectTypeName => EQUIVALENCY;
 
     public override void UpdateItems()
     {

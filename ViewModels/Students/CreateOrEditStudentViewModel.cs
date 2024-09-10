@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
-using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
 using Microsoft.EntityFrameworkCore;
 
@@ -79,8 +79,8 @@ public partial class CreateOrEditStudentViewModel : BaseCreateOrEditViewModel<St
         University = new University();
     }
 
-    public CreateOrEditStudentViewModel(Student? student, DatabaseService databaseService,
-        GenericDialogService genericDialogService) : base(student, databaseService, genericDialogService)
+    public CreateOrEditStudentViewModel(Student? student, DatabaseService databaseService) : base(student,
+        databaseService)
     {
         WindowAndButtonText = IsCreate ? CREATE_TEXT : EDIT_TEXT;
 
@@ -152,8 +152,7 @@ public partial class CreateOrEditStudentViewModel : BaseCreateOrEditViewModel<St
                 stu.UniversityId == University.Id && stu.StudentId == preparedStudentId);
             if (doesStudentIdExist)
             {
-                await GenericDialogService.OpenGenericDialog(STUDENT_ID_EXISTS_TITLE,
-                    STUDENT_ID_EXISTS_BODY, Constants.GenericStrings.OKAY);
+                ShowNotification(STUDENT_ID_EXISTS_TITLE, STUDENT_ID_EXISTS_BODY, NotificationType.Error);
                 return;
             }
 
@@ -176,8 +175,8 @@ public partial class CreateOrEditStudentViewModel : BaseCreateOrEditViewModel<St
                 await DatabaseService.Students.FindAsync(Item!.Id);
             if (editingStudent is null)
             {
-                await GenericDialogService.OpenGenericDialog(STUDENT_EDITING_NOT_EXIST_TITLE,
-                    STUDENT_EDITING_NOT_EXIST_BODY, Constants.GenericStrings.OKAY);
+                ShowNotification(STUDENT_EDITING_NOT_EXIST_TITLE, STUDENT_EDITING_NOT_EXIST_BODY,
+                    NotificationType.Error);
                 return;
             }
 
@@ -185,8 +184,7 @@ public partial class CreateOrEditStudentViewModel : BaseCreateOrEditViewModel<St
                 stu.UniversityId == University.Id && stu.StudentId == preparedStudentId && stu.Id != editingStudent.Id);
             if (doesStudentIdExist)
             {
-                await GenericDialogService.OpenGenericDialog(STUDENT_ID_EXISTS_TITLE,
-                    STUDENT_ID_EXISTS_BODY, Constants.GenericStrings.OKAY);
+                ShowNotification(STUDENT_ID_EXISTS_TITLE, STUDENT_ID_EXISTS_BODY, NotificationType.Error);
                 return;
             }
 

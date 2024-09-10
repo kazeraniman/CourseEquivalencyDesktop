@@ -13,8 +13,6 @@ namespace CourseEquivalencyDesktop.ViewModels.StudyPlans;
 public class StudyPlansPageViewModel : BasePageViewModel<StudyPlan>
 {
     #region Constants
-    private const string STUDY_PLAN = "Study Plan";
-
     private const string STUDY_PLAN_DELETE_BODY =
         "Are you sure you wish to delete the study plan for \"{0}\" to \"{1}\"?\nThis action cannot be undone and will delete all associated entries.";
     #endregion
@@ -32,7 +30,7 @@ public class StudyPlansPageViewModel : BasePageViewModel<StudyPlan>
     #endregion
 
     #region BasePageView
-    protected override string DeleteTitle => "Delete Study Plan?";
+    protected override string ObjectTypeName => "Study Plan";
 
     public override void UpdateItems()
     {
@@ -65,7 +63,9 @@ public class StudyPlansPageViewModel : BasePageViewModel<StudyPlan>
 
     protected override string GetName(StudyPlan? item)
     {
-        return item is not null ? $"{item.Student.Name} to {item.DestinationUniversity.Name} {STUDY_PLAN}" : STUDY_PLAN;
+        return item is not null
+            ? $"{item.Student.Name} to {item.DestinationUniversity.Name} {ObjectTypeName}"
+            : ObjectTypeName;
     }
 
     protected override bool Filter(object arg)

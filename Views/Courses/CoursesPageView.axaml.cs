@@ -91,8 +91,9 @@ public partial class CoursesPageView : BasePageViewCodeBehind<Course>
     #endregion
 
     #region BasePageViewCodeBehind
-    protected override (BaseCreateOrEditViewModel<Course>, BaseCreateOrEditWindowCodeBehind) CreateViewModelAndWindow(
-        Course? item)
+    protected override (BaseCreateOrEditViewModel<Course>, BaseCreateOrEditWindowCodeBehind<Course>)
+        CreateViewModelAndWindow(
+            Course? item)
     {
         var viewModel =
             Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditCourseViewModelFactory>()(item);

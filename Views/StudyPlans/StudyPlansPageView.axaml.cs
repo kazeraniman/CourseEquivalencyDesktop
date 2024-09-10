@@ -20,11 +20,11 @@ public partial class StudyPlansPageView : BasePageViewCodeBehind<StudyPlan>
     #endregion
 
     #region BasePageViewCodeBehind
-    protected override (BaseCreateOrEditViewModel<StudyPlan>, BaseCreateOrEditWindowCodeBehind)
+    protected override (BaseCreateOrEditViewModel<StudyPlan>, BaseCreateOrEditWindowCodeBehind<StudyPlan>)
         CreateViewModelAndWindow(StudyPlan? item)
     {
         BaseCreateOrEditViewModel<StudyPlan> viewModel;
-        BaseCreateOrEditWindowCodeBehind window;
+        BaseCreateOrEditWindowCodeBehind<StudyPlan> window;
         if (item is null)
         {
             viewModel =

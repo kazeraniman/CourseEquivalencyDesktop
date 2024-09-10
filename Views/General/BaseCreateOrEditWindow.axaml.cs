@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 
@@ -9,6 +10,10 @@ namespace CourseEquivalencyDesktop.Views.General;
 
 public class BaseCreateOrEditWindow : TemplatedControl
 {
+    #region Fields
+    private WindowNotificationManager? windowNotificationManager;
+    #endregion
+
     #region Avalonia Properties
     public static readonly StyledProperty<string?> WindowAndButtonTextProperty =
         AvaloniaProperty.Register<BasePageView, string?>(nameof(WindowAndButtonTextProperty));
@@ -64,6 +69,9 @@ public class BaseCreateOrEditWindow : TemplatedControl
     {
         base.OnApplyTemplate(e);
 
+        windowNotificationManager =
+            e.NameScope.Find<WindowNotificationManager>("CreateOrEditWindowNotificationManager");
+
         var stackPanel = e.NameScope.Find<StackPanel>("ContentsStackPanel");
         if (stackPanel is null)
         {
@@ -72,6 +80,13 @@ public class BaseCreateOrEditWindow : TemplatedControl
 
         stackPanel.Children.Clear();
         stackPanel.Children.AddRange(FormContents);
+    }
+    #endregion
+
+    #region Additional Functionality
+    public WindowNotificationManager? GetWindowNotificationManager()
+    {
+        return windowNotificationManager;
     }
     #endregion
 }

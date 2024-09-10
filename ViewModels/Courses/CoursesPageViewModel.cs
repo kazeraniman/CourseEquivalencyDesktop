@@ -29,15 +29,20 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
     #endregion
 
     #region Constants
-    private const string COURSE = "Course";
-    private const string CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TEMPLATE = "\"{0}\" was created.";
+    private const string CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TITLE = "Equivalency Created";
+    private const string CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE = "\"{0}\" was created.";
 
-    private const string CREATE_EQUIVALENCY_FAILED_NOTIFICATION_TEMPLATE =
+    private const string CREATE_EQUIVALENCY_FAILED_NOTIFICATION_TITLE = "Equivalency Not Created";
+
+    private const string CREATE_EQUIVALENCY_FAILED_NOTIFICATION_BODY_TEMPLATE =
         "An error occurred and \"{0}\" could not be created.";
 
-    private const string DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TEMPLATE = "\"{0}\" was deleted.";
+    private const string DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TITLE = "Equivalency Deleted";
+    private const string DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE = "\"{0}\" was deleted.";
 
-    private const string DELETE_EQUIVALENCY_FAILED_NOTIFICATION_TEMPLATE =
+    private const string DELETE_EQUIVALENCY_FAILED_NOTIFICATION_TITLE = "Equivalency Not Deleted";
+
+    private const string DELETE_EQUIVALENCY_FAILED_NOTIFICATION_BODY_TEMPLATE =
         "An error occurred and \"{0}\" could not be deleted.";
 
     private const string COURSE_DELETE_BODY =
@@ -59,7 +64,7 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
     #endregion
 
     #region BasePageView
-    protected override string DeleteTitle => "Delete Course?";
+    protected override string ObjectTypeName => "Course";
 
     public override void UpdateItems()
     {
@@ -83,7 +88,7 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
 
     protected override string GetName(Course? item)
     {
-        return item?.Name ?? COURSE;
+        return item?.Name ?? ObjectTypeName;
     }
 
     protected override bool Filter(object arg)
@@ -133,15 +138,15 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
             // Force the binding to refresh since it is bound to the ID
             course.OnPropertyChanged(nameof(course.Id));
 
-            ToastNotificationService.ShowToastNotification(
-                string.Format(CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TEMPLATE,
+            ToastNotificationService.ShowToastNotification(CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TITLE,
+                string.Format(CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE,
                     EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Success);
         }
 
         void SaveChangesFailedHandler()
         {
-            ToastNotificationService.ShowToastNotification(
-                string.Format(CREATE_EQUIVALENCY_FAILED_NOTIFICATION_TEMPLATE,
+            ToastNotificationService.ShowToastNotification(CREATE_EQUIVALENCY_FAILED_NOTIFICATION_TITLE,
+                string.Format(CREATE_EQUIVALENCY_FAILED_NOTIFICATION_BODY_TEMPLATE,
                     EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Error);
         }
     }
@@ -164,15 +169,15 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
             // Force the binding to refresh since it is bound to the ID
             course.OnPropertyChanged(nameof(course.Id));
 
-            ToastNotificationService.ShowToastNotification(
-                string.Format(DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TEMPLATE,
+            ToastNotificationService.ShowToastNotification(DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TITLE,
+                string.Format(DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE,
                     EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Success);
         }
 
         void SaveChangesFailedHandler()
         {
-            ToastNotificationService.ShowToastNotification(
-                string.Format(DELETE_EQUIVALENCY_FAILED_NOTIFICATION_TEMPLATE,
+            ToastNotificationService.ShowToastNotification(DELETE_EQUIVALENCY_FAILED_NOTIFICATION_TITLE,
+                string.Format(DELETE_EQUIVALENCY_FAILED_NOTIFICATION_BODY_TEMPLATE,
                     EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Error);
         }
     }

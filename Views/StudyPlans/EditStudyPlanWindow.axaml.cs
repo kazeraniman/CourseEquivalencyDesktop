@@ -11,7 +11,7 @@ using CourseEquivalencyDesktop.Views.General;
 
 namespace CourseEquivalencyDesktop.Views.StudyPlans;
 
-public partial class EditStudyPlanWindow : BaseCreateOrEditWindowCodeBehind
+public partial class EditStudyPlanWindow : BaseCreateOrEditWindowCodeBehind<StudyPlan>
 {
     #region Constants
     private const string DEFAULT_CLASS_NAME = "CourseListItem";

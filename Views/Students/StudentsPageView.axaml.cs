@@ -20,8 +20,9 @@ public partial class StudentsPageView : BasePageViewCodeBehind<Student>
     #endregion
 
     #region BasePageViewCodeBehind
-    protected override (BaseCreateOrEditViewModel<Student>, BaseCreateOrEditWindowCodeBehind) CreateViewModelAndWindow(
-        Student? item)
+    protected override (BaseCreateOrEditViewModel<Student>, BaseCreateOrEditWindowCodeBehind<Student>)
+        CreateViewModelAndWindow(
+            Student? item)
     {
         var viewModel =
             Ioc.Default.GetRequiredService<ServiceCollectionExtensions.CreateOrEditStudentViewModelFactory>()(item);

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
-using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,8 +43,8 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
         WindowAndButtonText = CREATE_TEXT;
     }
 
-    public CreateOrEditUniversityViewModel(University? university, DatabaseService databaseService,
-        GenericDialogService genericDialogService) : base(university, databaseService, genericDialogService)
+    public CreateOrEditUniversityViewModel(University? university, DatabaseService databaseService) : base(university,
+        databaseService)
     {
         WindowAndButtonText = IsCreate ? CREATE_TEXT : EDIT_TEXT;
 
@@ -100,8 +100,7 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
             var doesNameExist = await DatabaseService.Universities.AnyAsync(uni => uni.Name == preparedName);
             if (doesNameExist)
             {
-                await GenericDialogService.OpenGenericDialog(UNIVERSITY_NAME_EXISTS_TITLE,
-                    UNIVERSITY_NAME_EXISTS_BODY, Constants.GenericStrings.OKAY);
+                ShowNotification(UNIVERSITY_NAME_EXISTS_TITLE, UNIVERSITY_NAME_EXISTS_BODY, NotificationType.Error);
                 return;
             }
 
@@ -119,8 +118,8 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
                 await DatabaseService.Universities.FindAsync(Item!.Id);
             if (editingUniversity is null)
             {
-                await GenericDialogService.OpenGenericDialog(UNIVERSITY_EDITING_NOT_EXIST_TITLE,
-                    UNIVERSITY_EDITING_NOT_EXIST_BODY, Constants.GenericStrings.OKAY);
+                ShowNotification(UNIVERSITY_EDITING_NOT_EXIST_TITLE, UNIVERSITY_EDITING_NOT_EXIST_BODY,
+                    NotificationType.Error);
                 return;
             }
 
@@ -129,8 +128,7 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
                     uni.Name == preparedName && uni.Id != editingUniversity.Id);
             if (doesNameExist)
             {
-                await GenericDialogService.OpenGenericDialog(UNIVERSITY_NAME_EXISTS_TITLE,
-                    UNIVERSITY_NAME_EXISTS_BODY, Constants.GenericStrings.OKAY);
+                ShowNotification(UNIVERSITY_NAME_EXISTS_TITLE, UNIVERSITY_NAME_EXISTS_BODY, NotificationType.Error);
                 return;
             }
 

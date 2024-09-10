@@ -20,7 +20,8 @@ public partial class EquivalenciesPageView : BasePageViewCodeBehind<CourseEquiva
 
 
     #region BasePageViewCodeBehind
-    protected override (BaseCreateOrEditViewModel<CourseEquivalency>, BaseCreateOrEditWindowCodeBehind)
+    protected override (BaseCreateOrEditViewModel<CourseEquivalency>,
+        BaseCreateOrEditWindowCodeBehind<CourseEquivalency>)
         CreateViewModelAndWindow(CourseEquivalency? item)
     {
         throw new NotImplementedException();
