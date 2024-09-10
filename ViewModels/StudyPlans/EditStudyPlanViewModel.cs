@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Collections;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
@@ -147,8 +148,7 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
     }
 
     public EditStudyPlanViewModel(StudyPlan? studyPlan, FileDialogService fileDialogService,
-        UserSettingsService userSettingsService, DatabaseService databaseService,
-        GenericDialogService genericDialogService) : base(studyPlan, databaseService, genericDialogService)
+        UserSettingsService userSettingsService, DatabaseService databaseService) : base(studyPlan, databaseService)
     {
         if (studyPlan is null)
         {
@@ -213,8 +213,8 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
             await DatabaseService.StudyPlans.FindAsync(Item!.Id);
         if (editingStudyPlan is null)
         {
-            await GenericDialogService.OpenGenericDialog(STUDY_PLAN_EDITING_NOT_EXIST_TITLE,
-                STUDY_PLAN_EDITING_NOT_EXIST_BODY, Constants.GenericStrings.OKAY);
+            ShowNotification(STUDY_PLAN_EDITING_NOT_EXIST_TITLE, STUDY_PLAN_EDITING_NOT_EXIST_BODY,
+                NotificationType.Error);
             return;
         }
 
@@ -227,8 +227,8 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
             if (HomeUniversityCourses.Any(homeUniversityCourse =>
                     !destinationUniversityEquivalencies.Contains(homeUniversityCourse.Id)))
             {
-                await GenericDialogService.OpenGenericDialog(STUDY_PLAN_COMPLETE_MISSING_EQUIVALENCIES_TITLE,
-                    STUDY_PLAN_COMPLETE_MISSING_EQUIVALENCIES_BODY, Constants.GenericStrings.OKAY);
+                ShowNotification(STUDY_PLAN_COMPLETE_MISSING_EQUIVALENCIES_TITLE,
+                    STUDY_PLAN_COMPLETE_MISSING_EQUIVALENCIES_BODY, NotificationType.Error);
                 return;
             }
         }
@@ -355,8 +355,8 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
         MiniWord.SaveAsByTemplate(exportFile.Path.LocalPath,
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CREDIT_TRANSFER_MEMO_TEMPLATE_PATH), templateValues);
 
-        await GenericDialogService.OpenGenericDialog(CREDIT_TRANSFER_MEMO_EXPORTED_TITLE,
-            CREDIT_TRANSFER_MEMO_EXPORTED_BODY, Constants.GenericStrings.OKAY);
+        ShowNotification(CREDIT_TRANSFER_MEMO_EXPORTED_TITLE, CREDIT_TRANSFER_MEMO_EXPORTED_BODY,
+            NotificationType.Success);
     }
     #endregion
 

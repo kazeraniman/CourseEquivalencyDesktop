@@ -18,10 +18,17 @@ namespace CourseEquivalencyDesktop.ViewModels.General;
 public abstract partial class BasePageViewModel<T> : BaseViewModel where T : BaseModel
 {
     #region Constants
-    private const string CREATE_SUCCESSFUL_NOTIFICATION_TEMPLATE = "\"{0}\" was created.";
-    private const string EDIT_SUCCESSFUL_NOTIFICATION_TEMPLATE = "Changes saved for \"{0}\".";
-    private const string DELETE_SUCCESSFUL_NOTIFICATION_TEMPLATE = "\"{0}\" was deleted.";
-    private const string DELETE_FAILED_NOTIFICATION_TEMPLATE = "An error occurred and \"{0}\" could not be deleted.";
+    private const string DELETE_TITLE_TEMPLATE = "Delete {0}?";
+    private const string CREATE_SUCCESSFUL_NOTIFICATION_TITLE = "{0} Created";
+    private const string CREATE_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE = "\"{0}\" was created.";
+    private const string EDIT_SUCCESSFUL_NOTIFICATION_TITLE = "{0} Edited";
+    private const string EDIT_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE = "Changes saved for \"{0}\".";
+    private const string DELETE_SUCCESSFUL_NOTIFICATION_TITLE = "{0} Deleted";
+    private const string DELETE_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE = "\"{0}\" was deleted.";
+    private const string DELETE_FAILED_NOTIFICATION_TITLE = "{0} Delete Failed";
+
+    private const string DELETE_FAILED_NOTIFICATION_BODY_TEMPLATE =
+        "An error occurred and \"{0}\" could not be deleted.";
     #endregion
 
     #region Fields
@@ -39,7 +46,7 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
     #region Properties
     public DataGridCollectionView ItemsCollectionView { get; init; }
 
-    protected abstract string DeleteTitle { get; }
+    protected abstract string ObjectTypeName { get; }
 
     #region Observable Properties
     [ObservableProperty]
@@ -160,7 +167,8 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
         if (createdObject is not null)
         {
             ToastNotificationService.ShowToastNotification(
-                string.Format(CREATE_SUCCESSFUL_NOTIFICATION_TEMPLATE, GetName(createdObject)),
+                string.Format(CREATE_SUCCESSFUL_NOTIFICATION_TITLE, ObjectTypeName),
+                string.Format(CREATE_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE, GetName(createdObject)),
                 NotificationType.Success);
         }
 
@@ -177,7 +185,8 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
             ItemsCollectionView.Refresh();
 
             ToastNotificationService.ShowToastNotification(
-                string.Format(EDIT_SUCCESSFUL_NOTIFICATION_TEMPLATE, GetName(modifiedItem)),
+                string.Format(EDIT_SUCCESSFUL_NOTIFICATION_TITLE, ObjectTypeName),
+                string.Format(EDIT_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE, GetName(modifiedItem)),
                 NotificationType.Success);
         }
 
@@ -187,7 +196,8 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
     [RelayCommand]
     private async Task Delete(T item)
     {
-        var shouldDelete = await GenericDialogService.OpenGenericDialog(DeleteTitle, GetDeleteBody(item),
+        var shouldDelete = await GenericDialogService.OpenGenericDialog(
+            string.Format(DELETE_TITLE_TEMPLATE, ObjectTypeName), GetDeleteBody(item),
             Constants.GenericStrings.DELETE, Constants.GenericStrings.CANCEL,
             primaryButtonThemeName: Constants.ResourceNames.RED_BUTTON);
         if (shouldDelete is null or false)
@@ -207,14 +217,16 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
             }
 
             ToastNotificationService.ShowToastNotification(
-                string.Format(DELETE_SUCCESSFUL_NOTIFICATION_TEMPLATE, GetName(itemsToRemove.FirstOrDefault())),
+                string.Format(DELETE_SUCCESSFUL_NOTIFICATION_TITLE, ObjectTypeName),
+                string.Format(DELETE_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE, GetName(itemsToRemove.FirstOrDefault())),
                 NotificationType.Success);
         }
 
         void SaveChangesFailedHandler()
         {
             ToastNotificationService.ShowToastNotification(
-                string.Format(DELETE_FAILED_NOTIFICATION_TEMPLATE, GetName(itemsToRemove.FirstOrDefault())),
+                string.Format(DELETE_FAILED_NOTIFICATION_TITLE, ObjectTypeName),
+                string.Format(DELETE_FAILED_NOTIFICATION_BODY_TEMPLATE, GetName(itemsToRemove.FirstOrDefault())),
                 NotificationType.Error);
         }
     }

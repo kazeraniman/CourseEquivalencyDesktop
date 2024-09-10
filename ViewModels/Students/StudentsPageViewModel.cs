@@ -13,8 +13,6 @@ namespace CourseEquivalencyDesktop.ViewModels.Students;
 public class StudentsPageViewModel : BasePageViewModel<Student>
 {
     #region Constants
-    private const string STUDENT = "Student";
-
     private const string STUDENT_DELETE_BODY =
         "Are you sure you wish to delete \"{0}\"?\nThis action cannot be undone and will delete all associated entries.";
     #endregion
@@ -32,7 +30,7 @@ public class StudentsPageViewModel : BasePageViewModel<Student>
     #endregion
 
     #region BasePageView
-    protected override string DeleteTitle => "Delete Student?";
+    protected override string ObjectTypeName => "Student";
 
     public override void UpdateItems()
     {
@@ -55,7 +53,7 @@ public class StudentsPageViewModel : BasePageViewModel<Student>
 
     protected override string GetName(Student? item)
     {
-        return item?.Name ?? STUDENT;
+        return item?.Name ?? ObjectTypeName;
     }
 
     protected override bool Filter(object arg)

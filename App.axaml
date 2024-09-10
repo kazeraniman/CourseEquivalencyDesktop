@@ -223,6 +223,12 @@
                     Value="{DynamicResource TooltipDataValidationErrors}" />
         </Style>
 
+        <!-- Notifications -->
+        <Style Selector="ReversibleStackPanel#PART_Items TextBlock">
+            <Setter Property="TextWrapping"
+                    Value="Wrap" />
+        </Style>
+
         <!-- Custom controls. -->
         <StyleInclude Source="Views/CustomControls/InputTextBox.axaml" />
         <StyleInclude Source="Views/CustomControls/FormInputTextBox.axaml" />

@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
-using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
 
 namespace CourseEquivalencyDesktop.ViewModels.StudyPlans;
@@ -52,8 +52,8 @@ public partial class CreateStudyPlanViewModel : BaseCreateOrEditViewModel<StudyP
         Universities = [];
     }
 
-    public CreateStudyPlanViewModel(StudyPlan? studyPlan, DatabaseService databaseService,
-        GenericDialogService genericDialogService) : base(studyPlan, databaseService, genericDialogService)
+    public CreateStudyPlanViewModel(StudyPlan? studyPlan, DatabaseService databaseService) : base(studyPlan,
+        databaseService)
     {
         if (studyPlan is not null)
         {
@@ -100,8 +100,8 @@ public partial class CreateStudyPlanViewModel : BaseCreateOrEditViewModel<StudyP
     {
         if (Student!.University.Id == DestinationUniversity!.Id)
         {
-            await GenericDialogService.OpenGenericDialog(DESTINATION_UNIVERSITY_MUST_BE_DIFFERENT_TITLE,
-                DESTINATION_UNIVERSITY_MUST_BE_DIFFERENT_BODY, Constants.GenericStrings.OKAY);
+            ShowNotification(DESTINATION_UNIVERSITY_MUST_BE_DIFFERENT_TITLE,
+                DESTINATION_UNIVERSITY_MUST_BE_DIFFERENT_BODY, NotificationType.Error);
             return;
         }
 

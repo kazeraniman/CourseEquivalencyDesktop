@@ -60,35 +60,29 @@ public static class ServiceCollectionExtensions
         collection.AddTransient<CreateOrEditUniversityViewModelFactory>(provider => university =>
         {
             var databaseService = provider.GetRequiredService<DatabaseService>();
-            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
-            return new CreateOrEditUniversityViewModel(university, databaseService, genericDialogService);
+            return new CreateOrEditUniversityViewModel(university, databaseService);
         });
         collection.AddTransient<CreateOrEditCourseViewModelFactory>(provider => course =>
         {
             var databaseService = provider.GetRequiredService<DatabaseService>();
-            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
-            return new CreateOrEditCourseViewModel(course, databaseService, genericDialogService);
+            return new CreateOrEditCourseViewModel(course, databaseService);
         });
         collection.AddTransient<CreateOrEditStudentViewModelFactory>(provider => student =>
         {
             var databaseService = provider.GetRequiredService<DatabaseService>();
-            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
-            return new CreateOrEditStudentViewModel(student, databaseService, genericDialogService);
+            return new CreateOrEditStudentViewModel(student, databaseService);
         });
         collection.AddTransient<CreateStudyPlanViewModelFactory>(provider => studyPlan =>
         {
             var databaseService = provider.GetRequiredService<DatabaseService>();
-            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
-            return new CreateStudyPlanViewModel(studyPlan, databaseService, genericDialogService);
+            return new CreateStudyPlanViewModel(studyPlan, databaseService);
         });
         collection.AddTransient<EditStudyPlanViewModelFactory>(provider => studyPlan =>
         {
             var fileDialogService = provider.GetRequiredService<FileDialogService>();
             var userSettingsService = provider.GetRequiredService<UserSettingsService>();
             var databaseService = provider.GetRequiredService<DatabaseService>();
-            var genericDialogService = provider.GetRequiredService<GenericDialogService>();
-            return new EditStudyPlanViewModel(studyPlan, fileDialogService, userSettingsService, databaseService,
-                genericDialogService);
+            return new EditStudyPlanViewModel(studyPlan, fileDialogService, userSettingsService, databaseService);
         });
     }
     #endregion

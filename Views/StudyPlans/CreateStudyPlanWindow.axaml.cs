@@ -1,9 +1,10 @@
 ﻿using Avalonia.Interactivity;
+using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Views.General;
 
 namespace CourseEquivalencyDesktop.Views.StudyPlans;
 
-public partial class CreateStudyPlanWindow : BaseCreateOrEditWindowCodeBehind
+public partial class CreateStudyPlanWindow : BaseCreateOrEditWindowCodeBehind<StudyPlan>
 {
     #region Constructors
     public CreateStudyPlanWindow()

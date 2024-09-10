@@ -1,18 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Services;
-using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
 
 namespace CourseEquivalencyDesktop.ViewModels.Settings;
 
 public partial class SettingsPageViewModel : BaseViewModel
 {
+    #region Constants
+    private const string SETTINGS_SAVED_TITLE = "Settings Saved";
+    private const string SETTINGS_SAVED_BODY = "Your settings have been saved.";
+    #endregion
+
     #region Fields
-    private readonly UserSettingsService userSettingsService;
-    private readonly GenericDialogService genericDialogService;
+    private readonly UserSettingsService userSettingsService = null!;
+    private readonly ToastNotificationService toastNotificationService = null!;
     #endregion
 
     #region Properties
@@ -53,15 +58,13 @@ public partial class SettingsPageViewModel : BaseViewModel
     public SettingsPageViewModel()
     {
         Utility.Utility.AssertDesignMode();
-
-        userSettingsService = new UserSettingsService();
-        genericDialogService = new GenericDialogService();
     }
 
-    public SettingsPageViewModel(GenericDialogService genericDialogService, UserSettingsService userSettingsService)
+    public SettingsPageViewModel(UserSettingsService userSettingsService,
+        ToastNotificationService toastNotificationService)
     {
         this.userSettingsService = userSettingsService;
-        this.genericDialogService = genericDialogService;
+        this.toastNotificationService = toastNotificationService;
 
         UserFullName = userSettingsService.UserFullName;
         UserDepartment = userSettingsService.UserDepartment;
@@ -124,8 +127,8 @@ public partial class SettingsPageViewModel : BaseViewModel
 
         await userSettingsService.SetAllUserSettings(userSettings);
 
-        await genericDialogService.OpenGenericDialog("Settings Saved", "Your settings have been saved!",
-            Constants.GenericStrings.OKAY);
+        toastNotificationService.ShowToastNotification(SETTINGS_SAVED_TITLE, SETTINGS_SAVED_BODY,
+            NotificationType.Success);
 
         IsSaving = false;
     }

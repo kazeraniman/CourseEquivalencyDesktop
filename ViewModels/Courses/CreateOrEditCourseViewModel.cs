@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
-using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
 using Microsoft.EntityFrameworkCore;
 
@@ -62,8 +62,7 @@ public partial class CreateOrEditCourseViewModel : BaseCreateOrEditViewModel<Cou
         University = new University();
     }
 
-    public CreateOrEditCourseViewModel(Course? course, DatabaseService databaseService,
-        GenericDialogService genericDialogService) : base(course, databaseService, genericDialogService)
+    public CreateOrEditCourseViewModel(Course? course, DatabaseService databaseService) : base(course, databaseService)
     {
         WindowAndButtonText = IsCreate ? CREATE_TEXT : EDIT_TEXT;
 
@@ -133,8 +132,7 @@ public partial class CreateOrEditCourseViewModel : BaseCreateOrEditViewModel<Cou
                 cou.UniversityId == University.Id && cou.CourseId == preparedCourseId);
             if (doesCourseIdExist)
             {
-                await GenericDialogService.OpenGenericDialog(COURSE_CODE_EXISTS_TITLE,
-                    COURSE_CODE_EXISTS_BODY, Constants.GenericStrings.OKAY);
+                ShowNotification(COURSE_CODE_EXISTS_TITLE, COURSE_CODE_EXISTS_BODY, NotificationType.Error);
                 return;
             }
 
@@ -155,8 +153,7 @@ public partial class CreateOrEditCourseViewModel : BaseCreateOrEditViewModel<Cou
                 await DatabaseService.Courses.FindAsync(Item!.Id);
             if (editingCourse is null)
             {
-                await GenericDialogService.OpenGenericDialog(COURSE_EDITING_NOT_EXIST_TITLE,
-                    COURSE_EDITING_NOT_EXIST_BODY, Constants.GenericStrings.OKAY);
+                ShowNotification(COURSE_EDITING_NOT_EXIST_TITLE, COURSE_EDITING_NOT_EXIST_BODY, NotificationType.Error);
                 return;
             }
 
@@ -164,8 +161,7 @@ public partial class CreateOrEditCourseViewModel : BaseCreateOrEditViewModel<Cou
                 cou.UniversityId == University.Id && cou.CourseId == preparedCourseId && cou.Id != editingCourse.Id);
             if (doesCourseIdExist)
             {
-                await GenericDialogService.OpenGenericDialog(COURSE_CODE_EXISTS_TITLE,
-                    COURSE_CODE_EXISTS_BODY, Constants.GenericStrings.OKAY);
+                ShowNotification(COURSE_CODE_EXISTS_TITLE, COURSE_CODE_EXISTS_BODY, NotificationType.Error);
                 return;
             }
 

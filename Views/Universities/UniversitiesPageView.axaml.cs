@@ -20,7 +20,7 @@ public partial class UniversitiesPageView : BasePageViewCodeBehind<University>
     #endregion
 
     #region BasePageViewCodeBehind
-    protected override (BaseCreateOrEditViewModel<University>, BaseCreateOrEditWindowCodeBehind)
+    protected override (BaseCreateOrEditViewModel<University>, BaseCreateOrEditWindowCodeBehind<University>)
         CreateViewModelAndWindow(
             University? item)
     {

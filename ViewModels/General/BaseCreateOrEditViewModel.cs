@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
-using CourseEquivalencyDesktop.Utility;
 
 namespace CourseEquivalencyDesktop.ViewModels.General;
 
@@ -16,8 +16,9 @@ public abstract partial class BaseCreateOrEditViewModel<T> : BaseViewModel where
     }
 
     #region Fields
-    protected readonly DatabaseService DatabaseService;
-    protected readonly GenericDialogService GenericDialogService;
+    private WindowNotificationManager? windowNotificationManager;
+
+    protected readonly DatabaseService DatabaseService = null!;
 
     protected readonly T? Item;
     protected readonly bool IsCreate;
@@ -46,16 +47,11 @@ public abstract partial class BaseCreateOrEditViewModel<T> : BaseViewModel where
     protected BaseCreateOrEditViewModel()
     {
         Utility.Utility.AssertDesignMode();
-
-        DatabaseService = new DatabaseService();
-        GenericDialogService = new GenericDialogService();
     }
 
-    protected BaseCreateOrEditViewModel(T? item, DatabaseService databaseService,
-        GenericDialogService genericDialogService)
+    protected BaseCreateOrEditViewModel(T? item, DatabaseService databaseService)
     {
         DatabaseService = databaseService;
-        GenericDialogService = genericDialogService;
         Item = item;
         IsCreate = item is null;
     }
@@ -78,9 +74,15 @@ public abstract partial class BaseCreateOrEditViewModel<T> : BaseViewModel where
 
         void SaveChangesFailedHandler()
         {
-            _ = GenericDialogService.OpenGenericDialog(FailedSaveTitle, FailedSaveBody,
-                Constants.GenericStrings.OKAY);
+            ShowNotification(FailedSaveTitle, FailedSaveBody, NotificationType.Error);
         }
+    }
+
+    protected void ShowNotification(string title, string message, NotificationType notificationType,
+        TimeSpan? duration = null)
+    {
+        ToastNotificationService.ShowToastNotification(windowNotificationManager, title, message, notificationType,
+            duration);
     }
     #endregion
 
@@ -109,6 +111,12 @@ public abstract partial class BaseCreateOrEditViewModel<T> : BaseViewModel where
     private void Cancel()
     {
         OnRequestCloseWindow?.Invoke(this, EventArgs.Empty);
+    }
+
+    [RelayCommand]
+    private void SetUpNotifications(WindowNotificationManager? notificationManager)
+    {
+        windowNotificationManager = notificationManager;
     }
     #endregion
 }
