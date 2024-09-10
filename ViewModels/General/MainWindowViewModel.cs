@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
@@ -13,11 +14,13 @@ public partial class MainWindowViewModel : BaseViewModel
 {
     #region Fields
     public readonly Interaction<bool?, bool?> SpawnDatabaseSelectionWizardInteraction = new();
+    public readonly Interaction<bool?, WindowNotificationManager> GetWindowNotificationManagerInteraction = new();
     #endregion
 
     #region Properties
     #region Observable Properties
-    [ObservableProperty] private BaseViewModel currentContent = new MainPageLoadingViewModel();
+    [ObservableProperty]
+    private BaseViewModel currentContent = new MainPageLoadingViewModel();
     #endregion
     #endregion
 
@@ -29,8 +32,9 @@ public partial class MainWindowViewModel : BaseViewModel
         await Task.Delay(1000);
 
         // Register all the services needed for the application to run
+        var windowNotificationManager = await GetWindowNotificationManagerInteraction.HandleAsync(null);
         var collection = new ServiceCollection();
-        collection.AddCommonServices();
+        collection.AddCommonServices(windowNotificationManager);
 
         // Creates a ServiceProvider containing services from the provided IServiceCollection
         var services = collection.BuildServiceProvider();

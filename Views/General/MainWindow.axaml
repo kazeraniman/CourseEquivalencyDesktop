@@ -19,6 +19,12 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <TransitioningContentControl Content="{Binding CurrentContent}" />
+    <Grid RowDefinitions="*"
+          ColumnDefinitions="*">
+        <TransitioningContentControl Content="{Binding CurrentContent}" />
+        <WindowNotificationManager x:Name="MainWindowNotificationManager"
+                                   Position="TopRight"
+                                   MaxItems="1" />
+    </Grid>
 
 </Window>

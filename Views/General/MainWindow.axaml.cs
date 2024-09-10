@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using Avalonia.Interactivity;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CourseEquivalencyDesktop.Services;
@@ -22,6 +23,7 @@ public partial class MainWindow : Window
 
     #region Fields
     private IDisposable? spawnDatabaseSelectionWizardInteractionDisposable;
+    private IDisposable? getWindowNotificationManagerInteractionDisposable;
     #endregion
 
     #region Constructors
@@ -34,11 +36,13 @@ public partial class MainWindow : Window
     #region Avalonia Life Cycle
     protected override void OnDataContextChanged(EventArgs e)
     {
-        spawnDatabaseSelectionWizardInteractionDisposable?.Dispose();
+        CleanDisposables();
         if (DataContext is MainWindowViewModel vm)
         {
             spawnDatabaseSelectionWizardInteractionDisposable =
                 vm.SpawnDatabaseSelectionWizardInteraction.RegisterHandler(SpawnDatabaseSelectionWizardWindow);
+            getWindowNotificationManagerInteractionDisposable =
+                vm.GetWindowNotificationManagerInteraction.RegisterHandler(GetWindowNotificationManager);
         }
 
         base.OnDataContextChanged(e);
@@ -58,7 +62,7 @@ public partial class MainWindow : Window
     {
         base.OnUnloaded(e);
 
-        spawnDatabaseSelectionWizardInteractionDisposable?.Dispose();
+        CleanDisposables();
     }
     #endregion
 
@@ -87,6 +91,19 @@ public partial class MainWindow : Window
         };
 
         return await databaseSelectionWizardWindow.ShowDialog<bool?>(this);
+    }
+
+    private Task<WindowNotificationManager> GetWindowNotificationManager(bool? _)
+    {
+        return Task.FromResult(MainWindowNotificationManager);
+    }
+    #endregion
+
+    #region Helpers
+    private void CleanDisposables()
+    {
+        spawnDatabaseSelectionWizardInteractionDisposable?.Dispose();
+        getWindowNotificationManagerInteractionDisposable?.Dispose();
     }
     #endregion
 }

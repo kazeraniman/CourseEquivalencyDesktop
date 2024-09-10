@@ -13,6 +13,8 @@ namespace CourseEquivalencyDesktop.ViewModels.Students;
 public class StudentsPageViewModel : BasePageViewModel<Student>
 {
     #region Constants
+    private const string STUDENT = "Student";
+
     private const string STUDENT_DELETE_BODY =
         "Are you sure you wish to delete \"{0}\"?\nThis action cannot be undone and will delete all associated entries.";
     #endregion
@@ -23,15 +25,14 @@ public class StudentsPageViewModel : BasePageViewModel<Student>
     }
 
     public StudentsPageViewModel(DatabaseService databaseService, UserSettingsService userSettingsService,
-        GenericDialogService genericDialogService) : base(databaseService, userSettingsService, genericDialogService)
+        GenericDialogService genericDialogService, ToastNotificationService toastNotificationService) : base(
+        databaseService, userSettingsService, genericDialogService, toastNotificationService)
     {
     }
     #endregion
 
     #region BasePageView
     protected override string DeleteTitle => "Delete Student?";
-    protected override string DeleteFailedTitle => "Student Deletion Failed";
-    protected override string DeleteFailedBody => "An error occurred and the student could not be deleted.";
 
     public override void UpdateItems()
     {
@@ -50,6 +51,11 @@ public class StudentsPageViewModel : BasePageViewModel<Student>
     protected override string GetDeleteBody(Student item)
     {
         return string.Format(STUDENT_DELETE_BODY, item.Name);
+    }
+
+    protected override string GetName(Student? item)
+    {
+        return item?.Name ?? STUDENT;
     }
 
     protected override bool Filter(object arg)

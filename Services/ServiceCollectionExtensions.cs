@@ -1,4 +1,5 @@
-﻿using CourseEquivalencyDesktop.Models;
+﻿using Avalonia.Controls.Notifications;
+using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.ViewModels.Courses;
 using CourseEquivalencyDesktop.ViewModels.DatabaseSelectionWizard;
 using CourseEquivalencyDesktop.ViewModels.Equivalencies;
@@ -32,12 +33,14 @@ public static class ServiceCollectionExtensions
     #endregion
 
     #region Services
-    public static void AddCommonServices(this IServiceCollection collection)
+    public static void AddCommonServices(this IServiceCollection collection,
+        WindowNotificationManager windowNotificationManager)
     {
         collection.AddSingleton<FileDialogService>();
         collection.AddSingleton<UserSettingsService>();
         collection.AddSingleton<DatabaseService>();
         collection.AddSingleton<GenericDialogService>();
+        collection.AddSingleton<ToastNotificationService>(_ => new ToastNotificationService(windowNotificationManager));
         collection.AddTransient<DatabaseSelectionWizardViewModel>();
         collection.AddTransient<HomePageViewModel>();
         collection.AddTransient<UniversitiesPageViewModel>();
@@ -50,8 +53,9 @@ public static class ServiceCollectionExtensions
             var databaseService = provider.GetRequiredService<DatabaseService>();
             var userSettingsService = provider.GetRequiredService<UserSettingsService>();
             var genericDialogService = provider.GetRequiredService<GenericDialogService>();
+            var toastNotificationService = provider.GetRequiredService<ToastNotificationService>();
             return new CoursesPageViewModel(equivalentCourse, databaseService, userSettingsService,
-                genericDialogService);
+                genericDialogService, toastNotificationService);
         });
         collection.AddTransient<CreateOrEditUniversityViewModelFactory>(provider => university =>
         {

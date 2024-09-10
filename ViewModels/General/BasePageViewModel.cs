@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Collections;
+using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -15,23 +17,29 @@ namespace CourseEquivalencyDesktop.ViewModels.General;
 
 public abstract partial class BasePageViewModel<T> : BaseViewModel where T : BaseModel
 {
+    #region Constants
+    private const string CREATE_SUCCESSFUL_NOTIFICATION_TEMPLATE = "\"{0}\" was created.";
+    private const string EDIT_SUCCESSFUL_NOTIFICATION_TEMPLATE = "Changes saved for \"{0}\".";
+    private const string DELETE_SUCCESSFUL_NOTIFICATION_TEMPLATE = "\"{0}\" was deleted.";
+    private const string DELETE_FAILED_NOTIFICATION_TEMPLATE = "An error occurred and \"{0}\" could not be deleted.";
+    #endregion
+
     #region Fields
     public readonly Interaction<T?, T?> CreateOrEditInteraction = new();
 
     protected readonly ObservableCollection<T> Items = [];
     private readonly DispatcherTimer searchDebounceTimer = new();
 
-    protected readonly DatabaseService DatabaseService;
-    private readonly UserSettingsService userSettingsService;
-    protected readonly GenericDialogService GenericDialogService;
+    protected readonly DatabaseService DatabaseService = null!;
+    private readonly UserSettingsService userSettingsService = null!;
+    protected readonly GenericDialogService GenericDialogService = null!;
+    protected readonly ToastNotificationService ToastNotificationService = null!;
     #endregion
 
     #region Properties
     public DataGridCollectionView ItemsCollectionView { get; init; }
 
     protected abstract string DeleteTitle { get; }
-    protected abstract string DeleteFailedTitle { get; }
-    protected abstract string DeleteFailedBody { get; }
 
     #region Observable Properties
     [ObservableProperty]
@@ -51,18 +59,16 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
     {
         Utility.Utility.AssertDesignMode();
 
-        DatabaseService = new DatabaseService();
-        userSettingsService = new UserSettingsService();
-        GenericDialogService = new GenericDialogService();
         ItemsCollectionView = new DataGridCollectionView(Items);
     }
 
     protected BasePageViewModel(DatabaseService databaseService, UserSettingsService userSettingsService,
-        GenericDialogService genericDialogService)
+        GenericDialogService genericDialogService, ToastNotificationService toastNotificationService)
     {
         DatabaseService = databaseService;
         this.userSettingsService = userSettingsService;
         GenericDialogService = genericDialogService;
+        ToastNotificationService = toastNotificationService;
 
         searchDebounceTimer.Tick += SearchDebounce;
 
@@ -150,7 +156,15 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
     [RelayCommand(CanExecute = nameof(CanCreate))]
     private async Task<T?> Create()
     {
-        return await CreateInternal();
+        var createdObject = await CreateInternal();
+        if (createdObject is not null)
+        {
+            ToastNotificationService.ShowToastNotification(
+                string.Format(CREATE_SUCCESSFUL_NOTIFICATION_TEMPLATE, GetName(createdObject)),
+                NotificationType.Success);
+        }
+
+        return createdObject;
     }
 
     [RelayCommand]
@@ -161,6 +175,10 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
         {
             // This is needed to reload the sort in case the order changed (the values should be correctly propagated without this)
             ItemsCollectionView.Refresh();
+
+            ToastNotificationService.ShowToastNotification(
+                string.Format(EDIT_SUCCESSFUL_NOTIFICATION_TEMPLATE, GetName(modifiedItem)),
+                NotificationType.Success);
         }
 
         return modifiedItem;
@@ -187,12 +205,17 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
             {
                 Items.Remove(itemToRemove);
             }
+
+            ToastNotificationService.ShowToastNotification(
+                string.Format(DELETE_SUCCESSFUL_NOTIFICATION_TEMPLATE, GetName(itemsToRemove.FirstOrDefault())),
+                NotificationType.Success);
         }
 
         void SaveChangesFailedHandler()
         {
-            _ = GenericDialogService.OpenGenericDialog(DeleteFailedTitle, DeleteFailedBody,
-                Constants.GenericStrings.OKAY);
+            ToastNotificationService.ShowToastNotification(
+                string.Format(DELETE_FAILED_NOTIFICATION_TEMPLATE, GetName(itemsToRemove.FirstOrDefault())),
+                NotificationType.Error);
         }
     }
 
@@ -213,6 +236,7 @@ public abstract partial class BasePageViewModel<T> : BaseViewModel where T : Bas
     public abstract void UpdateItems();
     protected abstract Task<HashSet<T>> Remove(T item);
     protected abstract string GetDeleteBody(T item);
+    protected abstract string GetName(T? item);
     protected abstract bool Filter(object arg);
 
     public virtual void ViewLoaded()

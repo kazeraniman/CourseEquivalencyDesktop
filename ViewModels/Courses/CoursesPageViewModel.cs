@@ -3,11 +3,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
+using CourseEquivalencyDesktop.ViewModels.Equivalencies;
 using CourseEquivalencyDesktop.ViewModels.General;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,10 +29,16 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
     #endregion
 
     #region Constants
-    private const string CREATE_EQUIVALENCY_FAILED_TITLE = "Equivalency Creation Failed";
-    private const string CREATE_EQUIVALENCY_FAILED_BODY = "An error occurred and the equivalency could not be created.";
-    private const string DELETE_EQUIVALENCY_FAILED_TITLE = "Equivalency Deletion Failed";
-    private const string DELETE_EQUIVALENCY_FAILED_BODY = "An error occurred and the equivalency could not be deleted.";
+    private const string COURSE = "Course";
+    private const string CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TEMPLATE = "\"{0}\" was created.";
+
+    private const string CREATE_EQUIVALENCY_FAILED_NOTIFICATION_TEMPLATE =
+        "An error occurred and \"{0}\" could not be created.";
+
+    private const string DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TEMPLATE = "\"{0}\" was deleted.";
+
+    private const string DELETE_EQUIVALENCY_FAILED_NOTIFICATION_TEMPLATE =
+        "An error occurred and \"{0}\" could not be deleted.";
 
     private const string COURSE_DELETE_BODY =
         "Are you sure you wish to delete \"{0}\"?\nThis action cannot be undone and will delete all associated entries.";
@@ -42,8 +50,9 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
     }
 
     public CoursesPageViewModel(Course? equivalentCourse, DatabaseService databaseService,
-        UserSettingsService userSettingsService,
-        GenericDialogService genericDialogService) : base(databaseService, userSettingsService, genericDialogService)
+        UserSettingsService userSettingsService, GenericDialogService genericDialogService,
+        ToastNotificationService toastNotificationService) : base(databaseService, userSettingsService,
+        genericDialogService, toastNotificationService)
     {
         EquivalentCourse = equivalentCourse;
     }
@@ -51,8 +60,6 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
 
     #region BasePageView
     protected override string DeleteTitle => "Delete Course?";
-    protected override string DeleteFailedTitle => "Course Deletion Failed";
-    protected override string DeleteFailedBody => "An error occurred and the course could not be deleted.";
 
     public override void UpdateItems()
     {
@@ -72,6 +79,11 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
     protected override string GetDeleteBody(Course item)
     {
         return string.Format(COURSE_DELETE_BODY, item.Name);
+    }
+
+    protected override string GetName(Course? item)
+    {
+        return item?.Name ?? COURSE;
     }
 
     protected override bool Filter(object arg)
@@ -120,12 +132,17 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
         {
             // Force the binding to refresh since it is bound to the ID
             course.OnPropertyChanged(nameof(course.Id));
+
+            ToastNotificationService.ShowToastNotification(
+                string.Format(CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TEMPLATE,
+                    EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Success);
         }
 
         void SaveChangesFailedHandler()
         {
-            _ = GenericDialogService.OpenGenericDialog(CREATE_EQUIVALENCY_FAILED_TITLE, CREATE_EQUIVALENCY_FAILED_BODY,
-                Constants.GenericStrings.OKAY);
+            ToastNotificationService.ShowToastNotification(
+                string.Format(CREATE_EQUIVALENCY_FAILED_NOTIFICATION_TEMPLATE,
+                    EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Error);
         }
     }
 
@@ -146,12 +163,17 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
         {
             // Force the binding to refresh since it is bound to the ID
             course.OnPropertyChanged(nameof(course.Id));
+
+            ToastNotificationService.ShowToastNotification(
+                string.Format(DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TEMPLATE,
+                    EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Success);
         }
 
         void SaveChangesFailedHandler()
         {
-            _ = GenericDialogService.OpenGenericDialog(DELETE_EQUIVALENCY_FAILED_TITLE, DELETE_EQUIVALENCY_FAILED_BODY,
-                Constants.GenericStrings.OKAY);
+            ToastNotificationService.ShowToastNotification(
+                string.Format(DELETE_EQUIVALENCY_FAILED_NOTIFICATION_TEMPLATE,
+                    EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Error);
         }
     }
     #endregion
