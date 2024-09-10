@@ -13,6 +13,8 @@ namespace CourseEquivalencyDesktop.ViewModels.StudyPlans;
 public class StudyPlansPageViewModel : BasePageViewModel<StudyPlan>
 {
     #region Constants
+    private const string STUDY_PLAN = "Study Plan";
+
     private const string STUDY_PLAN_DELETE_BODY =
         "Are you sure you wish to delete the study plan for \"{0}\" to \"{1}\"?\nThis action cannot be undone and will delete all associated entries.";
     #endregion
@@ -22,17 +24,15 @@ public class StudyPlansPageViewModel : BasePageViewModel<StudyPlan>
     {
     }
 
-    public StudyPlansPageViewModel(DatabaseService databaseService,
-        UserSettingsService userSettingsService,
-        GenericDialogService genericDialogService) : base(databaseService, userSettingsService, genericDialogService)
+    public StudyPlansPageViewModel(DatabaseService databaseService, UserSettingsService userSettingsService,
+        GenericDialogService genericDialogService, ToastNotificationService toastNotificationService) : base(
+        databaseService, userSettingsService, genericDialogService, toastNotificationService)
     {
     }
     #endregion
 
     #region BasePageView
     protected override string DeleteTitle => "Delete Study Plan?";
-    protected override string DeleteFailedTitle => "Study Plan Deletion Failed";
-    protected override string DeleteFailedBody => "An error occurred and the study plan could not be deleted.";
 
     public override void UpdateItems()
     {
@@ -61,6 +61,11 @@ public class StudyPlansPageViewModel : BasePageViewModel<StudyPlan>
     protected override string GetDeleteBody(StudyPlan item)
     {
         return string.Format(STUDY_PLAN_DELETE_BODY, item.Student.Name, item.DestinationUniversity.Name);
+    }
+
+    protected override string GetName(StudyPlan? item)
+    {
+        return item is not null ? $"{item.Student.Name} to {item.DestinationUniversity.Name} {STUDY_PLAN}" : STUDY_PLAN;
     }
 
     protected override bool Filter(object arg)
