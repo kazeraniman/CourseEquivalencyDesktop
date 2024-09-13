@@ -9,7 +9,8 @@
         x:Class="CourseEquivalencyDesktop.Views.General.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="ExCourseEquivalency"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
