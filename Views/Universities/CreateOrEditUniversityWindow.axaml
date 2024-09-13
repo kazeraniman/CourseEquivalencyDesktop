@@ -19,7 +19,8 @@
         <vm:CreateOrEditUniversityViewModel />
     </Design.DataContext>
 
-    <general:BaseCreateOrEditWindow WindowAndButtonText="{Binding WindowAndButtonText}"
+    <general:BaseCreateOrEditWindow x:Name="WindowRoot"
+                                    WindowAndButtonText="{Binding WindowAndButtonText}"
                                     CancelCommand="{Binding CancelCommand}"
                                     CreateOrEditCommand="{Binding CreateOrEditCommand}">
         <general:BaseCreateOrEditWindow.FormContents>
