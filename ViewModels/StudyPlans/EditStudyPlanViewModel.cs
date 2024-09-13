@@ -14,6 +14,7 @@ using CourseEquivalencyDesktop.Models;
 using CourseEquivalencyDesktop.Services;
 using CourseEquivalencyDesktop.Utility;
 using CourseEquivalencyDesktop.ViewModels.General;
+using Microsoft.EntityFrameworkCore;
 using MiniSoftware;
 
 namespace CourseEquivalencyDesktop.ViewModels.StudyPlans;
@@ -199,8 +200,18 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
 
         WindowAndButtonText = EDIT_TEXT;
 
-        Student = studyPlan.Student;
-        DestinationUniversity = studyPlan.DestinationUniversity;
+        // TODO: Use async loads and have a loading component displayed while getting ready
+        Student = databaseService.Students
+                      .Include(stu => stu.University)
+                      .ThenInclude(uni => uni.Courses)
+                      .ThenInclude(course => course.Equivalencies)
+                      .SingleOrDefault(stu => stu.Id == studyPlan.Student.Id)
+                  ?? studyPlan.Student;
+        DestinationUniversity = databaseService.Universities
+                                    .Include(uni => uni.Courses)
+                                    .ThenInclude(course => course.Equivalencies)
+                                    .SingleOrDefault(uni => uni.Id == studyPlan.DestinationUniversity.Id)
+                                ?? studyPlan.DestinationUniversity;
         StudyPlanStatus = studyPlan.Status;
         AcademicTerm = studyPlan.Academic;
         SeasonalTerm = studyPlan.Seasonal;
@@ -211,8 +222,13 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
         ExchangeEndDate = studyPlan.ExchangeEndDate;
         LastCompletedAcademicTerm = studyPlan.LastCompletedAcademicTerm;
 
-        HomeUniversityCourses.AddRange(studyPlan.HomeUniversityCourses);
-        DestinationUniversityCourses.AddRange(studyPlan.DestinationUniversityCourses);
+        var freshStudyPlan = databaseService.StudyPlans
+                                 .Include(sp => sp.HomeUniversityCourses)
+                                 .Include(sp => sp.DestinationUniversityCourses)
+                                 .SingleOrDefault(sp => sp.Id == studyPlan.Id)
+                             ?? studyPlan;
+        HomeUniversityCourses.AddRange(freshStudyPlan.HomeUniversityCourses);
+        DestinationUniversityCourses.AddRange(freshStudyPlan.DestinationUniversityCourses);
 
         equivalentCourseComparer = new EquivalentCourseComparer(HomeUniversityCourses);
         SortDestinationCoursesByEquivalency();

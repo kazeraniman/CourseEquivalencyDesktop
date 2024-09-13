@@ -36,18 +36,10 @@ public class StudyPlansPageViewModel : BasePageViewModel<StudyPlan>
     {
         Items.Clear();
 
-        // TODO: Get teh item in the edit window instead to not pull everything for everything at once
-        // Using the Include to eagerly load study plans and related information so they are ready on first page view
+        // Using the Include to eagerly load the student and university so they are ready on first page view
         Items.AddRange(DatabaseService.StudyPlans
             .Include(studyPlan => studyPlan.Student)
-            .ThenInclude(student => student.University)
-            .ThenInclude(university => university.Courses)
-            .ThenInclude(courses => courses.Equivalencies)
-            .Include(studyPlan => studyPlan.DestinationUniversity)
-            .ThenInclude(university => university.Courses)
-            .ThenInclude(courses => courses.Equivalencies)
-            .Include(studyPlan => studyPlan.HomeUniversityCourses)
-            .Include(studyPlan => studyPlan.DestinationUniversityCourses));
+            .Include(studyPlan => studyPlan.DestinationUniversity));
     }
 
     protected override Task<HashSet<StudyPlan>> Remove(StudyPlan item)
