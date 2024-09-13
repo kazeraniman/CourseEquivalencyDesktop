@@ -454,6 +454,8 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
         MiniWord.SaveAsByTemplate(exportFile.Path.LocalPath, templateFile, templateValues);
 
         ShowNotification(exportedSuccessTitle, exportedSuccessBody, NotificationType.Success);
+
+        Process.Start("explorer.exe", $"/select, \"{exportFile.Path.LocalPath}\"");
     }
 
     private void SortDestinationCoursesByEquivalency()
