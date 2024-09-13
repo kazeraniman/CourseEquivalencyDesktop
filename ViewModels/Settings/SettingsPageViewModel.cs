@@ -13,11 +13,13 @@ public partial class SettingsPageViewModel : BaseViewModel
     #region Constants
     private const string SETTINGS_SAVED_TITLE = "Settings Saved";
     private const string SETTINGS_SAVED_BODY = "Your settings have been saved.";
+    private const string SELECT_TEMPLATE_DIALOG_TITLE = "Select Template";
     #endregion
 
     #region Fields
     private readonly UserSettingsService userSettingsService = null!;
     private readonly ToastNotificationService toastNotificationService = null!;
+    private readonly FileDialogService fileDialogService = null!;
     #endregion
 
     #region Properties
@@ -44,6 +46,16 @@ public partial class SettingsPageViewModel : BaseViewModel
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    [Required(AllowEmptyStrings = false)]
+    private string? creditTransferMemoTemplateFilePath;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    [Required(AllowEmptyStrings = false)]
+    private string? proposedStudyPlanTemplateFilePath;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     [Required]
     private double searchDelay;
 
@@ -61,10 +73,11 @@ public partial class SettingsPageViewModel : BaseViewModel
     }
 
     public SettingsPageViewModel(UserSettingsService userSettingsService,
-        ToastNotificationService toastNotificationService)
+        ToastNotificationService toastNotificationService, FileDialogService fileDialogService)
     {
         this.userSettingsService = userSettingsService;
         this.toastNotificationService = toastNotificationService;
+        this.fileDialogService = fileDialogService;
 
         UserFullName = userSettingsService.UserFullName;
         UserDepartment = userSettingsService.UserDepartment;
@@ -93,6 +106,16 @@ public partial class SettingsPageViewModel : BaseViewModel
         ValidateProperty(value, nameof(UserEmail));
     }
 
+    partial void OnCreditTransferMemoTemplateFilePathChanged(string? value)
+    {
+        ValidateProperty(value, nameof(CreditTransferMemoTemplateFilePath));
+    }
+
+    partial void OnProposedStudyPlanTemplateFilePathChanged(string? value)
+    {
+        ValidateProperty(value, nameof(ProposedStudyPlanTemplateFilePath));
+    }
+
     partial void OnSearchDelayChanged(double value)
     {
         ValidateProperty(value, nameof(SearchDelay));
@@ -108,7 +131,14 @@ public partial class SettingsPageViewModel : BaseViewModel
     private bool CanSave()
     {
         return !(IsSaving || HasErrors || string.IsNullOrWhiteSpace(UserFullName) ||
-                 string.IsNullOrWhiteSpace(UserDepartment) || string.IsNullOrWhiteSpace(UserEmail));
+                 string.IsNullOrWhiteSpace(UserDepartment) || string.IsNullOrWhiteSpace(UserEmail) ||
+                 string.IsNullOrWhiteSpace(CreditTransferMemoTemplateFilePath) ||
+                 string.IsNullOrWhiteSpace(ProposedStudyPlanTemplateFilePath));
+    }
+
+    private bool CanOpenFilePicker()
+    {
+        return !IsSaving;
     }
     #endregion
 
@@ -122,6 +152,8 @@ public partial class SettingsPageViewModel : BaseViewModel
         userSettings.UserFullName = UserFullName;
         userSettings.UserDepartment = UserDepartment;
         userSettings.UserEmail = UserEmail;
+        userSettings.CreditTransferMemoTemplateFilePath = CreditTransferMemoTemplateFilePath;
+        userSettings.ProposedStudyPlanTemplateFilePath = ProposedStudyPlanTemplateFilePath;
         userSettings.SearchDebounceSeconds = SearchDelay;
         userSettings.DataGridPageSize = DataGridPageSize;
 
@@ -131,6 +163,40 @@ public partial class SettingsPageViewModel : BaseViewModel
             NotificationType.Success);
 
         IsSaving = false;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanOpenFilePicker))]
+    private async Task SelectCreditTransferMemoTemplate()
+    {
+        await SelectTemplate(true);
+    }
+
+    [RelayCommand(CanExecute = nameof(CanOpenFilePicker))]
+    private async Task SelectProposedStudyPlanTemplate()
+    {
+        await SelectTemplate(false);
+    }
+    #endregion
+
+    #region Helpers
+    private async Task SelectTemplate(bool isCreditTransferMemoTemplate)
+    {
+        var templateFiles = await fileDialogService.OpenFileDialog(SELECT_TEMPLATE_DIALOG_TITLE, false,
+            FileDialogService.WordDocumentFilePickerFileType);
+        if (templateFiles.Count == 0)
+        {
+            return;
+        }
+
+        var templateFilePath = templateFiles[0].Path.ToString();
+        if (isCreditTransferMemoTemplate)
+        {
+            CreditTransferMemoTemplateFilePath = templateFilePath;
+        }
+        else
+        {
+            ProposedStudyPlanTemplateFilePath = templateFilePath;
+        }
     }
     #endregion
 }

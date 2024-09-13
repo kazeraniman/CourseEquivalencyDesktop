@@ -31,6 +31,12 @@
             <u:StringReverseConverter x:Key="StringReverseConverter" />
             <u:ComparisonConverter x:Key="ComparisonConverter" />
         </general:BaseCreateOrEditWindow.Resources>
+        <general:BaseCreateOrEditWindow.Styles>
+            <Style Selector="controls|CustomCalendarDatePicker.StyledTextBox Path">
+                <Setter Property="Margin"
+                        Value="0" />
+            </Style>
+        </general:BaseCreateOrEditWindow.Styles>
         <general:BaseCreateOrEditWindow.FormContents>
             <controls:FormInputTextBox LabelText="Student"
                                        IsEnabled="False"
@@ -81,46 +87,87 @@
                         BorderBrush="{StaticResource BorderGreyAvaloniaControl}"
                         CornerRadius="6"
                         Background="{StaticResource BackgroundWhiteAvaloniaControl}">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="20">
-                        <controls:FormInputComboBox LabelText="Academic Term"
-                                                    ItemsSource="{Binding AcademicTerms}"
-                                                    PlaceholderText="Academic Term"
-                                                    SelectedItem="{Binding AcademicTerm}"
-                                                    HorizontalAlignment="Stretch"
-                                                    Icon="{StaticResource CalendarIconData}"
-                                                    MinWidth="200">
-                            <controls:FormInputComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding ., Converter={StaticResource StringReverseConverter}}" />
-                                </DataTemplate>
-                            </controls:FormInputComboBox.ItemTemplate>
-                        </controls:FormInputComboBox>
-                        <controls:FormInputComboBox LabelText="Seasonal Term"
-                                                    ItemsSource="{Binding SeasonalTerms}"
-                                                    PlaceholderText="Seasonal Term"
-                                                    SelectedItem="{Binding SeasonalTerm}"
-                                                    HorizontalAlignment="Stretch"
-                                                    Icon="{StaticResource CalendarIconData}"
-                                                    MinWidth="200">
-                            <controls:FormInputComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}" />
-                                </DataTemplate>
-                            </controls:FormInputComboBox.ItemTemplate>
-                        </controls:FormInputComboBox>
-                        <StackPanel Spacing="5">
-                            <Label FontWeight="Bold"
-                                   Content="Year"
-                                   Target="YearDatePicker" />
-                            <NumericUpDown x:Name="YearDatePicker"
-                                           Classes="StyledTextBox"
-                                           Value="{Binding Year}"
-                                           Increment="1"
-                                           FormatString="0"
-                                           Minimum="1"
-                                           Maximum="9999"
-                                           MinWidth="200" />
+                    <StackPanel Spacing="10">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="20">
+                            <controls:FormInputComboBox LabelText="Academic Term"
+                                                        ItemsSource="{Binding AcademicTerms}"
+                                                        PlaceholderText="Academic Term"
+                                                        SelectedItem="{Binding AcademicTerm}"
+                                                        HorizontalAlignment="Stretch"
+                                                        Icon="{StaticResource CalendarIconData}"
+                                                        MinWidth="225">
+                                <controls:FormInputComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            Text="{Binding ., Converter={StaticResource StringReverseConverter}}" />
+                                    </DataTemplate>
+                                </controls:FormInputComboBox.ItemTemplate>
+                            </controls:FormInputComboBox>
+                            <controls:FormInputComboBox LabelText="Seasonal Term"
+                                                        ItemsSource="{Binding SeasonalTerms}"
+                                                        PlaceholderText="Seasonal Term"
+                                                        SelectedItem="{Binding SeasonalTerm}"
+                                                        HorizontalAlignment="Stretch"
+                                                        Icon="{StaticResource CalendarIconData}"
+                                                        MinWidth="225">
+                                <controls:FormInputComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" />
+                                    </DataTemplate>
+                                </controls:FormInputComboBox.ItemTemplate>
+                            </controls:FormInputComboBox>
+                            <StackPanel Spacing="5">
+                                <Label FontWeight="Bold"
+                                       Content="Year"
+                                       Target="YearDatePicker" />
+                                <NumericUpDown x:Name="YearDatePicker"
+                                               Classes="StyledTextBox"
+                                               Value="{Binding Year}"
+                                               Increment="1"
+                                               FormatString="0"
+                                               Minimum="1"
+                                               Maximum="9999"
+                                               MinWidth="225" />
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="20">
+                            <controls:FormInputComboBox LabelText="Last Completed Academic Term"
+                                                        ItemsSource="{Binding AcademicTerms}"
+                                                        PlaceholderText="Last Completed Academic Term"
+                                                        SelectedItem="{Binding LastCompletedAcademicTerm}"
+                                                        HorizontalAlignment="Stretch"
+                                                        Icon="{StaticResource CalendarIconData}"
+                                                        MinWidth="225">
+                                <controls:FormInputComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            Text="{Binding ., Converter={StaticResource StringReverseConverter}}" />
+                                    </DataTemplate>
+                                </controls:FormInputComboBox.ItemTemplate>
+                            </controls:FormInputComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="20">
+                            <StackPanel Spacing="5">
+                                <Label FontWeight="Bold"
+                                       Content="Exchange Start Date (optional)"
+                                       Target="StartDateCalendarDatePicker" />
+                                <controls:CustomCalendarDatePicker x:Name="StartDateCalendarDatePicker"
+                                                                   Classes="StyledTextBox"
+                                                                   SelectedDate="{Binding ExchangeStartDate}"
+                                                                   Width="225" />
+                            </StackPanel>
+                            <StackPanel Spacing="5">
+                                <Label FontWeight="Bold"
+                                       Content="Exchange End Date (optional)"
+                                       Target="EndDateCalendarDatePicker" />
+                                <controls:CustomCalendarDatePicker x:Name="EndDateCalendarDatePicker"
+                                                                   Classes="StyledTextBox"
+                                                                   SelectedDate="{Binding ExchangeEndDate}"
+                                                                   Width="225" />
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -133,14 +180,7 @@
                 <controls:CustomCalendarDatePicker x:Name="DueDateCalendarDatePicker"
                                                    Classes="StyledTextBox"
                                                    SelectedDate="{Binding DueDate}"
-                                                   Width="200">
-                    <controls:CustomCalendarDatePicker.Styles>
-                        <Style Selector="controls|CustomCalendarDatePicker.StyledTextBox Path">
-                            <Setter Property="Margin"
-                                    Value="0" />
-                        </Style>
-                    </controls:CustomCalendarDatePicker.Styles>
-                </controls:CustomCalendarDatePicker>
+                                                   Width="225" />
             </StackPanel>
 
             <controls:FormInputTextBox
@@ -353,24 +393,46 @@
                 </Border>
             </Grid>
 
-            <Button Theme="{StaticResource BlueButton}"
-                    Command="{Binding ExportCreditTransferMemoCommand}"
-                    HorizontalAlignment="Right"
-                    VerticalContentAlignment="Center"
-                    ToolTip.Tip="Export Credit Transfer Memo">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="5">
-                        <TextBlock Text="Export Credit Transfer Memo"
-                                   VerticalAlignment="Center" />
-                        <Path Classes="MyPath"
-                              Stroke="White"
-                              Height="25"
-                              Width="25"
-                              Data="{StaticResource ExportIconData}" />
-                    </StackPanel>
-                </Button.Content>
-            </Button>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="10"
+                        HorizontalAlignment="Right">
+                <Button Theme="{StaticResource BlueButton}"
+                        Command="{Binding ExportProposedStudyPlanCommand}"
+                        HorizontalAlignment="Right"
+                        VerticalContentAlignment="Center"
+                        ToolTip.Tip="Export Proposed Study Plan">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="5">
+                            <TextBlock Text="Export Proposed Study Plan"
+                                       VerticalAlignment="Center" />
+                            <Path Classes="MyPath"
+                                  Stroke="White"
+                                  Height="25"
+                                  Width="25"
+                                  Data="{StaticResource ExportIconData}" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Theme="{StaticResource BlueButton}"
+                        Command="{Binding ExportCreditTransferMemoCommand}"
+                        HorizontalAlignment="Right"
+                        VerticalContentAlignment="Center"
+                        ToolTip.Tip="Export Credit Transfer Memo">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="5">
+                            <TextBlock Text="Export Credit Transfer Memo"
+                                       VerticalAlignment="Center" />
+                            <Path Classes="MyPath"
+                                  Stroke="White"
+                                  Height="25"
+                                  Width="25"
+                                  Data="{StaticResource ExportIconData}" />
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
         </general:BaseCreateOrEditWindow.FormContents>
     </general:BaseCreateOrEditWindow>
 </Window>

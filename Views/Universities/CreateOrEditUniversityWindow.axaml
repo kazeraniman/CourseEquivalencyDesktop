@@ -7,13 +7,13 @@
         xmlns:general="using:CourseEquivalencyDesktop.Views.General"
         mc:Ignorable="d"
         d:DesignWidth="800"
-        d:DesignHeight="300"
+        d:DesignHeight="385"
         x:Class="CourseEquivalencyDesktop.Views.Universities.CreateOrEditUniversityWindow"
         x:DataType="vm:CreateOrEditUniversityViewModel"
         Title="{Binding WindowAndButtonText}"
         CanResize="False"
         Width="800"
-        Height="300"
+        Height="38"
         WindowStartupLocation="CenterOwner">
 
     <Design.DataContext>
@@ -29,6 +29,11 @@
                                        Watermark="University of Waterloo"
                                        Text="{Binding Name}"
                                        Icon="{StaticResource UniversityIconData}" />
+            <controls:FormInputTextBox x:Name="CountryTextBox"
+                                       LabelText="Enter a country"
+                                       Watermark="Canada"
+                                       Text="{Binding Country}"
+                                       Icon="{StaticResource CountryIconData}" />
             <controls:FormInputTextBox LabelText="Enter a URL (optional)"
                                        Watermark="https://uwaterloo.ca/"
                                        Text="{Binding Url}"

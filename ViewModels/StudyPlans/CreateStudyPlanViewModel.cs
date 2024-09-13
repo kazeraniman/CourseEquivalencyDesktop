@@ -119,7 +119,8 @@ public partial class CreateStudyPlanViewModel : BaseCreateOrEditViewModel<StudyP
                 >= 9 and <= 12 => StudyPlan.SeasonalTerm.Winter,
                 _ => throw new UnreachableException("Month provided is invalid.")
             },
-            Academic = StudyPlan.AcademicTerm.A3
+            Academic = StudyPlan.AcademicTerm.A3,
+            LastCompletedAcademicTerm = StudyPlan.AcademicTerm.B2
         });
         await SaveChanges(entityEntry.Entity);
     }

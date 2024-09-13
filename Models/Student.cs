@@ -29,6 +29,7 @@ public class Student : BaseModel
     private string? notes;
     private ProgramType program;
     private StreamType stream;
+    private int expectedGraduationYear;
     #endregion
 
     #region Properties
@@ -86,11 +87,15 @@ public class Student : BaseModel
         set => SetField(ref stream, value);
     }
 
+    public int ExpectedGraduationYear
+    {
+        get => expectedGraduationYear;
+        set => SetField(ref expectedGraduationYear, value);
+    }
+
     // Handled by EF Core
-    // ReSharper disable UnassignedGetOnlyAutoProperty
     // ReSharper disable CollectionNeverUpdated.Global
     public ICollection<StudyPlan> StudyPlans { get; } = [];
     // ReSharper restore CollectionNeverUpdated.Global
-    // ReSharper restore UnassignedGetOnlyAutoProperty
     #endregion
 }

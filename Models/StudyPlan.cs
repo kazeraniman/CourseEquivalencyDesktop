@@ -37,6 +37,8 @@ public class StudyPlan : BaseModel
 
     // TODO: Should these be DateTimeOffset? Do we care with a local DB?
     private DateTime updatedAt;
+    private DateTime? exchangeStartDate;
+    private DateTime? exchangeEndDate;
     private DateTime? dueDate;
 
     private int studentId;
@@ -51,6 +53,7 @@ public class StudyPlan : BaseModel
     private int year;
     private SeasonalTerm seasonalTerm;
     private AcademicTerm academicTerm;
+    private AcademicTerm lastCompletedAcademicTerm;
     #endregion
 
     #region Properties
@@ -64,6 +67,18 @@ public class StudyPlan : BaseModel
     {
         get => updatedAt;
         set => SetField(ref updatedAt, value);
+    }
+
+    public DateTime? ExchangeStartDate
+    {
+        get => exchangeStartDate;
+        set => SetField(ref exchangeStartDate, value);
+    }
+
+    public DateTime? ExchangeEndDate
+    {
+        get => exchangeEndDate;
+        set => SetField(ref exchangeEndDate, value);
     }
 
     public DateTime? DueDate
@@ -124,6 +139,12 @@ public class StudyPlan : BaseModel
     {
         get => academicTerm;
         set => SetField(ref academicTerm, value);
+    }
+
+    public AcademicTerm LastCompletedAcademicTerm
+    {
+        get => lastCompletedAcademicTerm;
+        set => SetField(ref lastCompletedAcademicTerm, value);
     }
 
     // Handled by EF Core

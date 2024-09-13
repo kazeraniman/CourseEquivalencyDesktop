@@ -41,6 +41,8 @@ public class UserSettingsService
     public string? UserFullName => userSettings.UserFullName;
     public string? UserDepartment => userSettings.UserDepartment;
     public string? UserEmail => userSettings.UserEmail;
+    public string? CreditTransferMemoTemplateFilePath => userSettings.CreditTransferMemoTemplateFilePath;
+    public string? ProposedStudyPlanTemplateFilePath => userSettings.ProposedStudyPlanTemplateFilePath;
     #endregion
 
     #region File Management

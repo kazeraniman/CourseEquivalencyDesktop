@@ -12,9 +12,6 @@
 
     <ItemGroup>
         <AvaloniaResource Include="Assets\**"/>
-        <Content Include="DocumentTemplates\CreditTransferMemoTemplate.docx">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -96,5 +93,10 @@
     <ItemGroup>
         <AdditionalFiles Include="Views\DatabaseSelectionWizard\DatabaseSelectionWizardOpenPageView.axaml"/>
         <AdditionalFiles Include="Views\General\MainWindow.axaml"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="ExchangeDocumentTemplates\CreditTransferMemoTemplate.docx"/>
+        <None Remove="DocumentTemplates\ProposedStudyPlanTemplate.docx"/>
     </ItemGroup>
 </Project>

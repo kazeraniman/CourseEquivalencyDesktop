@@ -21,8 +21,6 @@ namespace CourseEquivalencyDesktop.ViewModels.StudyPlans;
 public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPlan>
 {
     #region Constants
-    private const string CREDIT_TRANSFER_MEMO_TEMPLATE_PATH = "DocumentTemplates/CreditTransferMemoTemplate.docx";
-
     private const string EDIT_TEXT = "Edit Study Plan";
     private const string STUDY_PLAN_EDITING_NOT_EXIST_TITLE = "Study Plan Doesn't Exist";
     private const string STUDY_PLAN_EDITING_NOT_EXIST_BODY = "The study plan you are trying to edit does not exist.";
@@ -31,24 +29,55 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
     private const string STUDY_PLAN_COMPLETE_MISSING_EQUIVALENCIES_BODY =
         "They study plan can't be marked as complete as there are still home university courses without and equivalent in the destination university.";
 
-    #region Credit Transfer Memo
+    #region Export
+    private const string STUDY_PLAN_EXPORT_NO_EMAIL_TITLE = "Student Email Missing";
+    private const string STUDY_PLAN_EXPORT_NO_EMAIL_BODY = "The student's email must be set to export.";
+    private const string STUDY_PLAN_EXPORT_NO_DATES_TITLE = "Exchange Dates Missing";
+    private const string STUDY_PLAN_EXPORT_NO_DATES_BODY = "The exchange start and end dates must be set to export.";
+
     private const string CREDIT_TRANSFER_MEMO_EXPORTED_TITLE = "Credit Transfer Memo Exported";
 
     private const string CREDIT_TRANSFER_MEMO_EXPORTED_BODY =
         "The credit transfer memo has been successfully exported.";
 
+    private const string PROPOSED_STUDY_PLAN_EXPORTED_TITLE = "Proposed Study Plan Exported";
+
+    private const string PROPOSED_STUDY_PLAN_EXPORTED_BODY =
+        "The proposed study plan has been successfully exported.";
+
+    private const string STUDY_PLAN_EXPORT_SETTINGS_MISSING_TITLE = "Export Settings Missing";
+
+    private const string STUDY_PLAN_EXPORT_SETTINGS_MISSING_BODY =
+        "Some settings required for filling out the template are missing. Please set them in the settings page.";
+
+    private const string STUDY_PLAN_EXPORT_TEMPLATE_FILE_MISSING_TITLE = "Template Missing";
+
+    private const string STUDY_PLAN_EXPORT_TEMPLATE_FILE_MISSING_BODY =
+        "The template selected is set in the settings but the file could not be found. Please double-check the location.";
+
+    private const string CREDIT_TRANSFER_MEMO = "CreditTransferMemo";
     private const string CREDIT_TRANSFER_MEMO_EXPORT_TITLE = "Export Credit Transfer Memo";
-    private const string CREDIT_TRANSFER_MEMO_DATE_TEMPLATE_TAG = "Date";
-    private const string CREDIT_TRANSFER_MEMO_STUDENT_NAME_TEMPLATE_TAG = "Student_Name";
-    private const string CREDIT_TRANSFER_MEMO_STUDENT_ID_TEMPLATE_TAG = "Student_ID";
-    private const string CREDIT_TRANSFER_MEMO_PLAN_TEMPLATE_TAG = "Plan";
-    private const string CREDIT_TRANSFER_MEMO_HOME_UNIVERSITY_TEMPLATE_TAG = "Home_University";
-    private const string CREDIT_TRANSFER_MEMO_DESTINATION_UNIVERSITY_TEMPLATE_TAG = "Destination_University";
-    private const string CREDIT_TRANSFER_MEMO_TERM_TEMPLATE_TAG = "Term";
-    private const string CREDIT_TRANSFER_MEMO_ADVISOR_TEMPLATE_TAG = "Advisor";
-    private const string CREDIT_TRANSFER_MEMO_COURSES_TEMPLATE_TAG = "Courses";
-    private const string CREDIT_TRANSFER_MEMO_DEFAULT_ADVISOR_NAME = "SET NAME IN SETTINGS";
-    private const string CREDIT_TRANSFER_MEMO_DEFAULT_ADVISOR_DEPARTMENT = "SET DEPARTMENT IN SETTINGS";
+    private const string PROPOSED_STUDY_PLAN = "ProposedStudyPlan";
+    private const string PROPOSED_STUDY_PLAN_EXPORT_TITLE = "Export Proposed Study Plan";
+    private const string DATE_TEMPLATE_TAG = "Date";
+    private const string STUDENT_NAME_TEMPLATE_TAG = "Student_Name";
+    private const string STUDENT_ID_TEMPLATE_TAG = "Student_ID";
+    private const string STUDENT_EMAIL_TEMPLATE_TAG = "Student_Email";
+    private const string PROGRAM_TEMPLATE_TAG = "Program";
+    private const string STREAM_TEMPLATE_TAG = "Stream";
+    private const string HOME_UNIVERSITY_TEMPLATE_TAG = "Home_University";
+    private const string DESTINATION_UNIVERSITY_TEMPLATE_TAG = "Destination_University";
+    private const string TERM_TEMPLATE_TAG = "Term";
+    private const string ADVISOR_NAME_TEMPLATE_TAG = "Advisor_Name";
+    private const string ADVISOR_DEPARTMENT_TEMPLATE_TAG = "Advisor_Department";
+    private const string COURSES_TEMPLATE_TAG = "Courses";
+    private const string GRADUATION_YEAR_TEMPLATE_TAG = "Graduation_Year";
+    private const string DESTINATION_COUNTRY_TEMPLATE_TAG = "Destination_Country";
+    private const string START_DATE_TEMPLATE_TAG = "Start_Date";
+    private const string END_DATE_TEMPLATE_TAG = "End_Date";
+    private const string LAST_TERM_TEMPLATE_TAG = "Last_Term";
+    private const string DATE_FORMAT_STRING = "dd-MMM-yyyy";
+    private const string MISSING_DEFAULT_STRING = "MISSING";
     #endregion
     #endregion
 
@@ -99,6 +128,16 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
 
     [ObservableProperty]
     private DateTime? dueDate;
+
+    [ObservableProperty]
+    private DateTime? exchangeStartDate;
+
+    [ObservableProperty]
+    private DateTime? exchangeEndDate;
+
+    [ObservableProperty]
+    [Required]
+    private StudyPlan.AcademicTerm lastCompletedAcademicTerm;
 
     [ObservableProperty]
     private string? notes;
@@ -168,6 +207,9 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
         Year = studyPlan.Year;
         DueDate = studyPlan.DueDate;
         Notes = studyPlan.Notes;
+        ExchangeStartDate = studyPlan.ExchangeStartDate;
+        ExchangeEndDate = studyPlan.ExchangeEndDate;
+        LastCompletedAcademicTerm = studyPlan.LastCompletedAcademicTerm;
 
         HomeUniversityCourses.AddRange(studyPlan.HomeUniversityCourses);
         DestinationUniversityCourses.AddRange(studyPlan.DestinationUniversityCourses);
@@ -238,6 +280,9 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
         editingStudyPlan.Seasonal = SeasonalTerm;
         editingStudyPlan.Year = Year;
         editingStudyPlan.DueDate = DueDate;
+        editingStudyPlan.ExchangeStartDate = ExchangeStartDate;
+        editingStudyPlan.ExchangeEndDate = ExchangeEndDate;
+        editingStudyPlan.LastCompletedAcademicTerm = LastCompletedAcademicTerm;
         editingStudyPlan.Notes = Notes;
         editingStudyPlan.UpdatedAt = DateTime.Now;
 
@@ -304,8 +349,59 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
     [RelayCommand]
     private async Task ExportCreditTransferMemo()
     {
-        var exportFile = await fileDialogService.SaveFileDialog(CREDIT_TRANSFER_MEMO_EXPORT_TITLE,
-            $"CreditTransferMemo-{Student.StudentId}-{Student.Name}-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}",
+        await Export(CREDIT_TRANSFER_MEMO, CREDIT_TRANSFER_MEMO_EXPORT_TITLE,
+            userSettingsService.CreditTransferMemoTemplateFilePath, CREDIT_TRANSFER_MEMO_EXPORTED_TITLE,
+            CREDIT_TRANSFER_MEMO_EXPORTED_BODY);
+    }
+
+    [RelayCommand]
+    private async Task ExportProposedStudyPlan()
+    {
+        await Export(PROPOSED_STUDY_PLAN, PROPOSED_STUDY_PLAN_EXPORT_TITLE,
+            userSettingsService.ProposedStudyPlanTemplateFilePath, PROPOSED_STUDY_PLAN_EXPORTED_TITLE,
+            PROPOSED_STUDY_PLAN_EXPORTED_BODY);
+    }
+    #endregion
+
+    #region Helpers
+    private async Task Export(string exportType, string saveFileDialogTitle, string? templatePath,
+        string exportedSuccessTitle, string exportedSuccessBody)
+    {
+        if (string.IsNullOrEmpty(templatePath) || string.IsNullOrWhiteSpace(userSettingsService.UserFullName) ||
+            string.IsNullOrWhiteSpace(userSettingsService.UserDepartment))
+        {
+            ShowNotification(STUDY_PLAN_EXPORT_SETTINGS_MISSING_TITLE, STUDY_PLAN_EXPORT_SETTINGS_MISSING_BODY,
+                NotificationType.Error);
+            return;
+        }
+
+        var templateFile = new Uri(templatePath).LocalPath;
+        if (!File.Exists(templateFile))
+        {
+            ShowNotification(STUDY_PLAN_EXPORT_TEMPLATE_FILE_MISSING_TITLE,
+                STUDY_PLAN_EXPORT_TEMPLATE_FILE_MISSING_BODY, NotificationType.Error);
+            return;
+        }
+
+        if (exportType == PROPOSED_STUDY_PLAN)
+        {
+            if (string.IsNullOrWhiteSpace(Student.Email))
+            {
+                ShowNotification(STUDY_PLAN_EXPORT_NO_EMAIL_TITLE, STUDY_PLAN_EXPORT_NO_EMAIL_BODY,
+                    NotificationType.Error);
+                return;
+            }
+
+            if (ExchangeStartDate is null || ExchangeEndDate is null)
+            {
+                ShowNotification(STUDY_PLAN_EXPORT_NO_DATES_TITLE, STUDY_PLAN_EXPORT_NO_DATES_BODY,
+                    NotificationType.Error);
+                return;
+            }
+        }
+
+        var exportFile = await fileDialogService.SaveFileDialog(saveFileDialogTitle,
+            $"{exportType}-{Student.StudentId}-{Student.Name}-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}",
             FileDialogService.WORD_DOCUMENT_DEFAULT_EXTENSION, FileDialogService.WordDocumentFilePickerFileType);
 
         if (exportFile is null)
@@ -320,13 +416,13 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
             coursesTemplate.Add(new Dictionary<string, object>
             {
                 {
-                    CREDIT_TRANSFER_MEMO_DESTINATION_UNIVERSITY_TEMPLATE_TAG,
+                    DESTINATION_UNIVERSITY_TEMPLATE_TAG,
                     i < DestinationUniversityCourses.Count
                         ? $"{DestinationUniversityCourses[i].CourseId} {DestinationUniversityCourses[i].Name}"
                         : string.Empty
                 },
                 {
-                    CREDIT_TRANSFER_MEMO_HOME_UNIVERSITY_TEMPLATE_TAG,
+                    HOME_UNIVERSITY_TEMPLATE_TAG,
                     i < HomeUniversityCourses.Count
                         ? $"{HomeUniversityCourses[i].CourseId} {HomeUniversityCourses[i].Name}"
                         : string.Empty
@@ -336,31 +432,30 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
 
         var templateValues = new Dictionary<string, object>
         {
-            { CREDIT_TRANSFER_MEMO_DATE_TEMPLATE_TAG, DateTime.Today.ToString("MMMM d, yyyy") },
-            { CREDIT_TRANSFER_MEMO_STUDENT_NAME_TEMPLATE_TAG, Student.Name },
-            { CREDIT_TRANSFER_MEMO_STUDENT_ID_TEMPLATE_TAG, Student.StudentId },
-            {
-                CREDIT_TRANSFER_MEMO_PLAN_TEMPLATE_TAG,
-                $"{Student.Program.GetProgramTypeString()}/{Student.Stream.GetStreamTypeString()}"
-            },
-            { CREDIT_TRANSFER_MEMO_DESTINATION_UNIVERSITY_TEMPLATE_TAG, DestinationUniversity.Name },
-            { CREDIT_TRANSFER_MEMO_TERM_TEMPLATE_TAG, AcademicTerm.GetAcademicTermString() },
-            {
-                CREDIT_TRANSFER_MEMO_ADVISOR_TEMPLATE_TAG,
-                $"{userSettingsService.UserFullName ?? CREDIT_TRANSFER_MEMO_DEFAULT_ADVISOR_NAME} ({userSettingsService.UserDepartment ?? CREDIT_TRANSFER_MEMO_DEFAULT_ADVISOR_DEPARTMENT})"
-            },
-            { CREDIT_TRANSFER_MEMO_COURSES_TEMPLATE_TAG, coursesTemplate }
+            { DATE_TEMPLATE_TAG, FormatDate(DateTime.Today) },
+            { STUDENT_NAME_TEMPLATE_TAG, Student.Name },
+            { STUDENT_ID_TEMPLATE_TAG, Student.StudentId },
+            { STUDENT_EMAIL_TEMPLATE_TAG, Student.Email ?? MISSING_DEFAULT_STRING },
+            { PROGRAM_TEMPLATE_TAG, Student.Program.GetProgramTypeString() },
+            { STREAM_TEMPLATE_TAG, Student.Stream.GetStreamTypeString() },
+            { HOME_UNIVERSITY_TEMPLATE_TAG, Student.University.Name },
+            { DESTINATION_UNIVERSITY_TEMPLATE_TAG, DestinationUniversity.Name },
+            { TERM_TEMPLATE_TAG, AcademicTerm.GetAcademicTermString() },
+            { ADVISOR_NAME_TEMPLATE_TAG, userSettingsService.UserFullName },
+            { ADVISOR_DEPARTMENT_TEMPLATE_TAG, userSettingsService.UserDepartment },
+            { GRADUATION_YEAR_TEMPLATE_TAG, Student.ExpectedGraduationYear },
+            { DESTINATION_COUNTRY_TEMPLATE_TAG, DestinationUniversity.Country },
+            { START_DATE_TEMPLATE_TAG, FormatDate(ExchangeStartDate) },
+            { END_DATE_TEMPLATE_TAG, FormatDate(ExchangeEndDate) },
+            { LAST_TERM_TEMPLATE_TAG, LastCompletedAcademicTerm.GetAcademicTermString() },
+            { COURSES_TEMPLATE_TAG, coursesTemplate }
         };
 
-        MiniWord.SaveAsByTemplate(exportFile.Path.LocalPath,
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, CREDIT_TRANSFER_MEMO_TEMPLATE_PATH), templateValues);
+        MiniWord.SaveAsByTemplate(exportFile.Path.LocalPath, templateFile, templateValues);
 
-        ShowNotification(CREDIT_TRANSFER_MEMO_EXPORTED_TITLE, CREDIT_TRANSFER_MEMO_EXPORTED_BODY,
-            NotificationType.Success);
+        ShowNotification(exportedSuccessTitle, exportedSuccessBody, NotificationType.Success);
     }
-    #endregion
 
-    #region Helpers
     private void SortDestinationCoursesByEquivalency()
     {
         var newDestinationUniversityCourses = DestinationUniversityCourses
@@ -368,6 +463,11 @@ public partial class EditStudyPlanViewModel : BaseCreateOrEditViewModel<StudyPla
             .ToList();
         DestinationUniversityCourses.Clear();
         DestinationUniversityCourses.AddRange(newDestinationUniversityCourses);
+    }
+
+    private string FormatDate(DateTime? date)
+    {
+        return date?.ToString(DATE_FORMAT_STRING).Replace(".", "").ToUpper() ?? MISSING_DEFAULT_STRING;
     }
     #endregion
 }
