@@ -12,7 +12,6 @@
         x:Class="CourseEquivalencyDesktop.Views.Courses.CreateOrEditCourseWindow"
         x:DataType="vm:CreateOrEditCourseViewModel"
         Title="{Binding WindowAndButtonText}"
-        CanResize="False"
         Width="900"
         Height="700"
         WindowStartupLocation="CenterOwner">

@@ -11,9 +11,8 @@
         x:Class="CourseEquivalencyDesktop.Views.Universities.CreateOrEditUniversityWindow"
         x:DataType="vm:CreateOrEditUniversityViewModel"
         Title="{Binding WindowAndButtonText}"
-        CanResize="False"
         Width="800"
-        Height="38"
+        Height="385"
         WindowStartupLocation="CenterOwner">
 
     <Design.DataContext>
