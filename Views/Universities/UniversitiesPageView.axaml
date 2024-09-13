@@ -29,8 +29,11 @@
             <dataGridBoundColumns:DataGridSelectableTextColumn Header="University"
                                                                Width="0.5*"
                                                                Binding="{Binding Name, DataType=m:University}" />
+            <dataGridBoundColumns:DataGridSelectableTextColumn Header="Country"
+                                                               Width="0.2*"
+                                                               Binding="{Binding Country, DataType=m:University}" />
             <dataGridBoundColumns:DataGridLinkColumn Header="URL"
-                                                     Width="0.5*"
+                                                     Width="0.3*"
                                                      Binding="{Binding Url, DataType=m:University}" />
             <DataGridTemplateColumn Header=""
                                     Width="Auto"

@@ -111,6 +111,10 @@ public class DatabaseService : DbContext
             .Property(e => e.Academic)
             .HasConversion<string>();
 
+        modelBuilder.Entity<StudyPlan>()
+            .Property(e => e.LastCompletedAcademicTerm)
+            .HasConversion<string>();
+
         modelBuilder.Entity<Student>()
             .HasMany(e => e.StudyPlans)
             .WithOne(e => e.Student)
@@ -132,6 +136,16 @@ public class DatabaseService : DbContext
         modelBuilder.Entity<StudyPlan>()
             .HasMany(e => e.DestinationUniversityCourses)
             .WithMany(e => e.DestinationUniversityCoursesStudyPlans);
+
+        /* Start of Default Values for Migration */
+        modelBuilder.Entity<University>()
+            .Property(p => p.Country)
+            .HasDefaultValue("Canada");
+
+        modelBuilder.Entity<Student>()
+            .Property(p => p.ExpectedGraduationYear)
+            .HasDefaultValue(2025);
+        /* End of Default Values for Migration */
     }
     #endregion
 

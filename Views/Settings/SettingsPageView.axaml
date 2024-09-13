@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:CourseEquivalencyDesktop.ViewModels.Settings"
+             xmlns:v="using:CourseEquivalencyDesktop.Views.Settings"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
@@ -49,6 +50,54 @@
                         <TextBox x:Name="EmailTextBox"
                                  Classes="StyledTextBox"
                                  Text="{Binding UserEmail}" />
+                    </StackPanel>
+                    <StackPanel Spacing="5">
+                        <Label FontWeight="Bold"
+                               Content="Credit Transfer Memo Template File"
+                               Target="CreditTransferMemoTemplateTextBox"
+                               ToolTip.Tip="The file to use as the template for generating the Credit Transfer Memo." />
+                        <Grid ColumnDefinitions="*,Auto"
+                              RowDefinitions="*">
+                            <TextBox x:Name="CreditTransferMemoTemplateTextBox"
+                                     Grid.Row="0"
+                                     Grid.Column="0"
+                                     IsReadOnly="True"
+                                     IsEnabled="False"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding Path=((vm:SettingsPageViewModel)DataContext).CreditTransferMemoTemplateFilePath, RelativeSource={RelativeSource FindAncestor, AncestorType=v:SettingsPageView}}" />
+                            <Button Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="5,0,0,0"
+                                    Theme="{StaticResource GreyButton}"
+                                    Command="{Binding Path=((vm:SettingsPageViewModel)DataContext).SelectCreditTransferMemoTemplateCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=v:SettingsPageView}}">
+                                <Path Classes="MyPath"
+                                      Data="{StaticResource FilePickIconData}" />
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Spacing="5">
+                        <Label FontWeight="Bold"
+                               Content="Proposed Study Plan Template File"
+                               Target="ProposedStudyPlanTemplateTextBox"
+                               ToolTip.Tip="The file to use as the template for generating the Proposed Study Plan." />
+                        <Grid ColumnDefinitions="*,Auto"
+                              RowDefinitions="*">
+                            <TextBox x:Name="ProposedStudyPlanTemplateTextBox"
+                                     Grid.Row="0"
+                                     Grid.Column="0"
+                                     IsReadOnly="True"
+                                     IsEnabled="False"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding Path=((vm:SettingsPageViewModel)DataContext).ProposedStudyPlanTemplateFilePath, RelativeSource={RelativeSource FindAncestor, AncestorType=v:SettingsPageView}}" />
+                            <Button Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="5,0,0,0"
+                                    Theme="{StaticResource GreyButton}"
+                                    Command="{Binding Path=((vm:SettingsPageViewModel)DataContext).SelectProposedStudyPlanTemplateCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=v:SettingsPageView}}">
+                                <Path Classes="MyPath"
+                                      Data="{StaticResource FilePickIconData}" />
+                            </Button>
+                        </Grid>
                     </StackPanel>
                     <StackPanel Spacing="5">
                         <Label FontWeight="Bold"

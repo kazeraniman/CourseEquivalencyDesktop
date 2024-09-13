@@ -83,6 +83,19 @@
                                 </DataTemplate>
                             </controls:FormInputComboBox.ItemTemplate>
                         </controls:FormInputComboBox>
+                        <StackPanel Spacing="5">
+                            <Label FontWeight="Bold"
+                                   Content="Expected Graduation Year"
+                                   Target="ExpectedGraduationYearDatePicker" />
+                            <NumericUpDown x:Name="ExpectedGraduationYearDatePicker"
+                                           Classes="StyledTextBox"
+                                           Value="{Binding ExpectedGraduationYear}"
+                                           Increment="1"
+                                           FormatString="0"
+                                           Minimum="1"
+                                           Maximum="9999"
+                                           MinWidth="200" />
+                        </StackPanel>
                     </StackPanel>
                 </Border>
             </StackPanel>

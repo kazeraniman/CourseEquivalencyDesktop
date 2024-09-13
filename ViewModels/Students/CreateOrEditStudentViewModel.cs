@@ -54,6 +54,11 @@ public partial class CreateOrEditStudentViewModel : BaseCreateOrEditViewModel<St
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
+    [Required]
+    private int expectedGraduationYear;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
     [EmailAddress]
     private string? email;
 
@@ -94,6 +99,7 @@ public partial class CreateOrEditStudentViewModel : BaseCreateOrEditViewModel<St
         University = student?.University ?? Universities[0];
         Program = student?.Program ?? ProgramTypes[0];
         Stream = student?.Stream ?? StreamTypes[0];
+        ExpectedGraduationYear = student?.ExpectedGraduationYear ?? DateTime.Today.Year;
 
         // Ensure the button is disabled if invalid but don't trigger errors as they haven't performed any actions yet
         CreateOrEditCommand.NotifyCanExecuteChanged();
@@ -163,6 +169,7 @@ public partial class CreateOrEditStudentViewModel : BaseCreateOrEditViewModel<St
                 StudentId = preparedStudentId,
                 Program = Program,
                 Stream = Stream,
+                ExpectedGraduationYear = ExpectedGraduationYear,
                 Email = preparedEmail,
                 Notes = preparedNotes
             });
@@ -193,6 +200,7 @@ public partial class CreateOrEditStudentViewModel : BaseCreateOrEditViewModel<St
             editingStudent.StudentId = preparedStudentId;
             editingStudent.Program = Program;
             editingStudent.Stream = Stream;
+            editingStudent.ExpectedGraduationYear = ExpectedGraduationYear;
             editingStudent.Email = preparedEmail;
             editingStudent.Notes = preparedNotes;
             await SaveChanges(editingStudent);

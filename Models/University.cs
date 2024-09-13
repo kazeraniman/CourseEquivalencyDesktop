@@ -9,6 +9,7 @@ public class University : BaseModel
     // Handled by EF Core
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private string name;
+    private string country;
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private string? url;
     #endregion
@@ -24,6 +25,12 @@ public class University : BaseModel
     {
         get => name;
         set => SetField(ref name, value);
+    }
+
+    public string Country
+    {
+        get => country;
+        set => SetField(ref country, value);
     }
 
     public string? Url

@@ -15,7 +15,7 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
     private const string CREATE_TEXT = "Create University";
     private const string EDIT_TEXT = "Edit University";
     private const string UNIVERSITY_NAME_EXISTS_TITLE = "University Exists";
-    private const string UNIVERSITY_NAME_EXISTS_BODY = "A university with this name already exists.";
+    private const string UNIVERSITY_NAME_EXISTS_BODY = "A university with this name in this country already exists.";
     private const string UNIVERSITY_EDITING_NOT_EXIST_TITLE = "University Doesn't Exist";
     private const string UNIVERSITY_EDITING_NOT_EXIST_BODY = "The university you are trying to edit does not exist.";
     #endregion
@@ -29,6 +29,11 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
     [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
     [Required(AllowEmptyStrings = false)]
     private string name = string.Empty;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
+    [Required(AllowEmptyStrings = false)]
+    private string country = string.Empty;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CreateOrEditCommand))]
@@ -49,6 +54,7 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
         WindowAndButtonText = IsCreate ? CREATE_TEXT : EDIT_TEXT;
 
         Name = university?.Name ?? string.Empty;
+        Country = university?.Country ?? string.Empty;
         Url = university?.Url;
 
         // Ensure the button is disabled if invalid but don't trigger errors as they haven't performed any actions yet
@@ -60,6 +66,11 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
     partial void OnNameChanged(string value)
     {
         ValidateProperty(value, nameof(Name));
+    }
+
+    partial void OnCountryChanged(string value)
+    {
+        ValidateProperty(value, nameof(Country));
     }
 
     partial void OnUrlChanged(string? value)
@@ -77,7 +88,7 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
     #region Command Execution Checks
     protected override bool CanCreateOrEdit()
     {
-        return base.CanCreateOrEdit() && !string.IsNullOrWhiteSpace(Name);
+        return base.CanCreateOrEdit() && !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Country);
     }
     #endregion
 
@@ -85,6 +96,7 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
     protected override async Task CreateOrEditInherited()
     {
         var preparedName = Name.Trim();
+        var preparedCountry = Country.Trim();
         var preparedUrl = Url?.Trim();
         if (IsCreate)
         {
@@ -97,7 +109,9 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
 
         async Task Create()
         {
-            var doesNameExist = await DatabaseService.Universities.AnyAsync(uni => uni.Name == preparedName);
+            var doesNameExist =
+                await DatabaseService.Universities.AnyAsync(uni =>
+                    uni.Name == preparedName && uni.Country == preparedCountry);
             if (doesNameExist)
             {
                 ShowNotification(UNIVERSITY_NAME_EXISTS_TITLE, UNIVERSITY_NAME_EXISTS_BODY, NotificationType.Error);
@@ -107,6 +121,7 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
             var entityEntry = await DatabaseService.AddAsync(new University
             {
                 Name = preparedName,
+                Country = preparedCountry,
                 Url = preparedUrl
             });
             await SaveChanges(entityEntry.Entity);
@@ -125,7 +140,7 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
 
             var doesNameExist =
                 await DatabaseService.Universities.AnyAsync(uni =>
-                    uni.Name == preparedName && uni.Id != editingUniversity.Id);
+                    uni.Name == preparedName && uni.Country == preparedCountry && uni.Id != editingUniversity.Id);
             if (doesNameExist)
             {
                 ShowNotification(UNIVERSITY_NAME_EXISTS_TITLE, UNIVERSITY_NAME_EXISTS_BODY, NotificationType.Error);
@@ -133,6 +148,7 @@ public partial class CreateOrEditUniversityViewModel : BaseCreateOrEditViewModel
             }
 
             editingUniversity.Name = preparedName;
+            editingUniversity.Country = preparedCountry;
             editingUniversity.Url = preparedUrl;
             await SaveChanges(editingUniversity);
         }
