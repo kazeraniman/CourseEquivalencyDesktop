@@ -18,6 +18,8 @@ namespace CourseEquivalencyDesktop.ViewModels.Courses;
 public partial class CoursesPageViewModel : BasePageViewModel<Course>
 {
     #region Fields
+    private WindowNotificationManager? windowNotificationManager;
+
     public readonly Interaction<Course?, Course?> CreateEquivalencyInteraction = new();
     #endregion
 
@@ -138,14 +140,16 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
             // Force the binding to refresh since it is bound to the ID
             course.OnPropertyChanged(nameof(course.Id));
 
-            ToastNotificationService.ShowToastNotification(CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TITLE,
+            ToastNotificationService.ShowToastNotification(windowNotificationManager,
+                CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TITLE,
                 string.Format(CREATE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE,
                     EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Success);
         }
 
         void SaveChangesFailedHandler()
         {
-            ToastNotificationService.ShowToastNotification(CREATE_EQUIVALENCY_FAILED_NOTIFICATION_TITLE,
+            ToastNotificationService.ShowToastNotification(windowNotificationManager,
+                CREATE_EQUIVALENCY_FAILED_NOTIFICATION_TITLE,
                 string.Format(CREATE_EQUIVALENCY_FAILED_NOTIFICATION_BODY_TEMPLATE,
                     EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Error);
         }
@@ -169,17 +173,25 @@ public partial class CoursesPageViewModel : BasePageViewModel<Course>
             // Force the binding to refresh since it is bound to the ID
             course.OnPropertyChanged(nameof(course.Id));
 
-            ToastNotificationService.ShowToastNotification(DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TITLE,
+            ToastNotificationService.ShowToastNotification(windowNotificationManager,
+                DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_TITLE,
                 string.Format(DELETE_EQUIVALENCY_SUCCESSFUL_NOTIFICATION_BODY_TEMPLATE,
                     EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Success);
         }
 
         void SaveChangesFailedHandler()
         {
-            ToastNotificationService.ShowToastNotification(DELETE_EQUIVALENCY_FAILED_NOTIFICATION_TITLE,
+            ToastNotificationService.ShowToastNotification(windowNotificationManager,
+                DELETE_EQUIVALENCY_FAILED_NOTIFICATION_TITLE,
                 string.Format(DELETE_EQUIVALENCY_FAILED_NOTIFICATION_BODY_TEMPLATE,
                     EquivalenciesPageViewModel.GetEquivalencyName(course, EquivalentCourse)), NotificationType.Error);
         }
+    }
+
+    [RelayCommand]
+    private void SetUpEquivalencyNotifications(WindowNotificationManager? notificationManager)
+    {
+        windowNotificationManager = notificationManager;
     }
     #endregion
 }

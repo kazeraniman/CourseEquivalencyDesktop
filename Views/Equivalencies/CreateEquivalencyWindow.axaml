@@ -16,8 +16,14 @@
         <vm:CoursesPageViewModel />
     </Design.DataContext>
 
-    <Border Margin="20">
-        <general:CoursesPageView ShouldShowHeader="False"
-                                 ShouldShowCreateButton="False" />
-    </Border>
+    <Grid RowDefinitions="*"
+          ColumnDefinitions="*">
+        <Border Margin="20">
+            <general:CoursesPageView ShouldShowHeader="False"
+                                     ShouldShowCreateButton="False" />
+        </Border>
+        <WindowNotificationManager x:Name="CreateEquivalenciesWindowNotificationManager"
+                                   Position="TopRight"
+                                   MaxItems="1" />
+    </Grid>
 </Window>
