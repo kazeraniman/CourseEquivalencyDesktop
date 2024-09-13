@@ -10,9 +10,6 @@
         x:Class="CourseEquivalencyDesktop.Views.Equivalencies.CreateEquivalencyWindow"
         x:DataType="vm:CoursesPageViewModel"
         Title="Create Equivalency"
-        CanResize="False"
-        Width="1280"
-        Height="720"
         WindowStartupLocation="CenterOwner">
 
     <Design.DataContext>

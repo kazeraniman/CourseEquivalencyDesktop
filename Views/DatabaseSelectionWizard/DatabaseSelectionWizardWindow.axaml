@@ -9,7 +9,6 @@
         x:Class="CourseEquivalencyDesktop.Views.DatabaseSelectionWizard.DatabaseSelectionWizardWindow"
         x:DataType="vm:DatabaseSelectionWizardViewModel"
         Title="Database Selection Wizard"
-        CanResize="False"
         Width="800"
         Height="250"
         WindowStartupLocation="CenterScreen">

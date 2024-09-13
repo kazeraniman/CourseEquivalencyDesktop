@@ -7,14 +7,13 @@
         xmlns:controls="using:CourseEquivalencyDesktop.Views.CustomControls"
         xmlns:general="using:CourseEquivalencyDesktop.Views.General"
         mc:Ignorable="d"
-        d:DesignWidth="1000"
-        d:DesignHeight="825"
+        d:DesignWidth="900"
+        d:DesignHeight="700"
         x:Class="CourseEquivalencyDesktop.Views.Students.CreateOrEditStudentWindow"
         x:DataType="vm:CreateOrEditStudentViewModel"
         Title="{Binding WindowAndButtonText}"
-        CanResize="False"
-        Width="1000"
-        Height="825"
+        Width="900"
+        Height="700"
         WindowStartupLocation="CenterOwner">
 
     <Design.DataContext>

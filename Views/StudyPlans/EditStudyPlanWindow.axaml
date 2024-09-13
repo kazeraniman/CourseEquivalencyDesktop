@@ -14,9 +14,6 @@
         x:Class="CourseEquivalencyDesktop.Views.StudyPlans.EditStudyPlanWindow"
         x:DataType="vm:EditStudyPlanViewModel"
         Title="{Binding WindowAndButtonText}"
-        CanResize="False"
-        Width="1280"
-        Height="720"
         WindowStartupLocation="CenterOwner">
 
     <Design.DataContext>

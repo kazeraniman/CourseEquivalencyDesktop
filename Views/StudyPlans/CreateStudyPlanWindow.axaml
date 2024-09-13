@@ -12,7 +12,6 @@
         x:Class="CourseEquivalencyDesktop.Views.StudyPlans.CreateStudyPlanWindow"
         x:DataType="vm:CreateStudyPlanViewModel"
         Title="{Binding WindowAndButtonText}"
-        CanResize="False"
         Width="800"
         Height="300"
         WindowStartupLocation="CenterOwner">
