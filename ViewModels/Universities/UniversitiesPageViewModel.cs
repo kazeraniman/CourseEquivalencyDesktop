@@ -58,7 +58,8 @@ public class UniversitiesPageViewModel : BasePageViewModel<University>
             return false;
         }
 
-        return string.IsNullOrWhiteSpace(SearchText) || university.Name.CaseInsensitiveContains(SearchText);
+        return string.IsNullOrWhiteSpace(SearchText) || university.Name.CaseInsensitiveContains(SearchText) ||
+               university.Country.CaseInsensitiveContains(SearchText);
     }
     #endregion
 }
